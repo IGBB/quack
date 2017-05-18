@@ -92,11 +92,11 @@ int* read_adapters(char *adapters_file) {
     memset(kmers, 0, array_size*sizeof(int));
     while ((l = kseq_read(seq)) >= 0) {
         index = 0;
-        for (i = 0; i < kmer_size; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65])) & (array_size-1);
-        }
+            for (i = 0; i < kmer_size; i++) {
+                index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
+            }
         for (; i < seq->seq.l; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65])) & (array_size-1);
+            index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
             kmers[index] = 1;
         }
 
@@ -127,17 +127,17 @@ sequence_data* read_fastq(char *fastq_file, int *kmers) {
         }
         for (i = 0; i < seq->seq.l; i++) {
             int base = seq->seq.s[i];
-            int offset = lookup[base-65];
+            int offset = lookup[base-65 & ~32];
             bases[i].content[offset]++;
             int quality = seq->qual.s[i]-33;
             bases[i].scores[quality]++;
         }
         index = 0;
         for (i = 0; i < kmer_size; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65])) & (array_size-1);
+            index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
         }
         for (; kmers[index] == 0 && i < seq->seq.l; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65])) & (array_size-1);
+            index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
             //
         }
         if (i < seq->seq.l) {
@@ -374,7 +374,7 @@ void draw(sequence_data* data, int position) {
     // mean line
     printf("<polyline points=\" ");
     for (i=1; i< data->max_length; i++) {
-	printf("%d,%d ", i, max_score-averages[i]+offset);
+	printf("%d,%lu ", i, max_score-averages[i]+offset);
     }
     printf("\" style=\"stroke-width: 0.5; opacity: 0.5; fill:none;stroke:#000\"/>\n");
 
