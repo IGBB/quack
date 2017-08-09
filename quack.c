@@ -160,6 +160,7 @@ sequence_data* transform(sequence_data* data) {
     data->original_max_length = data->max_length;
     // binning
     if (data->max_length > 3000) {
+        fprintf(stderr, "Binning...\n");
         int bin_size = 100;
         int unbinned;
         int binned = 0;
@@ -181,6 +182,7 @@ sequence_data* transform(sequence_data* data) {
              for (i = 0; i < 91; i++) {
                 data->bases[binned].scores[i] = data->bases[binned].scores[i] + data->bases[unbinned].scores[i];
              }
+            // fprintf(stderr, "%d\n", data->bases[binned].length_count);
             data->bases[binned].length_count = data->bases[binned].length_count + data->bases[unbinned].length_count;
             data->bases[binned].kmer_count = data->bases[binned].kmer_count + data->bases[unbinned].kmer_count;
         }
@@ -211,8 +213,8 @@ sequence_data* transform(sequence_data* data) {
                 data->bases[i].scores[j] = 100*data->bases[i].scores[j]/score_sum;
             }
         }
-        data->bases[i].length_count = 100*data->bases[i].length_count/data->number_of_sequences;
-        data->bases[i].kmer_count = 100*data->bases[i].kmer_count/data->number_of_sequences;
+        data->bases[i].length_count = ceil(100*(float)data->bases[i].length_count/data->number_of_sequences);
+        data->bases[i].kmer_count = ceil(100*(float)data->bases[i].kmer_count/(float)data->number_of_sequences);
 
     }
     return data;
@@ -283,10 +285,10 @@ void draw(sequence_data* data, int position) {
     int adjust = (position == 1)*120;
     printf("<g width=\"700\" height=\"700\" xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(%d 50)\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n", (position == 1)*610);
     if (position == 0) {
-        printf("<text x=\"395\" y=\"0\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%lu<tspan opacity=\"0.75\"> reads with encoding</tspan> %s <tspan opacity=\"0.75\">in</tspan> forward <tspan opacity=\"0.75\">read</tspan></text>\n", data->number_of_sequences, encoding);
+        printf("<text x=\"395\" y=\"0\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%lu <tspan opacity=\"0.75\"> reads with encoding</tspan> %s <tspan opacity=\"0.75\">in</tspan> forward <tspan opacity=\"0.75\">read</tspan></text>\n", data->number_of_sequences, encoding);
     }
     else if (position == 1) {
-        printf("<text x=\"275\" y=\"0\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%lu<tspan opacity=\"0.75\"> reads with encoding</tspan> %s <tspan opacity=\"0.75\">in</tspan> reverse <tspan opacity=\"0.75\">read</tspan></text>\n", data->number_of_sequences, encoding);
+        printf("<text x=\"275\" y=\"0\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%lu <tspan opacity=\"0.75\"> reads with encoding</tspan> %s <tspan opacity=\"0.75\">in</tspan> reverse <tspan opacity=\"0.75\">read</tspan></text>\n", data->number_of_sequences, encoding);
     }
 
     // tick marks
