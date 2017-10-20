@@ -136,9 +136,10 @@ sequence_data* read_fastq(char *fastq_file, int *kmers) {
         for (i = 0; i < kmer_size; i++) {
             index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
         }
-        for (; kmers[index] == 0 && i < seq->seq.l; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
-            //
+        if (kmers) {
+            for (; kmers[index] == 0 && i < seq->seq.l; i++) {
+                index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
+            }
         }
         if (i < seq->seq.l) {
             bases[i].kmer_count++;
@@ -220,7 +221,7 @@ sequence_data* transform(sequence_data* data) {
     return data;
 }
 
-void draw(sequence_data* data, int position) {
+void draw(sequence_data* data, int position, int adapters_used) {
     int i, j;
     int offset = 0;
     int sum = 0;
@@ -250,18 +251,16 @@ void draw(sequence_data* data, int position) {
     
     // get max score and score distribution and average scores at each position
     for (i = 0; i < data->max_length; i++) {
-	sum = 0;
-	counter = 0;
-        for (j = 0; j < 91; j++) {
-            if (data->bases[i].scores[j] > 0 && j > max_score) {
-                max_score = j;
-            }
-            total_counts[j] = total_counts[j] + data->bases[i].scores[j];
-	    sum = sum + j*data->bases[i].scores[j];
-	    counter++;
-            number_of_bases++;
-        }
-	averages[i] = sum/counter;
+        sum = 0;
+            for (j = 0; j < 91; j++) {
+                if (data->bases[i].scores[j] > 0 && j > max_score) {
+                    max_score = j;
+                }
+                total_counts[j] = total_counts[j] + data->bases[i].scores[j];
+                sum = sum + j*data->bases[i].scores[j];
+                number_of_bases++;
+                }
+        averages[i] = sum/100;
     }
 
     if (max_score < 40) {
@@ -277,7 +276,7 @@ void draw(sequence_data* data, int position) {
     else {
         encoding = "phred64";
         offset = 31;
-	max_score = max_score - offset;
+    max_score = max_score - offset;
     }
     
     
@@ -307,10 +306,6 @@ void draw(sequence_data* data, int position) {
     for (i = 1; i < 8; i++) {
         tickmarks(163+340*(position==1), 167+340*(position==1), i*254/8+125, i*254/8+125, i%2+1)
     }
-
-       
-
-
    
     // base ratios
     printf("<rect x=\"%d\" y=\"15\" width=\"450\" height=\"100\" style=\"fill:#89bc89;fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust);
@@ -349,17 +344,18 @@ void draw(sequence_data* data, int position) {
     printf("<svg x=\"%d\" y=\"390\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);        
     for (i = 0; i < data->max_length; i++){
         printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].length_count);
-    }
-    
+    }    
     printf("</svg>\n");
 
     //kmer distribution
-    printf("<rect x=\"%d\" y=\"500\" width=\"450\" height=\"100\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust);
-    printf("<svg x=\"%d\" y=\"500\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);        
-    for (i = 0; i < data->max_length; i++){
-        printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].kmer_count);
+    if (adapters_used == 1) {
+        printf("<rect x=\"%d\" y=\"500\" width=\"450\" height=\"100\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust);
+        printf("<svg x=\"%d\" y=\"500\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);        
+        for (i = 0; i < data->max_length; i++){
+            printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].kmer_count);
+        }
+        printf("</svg>\n");
     }
-    printf("</svg>\n");
 
     // heatmap
     printf("<rect x=\"%d\" y=\"125\" width=\"450\" height=\"254\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />", 170-adjust);
@@ -375,8 +371,8 @@ void draw(sequence_data* data, int position) {
 
     // mean line
     printf("<polyline points=\" ");
-    for (i=1; i< data->max_length; i++) {
-	printf("%d,%lu ", i, max_score-averages[i]+offset);
+    for (i=0; i< data->max_length; i++) {
+        printf("%d,%lu ", i, max_score-averages[i]+offset);
     }
     printf("\" style=\"stroke-width: 0.5; opacity: 0.5; fill:none;stroke:#000\"/>\n");
 
@@ -392,7 +388,6 @@ void draw(sequence_data* data, int position) {
     printf("</svg>\n");
 
      // labels
-
     if (position != 1) {
         // score distribution
         printf("<text x=\"-275\" y=\"50\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Score</text>");
@@ -410,38 +405,49 @@ void draw(sequence_data* data, int position) {
         printf("<text x=\"510\" y=\"360\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Score</text>");
         printf("<text x=\"510\" y=\"375\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Distribution</text>");
     }
-
-        // score distribution 
+    
+    // score distribution 
     printf("<text x=\"%d\" y=\"136\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%d</text>", 30+585*(position==1), max_score);
     printf("<text x=\"%d\" y=\"378\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 30+585*(position==1));
 
-        // base content
+    // base content
     printf("<text x=\"%d\" y=\"110\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"white\" fill-opacity=\"0.75\">Base Content Percentage</text>", 172-adjust);
 
-        // length distribution
+    // length distribution
     printf("<text x=\"%d\" y=\"486\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Length Distribution</text>", 172-adjust);
 
-        // kmer distribution
-    printf("<text x=\"%d\" y=\"596\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Adapter Content</text>", 172-adjust);
+    // kmer distribution
+    
+    if (adapters_used == 1) {
+        printf("<text x=\"%d\" y=\"596\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Adapter Content</text>", 172-adjust);
+    }
 
-
-        // common labels
+    // common labels
     printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 60+(position == 1)*530);
     printf("<text x=\"%d\" y=\"24\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366);
-    printf("<text x=\"%d\" y=\"600\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366);
     printf("<text x=\"%d\" y=\"490\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366);
     printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  154+(position == 1)*356);
     printf("<text x=\"%d\" y=\"400\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  147+(position == 1)*360);
-    printf("<text x=\"%d\" y=\"510\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  147+(position == 1)*360);
     printf("<text x=\"-465\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360);
-    printf("<text x=\"-575\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360);
     printf("<text x=\"-90\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360);
     printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Percent</text>", 90+(position == 1)*437);
-    printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust);
-    printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%lu</text>", 600-adjust, data->original_max_length);
-    printf("<text x=\"%d\" y=\"620\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust);
+    
 
-        // encoding
+    if (adapters_used == 1) {
+        printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust);
+        printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%lu</text>", 600-adjust, data->original_max_length);
+        printf("<text x=\"%d\" y=\"620\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust);
+        printf("<text x=\"%d\" y=\"510\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  147+(position == 1)*360);
+        printf("<text x=\"-575\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360);
+        printf("<text x=\"%d\" y=\"600\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366);
+    }
+    else {
+        printf("<text x=\"%d\" y=\"517\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust);
+        printf("<text x=\"%d\" y=\"517\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%lu</text>", 600-adjust, data->original_max_length);
+        printf("<text x=\"%d\" y=\"520\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust);   
+    }
+
+    // encoding
     printf("<text x=\"%d\" y=\"375\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Per base sequence quality</text>", 172-adjust);
 
     printf("</g>\n");
@@ -456,33 +462,61 @@ int main (int argc, char **argv)
     arguments.forward = "-";
     arguments.reverse = "-";
     arguments.name = "-";
+    arguments.adapters = "-";
     argp_parse (&argp, argc, argv, 0, 0, &arguments);
 
     if (strcmp(arguments.forward, "-") != 0 && strcmp(arguments.reverse, "-") != 0 && strcmp(arguments.unpaired, "-") == 0) {
-        printf("<svg width=\"1200\" height=\"700\" viewBox=\"0 0 1500 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
-        printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
-        int *kmers = read_adapters(arguments.adapters);
+        
+        if (strcmp(arguments.adapters, "-") != 0) {
+            printf("<svg width=\"1200\" height=\"700\" viewBox=\"0 0 1500 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
+            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
+            int *kmers = read_adapters(arguments.adapters);
+            sequence_data *data = read_fastq(arguments.forward, kmers);
+            sequence_data *transformed_data = transform(data);
+            draw(transformed_data, 0, 1);
+            free(data);
 
-        sequence_data *data = read_fastq(arguments.forward, kmers);
-        sequence_data *transformed_data = transform(data);
-        draw(transformed_data, 0);
-        free(data);
+            data = read_fastq(arguments.reverse, kmers);
+            transformed_data = transform(data);
+            draw(transformed_data, 1, 1);
+            free(data);
+        }
+        else {
+            printf("<svg width=\"1200\" height=\"600\" viewBox=\"0 0 1300 600\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
+            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
+            int *kmers = NULL;
+            sequence_data *data = read_fastq(arguments.forward, kmers);
+            sequence_data *transformed_data = transform(data);
+            draw(transformed_data, 0, 0);
+            free(data);
 
-        data = read_fastq(arguments.reverse, kmers);
-        transformed_data = transform(data);
-        draw(transformed_data, 1);
-        free(data);
+            data = read_fastq(arguments.reverse, kmers);
+            transformed_data = transform(data);
+            draw(transformed_data, 1, 0);
+            free(data);   
+        }
 
         printf("</svg>\n");
     }
     else if (strcmp(arguments.forward, "-") == 0 && strcmp(arguments.reverse, "-") == 0 && strcmp(arguments.unpaired, "-") != 0) {
-        printf("<svg width=\"700\" height=\"700\" viewBox=\"0 0 700 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
-        printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
-        int *kmers = read_adapters(arguments.adapters);
-        sequence_data *data = read_fastq(arguments.unpaired, kmers);
-        sequence_data *transformed_data = transform(data);
-        draw(transformed_data, 0);
-        free(data);
+        if (strcmp(arguments.adapters, "-") != 0) {
+            printf("<svg width=\"700\" height=\"600\" viewBox=\"0 0 700 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
+            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
+            int *kmers = read_adapters(arguments.adapters);
+            sequence_data *data = read_fastq(arguments.unpaired, kmers);
+            sequence_data *transformed_data = transform(data);
+            draw(transformed_data, 0, 1);
+            free(data);
+        }
+        else {
+            printf("<svg width=\"700\" height=\"600\" viewBox=\"0 0 700 600\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
+            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
+            int *kmers = NULL;
+            sequence_data *data = read_fastq(arguments.unpaired, kmers);
+            sequence_data *transformed_data = transform(data);
+            draw(transformed_data, 0, 0);
+            free(data);
+        }
         printf("</svg>\n");
     }
     else {
