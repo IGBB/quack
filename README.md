@@ -2,6 +2,11 @@
 
 A FASTQ quality assessment tool
 
+## Dependencies
+
+* zlib
+* klib (pulled by the submodule update below)
+
 ## Installation
 
 git clone https://github.com/IGBB/quack.git
