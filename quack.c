@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <argp.h>
 #include <zlib.h>  
 #include <stdio.h>  
 #include <stdint.h>
@@ -11,55 +10,77 @@
 #define unlikely(x) __builtin_expect ((x), 0)
 #define likely(x)       __builtin_expect((x),1)
 
-const char *argp_program_version = "quack 0.2";
-const char *argp_program_bug_address = "<thrash@igbb.msstate.edu>";
-static char doc[] = "Argp example #3 -- a program with options and arguments using argp";
-static char args_doc[] = "";
-static struct argp_option options[] = {
-    {"forward",   '1', "FORWARD", 0,   "Forward strand" },
-    {"reverse",   '2', "REVERSE", 0,   "Reverse strand" },
-    {"unpaired",   'u', "DATA", 0,   "Data (only use with -u)" },
-    {"name",   'n', "NAME", 0,   "Display in output" },
-    {"adapters", 'a', "ADAPTERS", 0, "Adapters file"},
-    { 0 }
-};
+const char *program_version = "quack 0.2";
 struct arguments {
     char *name, *forward, *reverse, *unpaired, *adapters;
 };
-static error_t
-parse_opt (int key, char *arg, struct argp_state *state) {
-    struct arguments *arguments = state->input;
-    switch (key) {
-        case '1':
-            arguments->forward = arg;
-            break;
-        case '2':
-            arguments->reverse = arg;
-            break;
-        case 'u':
-            arguments->unpaired = arg;
-            break;
-        case 'n':
-            arguments->name = arg;
-            break;
-        case 'a':
-            arguments->adapters = arg;
-            break;
 
-        case ARGP_KEY_ARG:
-            if (state->arg_num >= 0)
-            argp_usage (state);
-            break;
+struct arguments parse_options(int argc, char **argv) {
+    struct arguments arguments;
+    arguments.unpaired = "-";
+    arguments.forward = "-";
+    arguments.reverse = "-";
+    arguments.name = "-";
+    arguments.adapters = "-";
 
-        case ARGP_KEY_END:
-            if ((strcmp(arguments->forward, "-") != 0 && strcmp(arguments->unpaired, "-") != 0) || (strcmp(arguments->reverse, "-") != 0 && strcmp(arguments->unpaired, "-") != 0))
-            argp_usage (state);
-            break;
+    if (argc== 1 || argc == 2)  {
+        if (argc == 1 || (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "--usage") == 0 || strcmp(argv[1], "-?") == 0)) {
+            printf("Usage: quack [OPTION...]\n"
+            "quack -- A FASTQ quality assessment tool\n\n"
+            "  -1, --forward=FORWARD      Forward strand\n"
+            "  -2, --reverse=REVERSE      Reverse strand\n"
+            "  -a, --adapters=ADAPTERS    Adapters file\n"
+            "  -n, --name=NAME            Display in output\n"
+            "  -u, --unpaired=DATA        Data (only use with -u)\n"
+            "  -?, --help                 Give this help list\n"
+            "      --usage                (use alone)\n"
+            "  -V, --version              Print program version (use alone)\n"
+            "Report bugs to <thrash@igbb.msstate.edu>.\n");
+        }
 
-        default:
-            return ARGP_ERR_UNKNOWN;
+        if (argc == 2 && ((strcmp(argv[1], "-V") == 0 || strcmp(argv[1], "--version") == 0))) {
+            printf("%s\n", program_version);
+        }
     }
-    return 0;
+
+    if(argc>2 && argc % 2 != 0)
+    {
+        int counter=1;
+        while (counter<argc) {
+            if (strcmp(argv[counter], "--forward") == 0 || strcmp(argv[counter], "-1") == 0) {
+                arguments.forward = argv[counter+1];
+            }
+
+            else if (strcmp(argv[counter], "--reverse") == 0 || strcmp(argv[counter], "-2") == 0) {
+                arguments.reverse = argv[counter+1];
+            }
+
+            else if (strcmp(argv[counter], "--adapters") == 0 || strcmp(argv[counter], "-a") == 0) {
+                arguments.adapters = argv[counter+1];
+            }
+
+            else if (strcmp(argv[counter], "--unpaired") == 0 || strcmp(argv[counter], "-u") == 0) {
+                arguments.unpaired = argv[counter+1];
+            }
+
+            else if (strcmp(argv[counter], "--name") == 0 || strcmp(argv[counter], "-n") == 0) {
+                arguments.name = argv[counter+1];
+            }
+            else {
+                printf("Matches failed\n");
+                printf("%d - %d: %s %s\n", counter, counter+1, argv[counter], argv[counter+1]);
+            }
+
+            counter = counter+2;
+        }
+        printf("forward = %s\n"
+               "reverse = %s\n"
+               "unpaired = %s\n"
+               "name = %s\n"
+               "adapters = %s\n", 
+               arguments.forward, arguments.reverse, arguments.unpaired, arguments.name, arguments.adapters);
+    }
+    return arguments;
 }
 
 typedef struct {
@@ -453,17 +474,10 @@ void draw(sequence_data* data, int position, int adapters_used) {
     printf("</g>\n");
 }
 
-static struct argp argp = { options, parse_opt, args_doc, doc };
-
 int main (int argc, char **argv)
 {
     struct arguments arguments;
-    arguments.unpaired = "-";
-    arguments.forward = "-";
-    arguments.reverse = "-";
-    arguments.name = "-";
-    arguments.adapters = "-";
-    argp_parse (&argp, argc, argv, 0, 0, &arguments);
+    arguments = parse_options(argc, argv);
 
     if (strcmp(arguments.forward, "-") != 0 && strcmp(arguments.reverse, "-") != 0 && strcmp(arguments.unpaired, "-") == 0) {
         
