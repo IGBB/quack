@@ -7,7 +7,7 @@ A FASTQ quality assessment tool
 * zlib
 * klib (pulled by the submodule update below)
 
-## Installation
+## Installation from Source
 
 git clone https://github.com/IGBB/quack.git
 
@@ -16,3 +16,7 @@ cd quack/
 git submodule update --init --recursive
 
 gcc quack.c -o quack -lz -lm -I klib -O3
+
+## Binaries
+
+Binaries are available in the bin/ folder. Current testing of these binaries has been limited. If a binary doesn't work, try compiling from source on your system.
