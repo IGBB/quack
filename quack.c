@@ -1,11 +1,11 @@
 #include <stdlib.h>
-#include <zlib.h>  
-#include <stdio.h>  
+#include <zlib.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <math.h>
 #include <limits.h>
 
-#include "kseq.h" 
+#include "kseq.h"
 
 #define unlikely(x) __builtin_expect ((x), 0)
 #define likely(x)       __builtin_expect((x),1)
@@ -67,18 +67,21 @@ struct arguments parse_options(int argc, char **argv) {
                 arguments.name = argv[counter+1];
             }
             else {
-                printf("Matches failed\n");
-                printf("%d - %d: %s %s\n", counter, counter+1, argv[counter], argv[counter+1]);
+                printf("Usage: quack [OPTION...]\n"
+                "quack -- A FASTQ quality assessment tool\n\n"
+                "  -1, --forward=FORWARD      Forward strand\n"
+                "  -2, --reverse=REVERSE      Reverse strand\n"
+                "  -a, --adapters=ADAPTERS    Adapters file\n"
+                "  -n, --name=NAME            Display in output\n"
+                "  -u, --unpaired=DATA        Data (only use with -u)\n"
+                "  -?, --help                 Give this help list\n"
+                "      --usage                (use alone)\n"
+                "  -V, --version              Print program version (use alone)\n"
+                "Report bugs to <thrash@igbb.msstate.edu>.\n");
             }
 
             counter = counter+2;
         }
-        printf("forward = %s\n"
-               "reverse = %s\n"
-               "unpaired = %s\n"
-               "name = %s\n"
-               "adapters = %s\n", 
-               arguments.forward, arguments.reverse, arguments.unpaired, arguments.name, arguments.adapters);
     }
     return arguments;
 }
@@ -186,7 +189,7 @@ sequence_data* transform(sequence_data* data) {
         int bin_size = 100;
         int unbinned;
         int binned = 0;
-        
+
         for (unbinned = 1; unbinned < data->max_length; unbinned++) {
              if (unbinned%bin_size == 0){
                 binned++;
@@ -269,7 +272,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
         }
         i++;
     }
-    
+
     // get max score and score distribution and average scores at each position
     for (i = 0; i < data->max_length; i++) {
         sum = 0;
@@ -299,8 +302,8 @@ void draw(sequence_data* data, int position, int adapters_used) {
         offset = 31;
     max_score = max_score - offset;
     }
-    
-    
+
+
     // adjust the x position of the SVG based on whether this is paired end data
     int adjust = (position == 1)*120;
     printf("<g width=\"700\" height=\"700\" xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(%d 50)\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n", (position == 1)*610);
@@ -315,19 +318,19 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
     #define tickmarks(x1,x2,y1,y2, stroke_width) printf("<line x1=\"%d\" x2=\"%d\" y1=\"%d\" y2=\"%d\" style=\"stroke:black;stroke-width:%d;stroke-opacity:0.75\" />\n", x1,x2,y1,y2,stroke_width);
 
-            
+
         // vertical
     for (i = 1; i < 8; i++) {
         tickmarks(i*450/8+50+120*(position==0), i*450/8+50+120*(position==0), 118, 122, (i+1)%2+1)
         tickmarks(i*450/8+50+120*(position==0), i*450/8+50+120*(position==0), 383, 387, (i+1)%2+1)
         tickmarks(i*450/8+50+120*(position==0), i*450/8+50+120*(position==0), 493, 497, (i+1)%2+1)
     }
-            
+
         // horizontal
     for (i = 1; i < 8; i++) {
         tickmarks(163+340*(position==1), 167+340*(position==1), i*254/8+125, i*254/8+125, i%2+1)
     }
-   
+
     // base ratios
     printf("<rect x=\"%d\" y=\"15\" width=\"450\" height=\"100\" style=\"fill:#89bc89;fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust);
     printf("<svg x=\"%d\" y=\"15\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length-1);
@@ -357,21 +360,21 @@ void draw(sequence_data* data, int position, int adapters_used) {
     printf("<svg x=\"%d\" y=\"125\" width=\"100\" height=\"254\" preserveAspectRatio=\"none\" viewBox=\"0 0 100 %d\">\n", 60+(position == 1)*450, max_score);
     for (i = 0; i < max_score+offset; i++){
         printf("<rect x=\"%lu\" y=\"%d\" width=\"%lu\" height=\"1\" style=\"fill:steelblue;fill-opacity:1\" />", (uint64_t)abs(100*(position == 0)-(100*total_counts[i]/number_of_bases)*(position == 0)), max_score - i -1+offset, (uint64_t)100*total_counts[i]/number_of_bases);
-    }  
+    }
     printf("</svg>\n");
 
     //length distribution
     printf("<rect x=\"%d\" y=\"390\" width=\"450\" height=\"100\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust);
-    printf("<svg x=\"%d\" y=\"390\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);        
+    printf("<svg x=\"%d\" y=\"390\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);
     for (i = 0; i < data->max_length; i++){
         printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].length_count);
-    }    
+    }
     printf("</svg>\n");
 
     //kmer distribution
     if (adapters_used == 1) {
         printf("<rect x=\"%d\" y=\"500\" width=\"450\" height=\"100\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust);
-        printf("<svg x=\"%d\" y=\"500\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);        
+        printf("<svg x=\"%d\" y=\"500\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length);
         for (i = 0; i < data->max_length; i++){
             printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].kmer_count);
         }
@@ -426,8 +429,8 @@ void draw(sequence_data* data, int position, int adapters_used) {
         printf("<text x=\"510\" y=\"360\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Score</text>");
         printf("<text x=\"510\" y=\"375\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Distribution</text>");
     }
-    
-    // score distribution 
+
+    // score distribution
     printf("<text x=\"%d\" y=\"136\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%d</text>", 30+585*(position==1), max_score);
     printf("<text x=\"%d\" y=\"378\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 30+585*(position==1));
 
@@ -438,7 +441,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     printf("<text x=\"%d\" y=\"486\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Length Distribution</text>", 172-adjust);
 
     // kmer distribution
-    
+
     if (adapters_used == 1) {
         printf("<text x=\"%d\" y=\"596\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Adapter Content</text>", 172-adjust);
     }
@@ -452,7 +455,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     printf("<text x=\"-465\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360);
     printf("<text x=\"-90\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360);
     printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Percent</text>", 90+(position == 1)*437);
-    
+
 
     if (adapters_used == 1) {
         printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust);
@@ -465,7 +468,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     else {
         printf("<text x=\"%d\" y=\"517\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust);
         printf("<text x=\"%d\" y=\"517\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%lu</text>", 600-adjust, data->original_max_length);
-        printf("<text x=\"%d\" y=\"520\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust);   
+        printf("<text x=\"%d\" y=\"520\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust);
     }
 
     // encoding
@@ -480,7 +483,7 @@ int main (int argc, char **argv)
     arguments = parse_options(argc, argv);
 
     if (strcmp(arguments.forward, "-") != 0 && strcmp(arguments.reverse, "-") != 0 && strcmp(arguments.unpaired, "-") == 0) {
-        
+
         if (strcmp(arguments.adapters, "-") != 0) {
             printf("<svg width=\"1200\" height=\"700\" viewBox=\"0 0 1500 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
             printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
@@ -507,7 +510,7 @@ int main (int argc, char **argv)
             data = read_fastq(arguments.reverse, kmers);
             transformed_data = transform(data);
             draw(transformed_data, 1, 0);
-            free(data);   
+            free(data);
         }
 
         printf("</svg>\n");
