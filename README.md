@@ -39,8 +39,7 @@ Quack takes gzipped FASTQ-formatted files as input for data and gzipped As outpu
 
 
 ### Examples
-`quack -1 reads.1.fastq.gz -2 reads.2.fastq.gz -n sample_name -a adapters_files.fasta.gz > sample_name.svg`
-`quack -u reads.fastq.gz -n sample_name -a adapters.fa.gz > sample_name.svg`
-`quack -1 reads.1.fastq.gz -2 reads.2.fastq.gz > sample_name.svg`
-`quack -u reads.fastq.gz > sample_name.svg`
-
+`quack -1 reads.1.fastq.gz -2 reads.2.fastq.gz -n sample_name -a adapters_files.fasta.gz > sample_name.svg`  
+`quack -u reads.fastq.gz -n sample_name -a adapters.fa.gz > sample_name.svg`  
+`quack -1 reads.1.fastq.gz -2 reads.2.fastq.gz > sample_name.svg`  
+`quack -u reads.fastq.gz > sample_name.svg`  
