@@ -10,7 +10,7 @@
 #define unlikely(x) __builtin_expect ((x), 0)
 #define likely(x)       __builtin_expect((x),1)
 
-const char *program_version = "quack 0.2";
+const char *program_version = "quack 1.1.1";
 struct arguments {
     char *name, *forward, *reverse, *unpaired, *adapters;
 };
@@ -27,19 +27,20 @@ struct arguments parse_options(int argc, char **argv) {
         if (argc == 1 || (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "--usage") == 0 || strcmp(argv[1], "-?") == 0)) {
             printf("Usage: quack [OPTION...]\n"
             "quack -- A FASTQ quality assessment tool\n\n"
-            "  -1, --forward=FORWARD      Forward strand\n"
-            "  -2, --reverse=REVERSE      Reverse strand\n"
-            "  -a, --adapters=ADAPTERS    Adapters file\n"
-            "  -n, --name=NAME            Display in output\n"
-            "  -u, --unpaired=DATA        Data (only use with -u)\n"
-            "  -?, --help                 Give this help list\n"
-            "      --usage                (use alone)\n"
-            "  -V, --version              Print program version (use alone)\n"
+            "  -1, --forward file.1.fq.gz      Forward strand\n"
+            "  -2, --reverse file.2.fq.gz      Reverse strand\n"
+            "  -a, --adapters adapters.fa.gz   (Optional) Adapters file\n"
+            "  -n, --name NAME                 (Optional) Display in output\n"
+            "  -u, --unpaired unpaired.fq.gz   Data (only use with -u)\n"
+            "  -?, --help                      Give this help list\n"
+            "      --usage                     (use alone)\n"
+            "  -V, --version                   Print program version (use alone)\n"
             "Report bugs to <thrash@igbb.msstate.edu>.\n");
         }
 
         if (argc == 2 && ((strcmp(argv[1], "-V") == 0 || strcmp(argv[1], "--version") == 0))) {
             printf("%s\n", program_version);
+            exit (0);
         }
     }
 
@@ -69,11 +70,11 @@ struct arguments parse_options(int argc, char **argv) {
             else {
                 printf("Usage: quack [OPTION...]\n"
                 "quack -- A FASTQ quality assessment tool\n\n"
-                "  -1, --forward=FORWARD      Forward strand\n"
-                "  -2, --reverse=REVERSE      Reverse strand\n"
-                "  -a, --adapters=ADAPTERS    Adapters file\n"
-                "  -n, --name=NAME            Display in output\n"
-                "  -u, --unpaired=DATA        Data (only use with -u)\n"
+                "  -1, --forward file.1.fq.gz      Forward strand\n"
+                "  -2, --reverse file.2.fq.gz      Reverse strand\n"
+                "  -a, --adapters adapters.fa.gz    Adapters file\n"
+                "  -n, --name NAME            Display in output\n"
+                "  -u, --unpaired unpaired.fq.gz        Data (only use with -u)\n"
                 "  -?, --help                 Give this help list\n"
                 "      --usage                (use alone)\n"
                 "  -V, --version              Print program version (use alone)\n"
