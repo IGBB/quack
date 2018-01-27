@@ -2,6 +2,10 @@
 
 A FASTQ quality assessment tool
 
+## Latest Release
+
+The latest release of quack and its binaries can always be found [here](https://github.com/IGBB/quack/releases/latest).
+
 ## Dependencies
 
 * zlib
