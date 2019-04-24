@@ -493,7 +493,7 @@ int main (int argc, char **argv)
     adapters = (arguments.adapters != NULL);
     
     /* If paired and unparied data are both set or unset, then throw error */
-    if((paired ^ unpaired) == 0){
+    if(paired == unpaired){
       printf("%s\n", "Usage: quack [OPTION...]\nTry `quack --help' or `quack --usage' for more information.");
       exit(1);
     }
