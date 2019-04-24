@@ -16,12 +16,13 @@ struct arguments {
 };
 
 struct arguments parse_options(int argc, char **argv) {
-    struct arguments arguments;
-    arguments.unpaired = "-";
-    arguments.forward = "-";
-    arguments.reverse = "-";
-    arguments.name = "-";
-    arguments.adapters = "-";
+  struct arguments arguments = {
+                                .unpaired = NULL,
+                                .forward = NULL,
+                                .reverse = NULL,
+                                .name = NULL,
+                                .adapters = NULL
+  };
 
     if (argc== 1 || argc == 2)  {
         if (argc == 1 || (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "--usage") == 0 || strcmp(argv[1], "-?") == 0)) {
@@ -483,62 +484,49 @@ int main (int argc, char **argv)
     struct arguments arguments;
     arguments = parse_options(argc, argv);
 
-    if (strcmp(arguments.forward, "-") != 0 && strcmp(arguments.reverse, "-") != 0 && strcmp(arguments.unpaired, "-") == 0) {
+    int paired, unpaired, adapters;
+    int width, height;
+    int *kmers = NULL;
 
-        if (strcmp(arguments.adapters, "-") != 0) {
-            printf("<svg width=\"1200\" height=\"700\" viewBox=\"0 0 1500 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
-            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
-            int *kmers = read_adapters(arguments.adapters);
-            sequence_data *data = read_fastq(arguments.forward, kmers);
-            sequence_data *transformed_data = transform(data);
-            draw(transformed_data, 0, 1);
-            free(data);
-
-            data = read_fastq(arguments.reverse, kmers);
-            transformed_data = transform(data);
-            draw(transformed_data, 1, 1);
-            free(data);
-        }
-        else {
-            printf("<svg width=\"1200\" height=\"600\" viewBox=\"0 0 1300 600\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
-            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
-            int *kmers = NULL;
-            sequence_data *data = read_fastq(arguments.forward, kmers);
-            sequence_data *transformed_data = transform(data);
-            draw(transformed_data, 0, 0);
-            free(data);
-
-            data = read_fastq(arguments.reverse, kmers);
-            transformed_data = transform(data);
-            draw(transformed_data, 1, 0);
-            free(data);
-        }
-
-        printf("</svg>\n");
+    paired = (arguments.forward != NULL && arguments.reverse != NULL);
+    unpaired = (arguments.unpaired != NULL);
+    adapters = (arguments.adapters != NULL);
+    
+    /* If paired and unparied data are both set or unset, then throw error */
+    if(paired == unpaired){
+      printf("%s\n", "Usage: quack [OPTION...]\nTry `quack --help' or `quack --usage' for more information.");
+      exit(1);
     }
-    else if (strcmp(arguments.forward, "-") == 0 && strcmp(arguments.reverse, "-") == 0 && strcmp(arguments.unpaired, "-") != 0) {
-        if (strcmp(arguments.adapters, "-") != 0) {
-            printf("<svg width=\"700\" height=\"600\" viewBox=\"0 0 700 700\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
-            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
-            int *kmers = read_adapters(arguments.adapters);
-            sequence_data *data = read_fastq(arguments.unpaired, kmers);
-            sequence_data *transformed_data = transform(data);
-            draw(transformed_data, 0, 1);
-            free(data);
-        }
-        else {
-            printf("<svg width=\"700\" height=\"600\" viewBox=\"0 0 700 600\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
-            printf("<text x=\"20\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%s</text>\n", arguments.name);
-            int *kmers = NULL;
-            sequence_data *data = read_fastq(arguments.unpaired, kmers);
-            sequence_data *transformed_data = transform(data);
-            draw(transformed_data, 0, 0);
-            free(data);
-        }
-        printf("</svg>\n");
+
+    if(adapters) kmers = read_adapters(arguments.adapters);
+
+    width  = (paired)?1230:700;
+    height = (adapters)?700:600;
+    
+    printf("<svg width='%d' height='%d' viewBox='20 0 %d %d' " 
+           "xmlns='http://www.w3.org/2000/svg' " 
+           "xmlns:xlink='http://www.w3.org/1999/xlink'>\n", 
+           width, height, width, height);
+
+    // If name is given, add to middle of viewBox (half of width + min-x of viewbox)
+    if(arguments.name != NULL)
+      printf("<text x='%d' y='25' font-family='sans-serif' " 
+             "text-anchor='middle' font-size='30px' " 
+             "fill='black'>%s</text>\n", width/2 + 20, arguments.name);
+    
+    sequence_data *data = read_fastq(((paired)?arguments.forward:arguments.unpaired), kmers);
+    sequence_data *transformed_data = transform(data);
+    draw(transformed_data, 0, 1);
+    free(data);
+    
+    if(paired){
+      data = read_fastq(arguments.reverse, kmers);
+      transformed_data = transform(data);
+      draw(transformed_data, 1, 1);
+      free(data);
     }
-    else {
-        printf("%s\n", "Usage: quack [OPTION...]\nTry `quack --help' or `quack --usage' for more information.");
-    }
+
+    printf("</svg>\n");
+    
     exit (0);
 }
