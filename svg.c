@@ -3,23 +3,42 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-void svg_start(const char* type, int num, ...){
-  char format[1000];
-  int length = 0;
-  printf("<%s", type);
+
+void svg_vprintf(int num, va_list vl){
+  int i;
   
-  va_list vl;
-  va_start(vl, num);
-  for( int i = 0; i < num; i++){
+  for(i = 0; i < num; i++){
     vprintf(va_arg(vl, char*), vl);
   }
-  va_end(vl);
 
-  printf(">\n");
   
   return;
 }
 
-void svg_end(const char* type){
+
+void svg_start_tag(const char* type, int num, ...){
+  va_list vl;
+  va_start(vl, num);
+
+  printf("<%s", type);
+  svg_vprintf(num, vl);
+  printf(">\n");
+
+  va_end(vl);
+
+}
+void svg_simple_tag(const char* type, int num, ...){
+  va_list vl;
+  va_start(vl, num);
+
+  printf("<%s", type);
+  svg_vprintf(num, vl);
+  printf("/>\n");
+
+  va_end(vl);
+}
+
+
+void svg_end_tag(const char* type){
   printf("</%s>", type);
 }
