@@ -314,16 +314,77 @@ void draw(sequence_data* data, int position, int adapters_used) {
                 );
 
 
+  /*************** Base Ratio ***************/
+
+  /* Flip svg to make svg coordinate system match cartesian coordinate. The y
+     is negative to compensate for the horizontal flip */
+  svg_start_tag("svg", 7,
+                svg_attr(x,      "%d", 0),
+                svg_attr(y,      "%d", -100),
+                svg_attr(width,  "%d", 450),
+                svg_attr(height, "%d", 100),
+                svg_attr(preserveAspectRatio, "%s", "none"),
+                svg_attr(viewBox, "0 0 %d 100", data->max_length-1),
+                svg_attr(transform, "scale(%d, %d)", 1,-1)
+                );
+
+  /* Set background color */
+  svg_simple_tag("rect", 3,
+                svg_attr(width,  "%s", "100%"),
+                svg_attr(height, "%s", "100%"),
+                svg_attr(fill, "%s", "#CCC")
+                 );
+                 
+  
+  /* Allocate 10 characters per base (A,C,T,G) per point. Set each string to
+     emtpy */
+  size_t ratio_points_length = 10*data->max_length;
+  char * ratio_points[4];
+  for(i = 0; i < 4; i++){
+    ratio_points[i] = malloc(ratio_points_length);
+    ratio_points[i][0] = '\0';
+  }
+
+  
+  /* Calculate cumlative sum for each x position and add it to point string */
+  for (x = 0; x < data->max_length; x++) {
+    y = 0;
+    for(i = 0; i < 4; i++ ){
+      y += data->bases[x].content[i];
+      
+      char tmp[20];
+      snprintf(tmp, 20, "%d,%d ", x, y);
+      strncat(ratio_points[i], tmp, ratio_points_length);
+    }
+  }
+
+  /* Draw each distribution, in decending order so they stack */
+  char *ratio_colors[4] = {"#648964", "#84accf", "#5d7992", "#89bc89"};
+  for(i = 3; i >= 0; i--){
+      svg_simple_tag("polyline", 3,
+                 svg_attr(points,      "0,0 %s 100,0", ratio_points[i]),
+                 svg_attr(fill, "%s", ratio_colors[i]),
+                 svg_attr(stroke, "%s", "none")
+                 );
+  }
+
+  for(i = 0; i < 4; i++)
+    free(ratio_points[i]);
+
+  svg_end_tag("svg");
+
+  
+
   /*************** Heatmap ***************/
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
      is negative to compensate for the horizontal flip */
   svg_start_tag("svg", 7,
                 svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", -255),
+                svg_attr(y,      "%d", -400),
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 255),
                 svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d %d", data->max_length, max_score),
+                svg_attr(viewBox, "0 0 %d %d", data->max_length-1, max_score),
                 svg_attr(transform, "scale(%d, %d)", 1,-1)
                 );
                   
@@ -379,11 +440,11 @@ void draw(sequence_data* data, int position, int adapters_used) {
    
 
     
-  svg_end_tag("svg");
+  svg_end_tag("svg"); // heatmap
    
     
 
-  svg_end_tag("g");
+  svg_end_tag("g"); // rug plot
     
     /* // adjust the x position of the SVG based on whether this is paired end data */
     /* int adjust = (position == 1)*120; */
@@ -468,36 +529,6 @@ void draw(sequence_data* data, int position, int adapters_used) {
     /*     } */
     /*     printf("</svg>\n"); */
     /* } */
-
-    /* // heatmap */
-    /* printf("<rect x=\"%d\" y=\"125\" width=\"450\" height=\"254\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />", 170-adjust); */
-    /* printf("<svg x=\"%d\" y=\"125\" width=\"450\" height=\"254\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu %d\">", 170-adjust, data->max_length, max_score); */
-    /* printf("<rect x=\"0\" y=\"0\" width=\"%lu\" height=\"%d\" style=\"stroke:none;stroke-width:1;fill-opacity:0.2;fill:mediumseagreen;stroke-opacity:1.0\" />", data->max_length, max_score-40+12); */
-    /* printf("<rect x=\"0\" y=\"%d\" width=\"%lu\" height=\"%d\" style=\"stroke:none;stroke-width:1;fill-opacity:0.2;fill:gold;stroke-opacity:1.0\" />", max_score-40+12, data->max_length, 8); */
-    /* printf("<rect x=\"0\" y=\"%d\" width=\"%lu\" height=\"%d\" style=\"stroke:none;stroke-width:1;fill-opacity:0.2;fill:tomato;stroke-opacity:1.0\" />", max_score-20, data->max_length, 20); */
-    /* for (i = 0; i < data->max_length; i++) { */
-    /*     for (j = offset; j < max_score+offset; j++) { */
-    /*         printf("<rect x=\"%d\" y=\"%d\" width=\"1\" height=\"1\"  style=\"stroke:none;fill:%s;fill-opacity:%f\" />\n", i, max_score-j-1+offset, "#000", (float)data->bases[i].scores[j]/100); */
-    /*     } */
-    /* } */
-
-    /* // mean line */
-    /* printf("<polyline points=\" "); */
-    /* for (i=0; i< data->max_length; i++) { */
-    /*     printf("%d,%lu ", i, max_score-averages[i]+offset); */
-    /* } */
-    /* printf("\" style=\"stroke-width: 0.5; opacity: 0.5; fill:none;stroke:#000\"/>\n"); */
-
-    /* printf("</svg>\n"); */
-
-    /* // heatmap scale line */
-    /* printf("<svg x=\"%d\" y=\"125\" width=\"450\" height=\"254\" preserveAspectRatio=\"none\" viewBox=\"0 0 254 %d\">\n", 41+584*(position == 0), max_score); */
-    /* if (position != 1) { */
-    /*     printf("<text x=\"%d\" y=\"12\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"scale(0.5 %f)\">%d</text>\n", 7, (float)(max_score + 1)/254, max_score); */
-    /*     printf("<text x=\"%d\" y=\"20\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"translate(0 %d) scale(0.5 %f)\">28</text>\n", 7, 10+max_score-40, (float)(max_score + 1)/254); */
-    /*     printf("<text x=\"%d\" y=\"28\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"translate(0 %d) scale(0.5 %f)\">20</text>\n", 7, 16+max_score-40, (float)(max_score + 1)/254); */
-    /* } */
-    /* printf("</svg>\n"); */
 
     /*  // labels */
     /* if (position != 1) { */
