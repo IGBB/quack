@@ -306,13 +306,12 @@ void draw(sequence_data* data, int position, int adapters_used) {
     max_score = max_score - offset;
   }
     
-  /* Group for the entire rug plot */
-  svg_start_tag("g", 3, 
-                svg_attr(width,  "%d", 700),
-                svg_attr(height, "%d", 700),
-                svg_attr(transform, "translate(%d 50)", (position == 1)*610)
+  /* Group for the vertical section of rug plot */
+  svg_start_tag("g", 1, 
+                svg_attr(transform, "translate(%d 10)", (position == 1)?610:110)
                 );
 
+  
   /*************** Base Ratio ***************/
 
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
@@ -329,9 +328,9 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   /* Set background color */
   svg_simple_tag("rect", 3,
-                svg_attr(width,  "%s", "100%"),
-                svg_attr(height, "%s", "100%"),
-                svg_attr(fill, "%s", "#CCC")
+                 svg_attr(width,  "%s", "100%"),
+                 svg_attr(height, "%s", "100%"),
+                 svg_attr(fill, "%s", "#CCC")
                  );
                  
   
@@ -377,11 +376,11 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Draw each distribution, in decending order so they stack */
   char *ratio_colors[4] = {"#648964", "#84accf", "#5d7992", "#89bc89"};
   for(i = 3; i >= 0; i--){
-      svg_simple_tag("polyline", 3,
-                     svg_attr(points,      "0,0 %s %d,0", ratio_points[i], data->max_length),
-                     svg_attr(fill, "%s", ratio_colors[i]),
-                     svg_attr(stroke, "%s", "none")
-                 );
+    svg_simple_tag("polyline", 3,
+                   svg_attr(points,      "0,0 %s %d,0", ratio_points[i], data->max_length),
+                   svg_attr(fill, "%s", ratio_colors[i]),
+                   svg_attr(stroke, "%s", "none")
+                   );
   }
 
   for(i = 0; i < 4; i++)
@@ -396,9 +395,9 @@ void draw(sequence_data* data, int position, int adapters_used) {
      is negative to compensate for the horizontal flip */
   svg_start_tag("svg", 7,
                 svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", -400),
+                svg_attr(y,      "%d", -360),
                 svg_attr(width,  "%d", 450),
-                svg_attr(height, "%d", 255),
+                svg_attr(height, "%d", 250),
                 svg_attr(preserveAspectRatio, "%s", "none"),
                 svg_attr(viewBox, "0 0 %d %d", data->max_length, max_score),
                 svg_attr(transform, "scale(%d, %d)", 1,-1)
@@ -470,7 +469,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
      negative y*/
   svg_start_tag("svg", 6,
                 svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", 410),
+                svg_attr(y,      "%d", 370),
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 100),
                 svg_attr(preserveAspectRatio, "%s", "none"),
@@ -479,34 +478,62 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   /* Set background color */
   svg_simple_tag("rect", 3,
-                svg_attr(width,  "%s", "100%"),
-                svg_attr(height, "%s", "100%"),
-                svg_attr(fill, "%s", "#EEE")
+                 svg_attr(width,  "%s", "100%"),
+                 svg_attr(height, "%s", "100%"),
+                 svg_attr(fill, "%s", "#EEE")
                  );
                  
   for (x = 0; x < data->max_length; x++) {
-      if( data->bases[x].length_count > 0)
-        svg_simple_tag("rect", 6,
-                       svg_attr(x,      "%d", x),
-                       svg_attr(y,      "%d", 0),
-                       svg_attr(width,  "%d", 1),
-                       svg_attr(height, "%d", data->bases[x].length_count),
-                       svg_attr(stroke, "%s", "none"),
-                       svg_attr(fill,   "%s", "steelblue")
-                       );
-    }
+    if( data->bases[x].length_count > 0)
+      svg_simple_tag("rect", 6,
+                     svg_attr(x,      "%d", x),
+                     svg_attr(y,      "%d", 0),
+                     svg_attr(width,  "%d", 1),
+                     svg_attr(height, "%d", data->bases[x].length_count),
+                     svg_attr(stroke, "%s", "none"),
+                     svg_attr(fill,   "%s", "steelblue")
+                     );
+  }
 
   
   
   svg_end_tag("svg"); // Length Distro
 
+  /*************** Adapter Distro ***************/
 
-  /* //length distribution */
-    /* for (i = 0; i < data->max_length; i++){ */
-    /*     printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].length_count); */
-    /* } */
-    /* printf("</svg>\n"); */
-    
+  if(adapters_used==1){
+    /* Adapter Distro graph grows away from heatmap. No need to flip or have
+       negative y*/
+    svg_start_tag("svg", 6,
+                  svg_attr(x,      "%d", 0),
+                  svg_attr(y,      "%d", 480),
+                  svg_attr(width,  "%d", 450),
+                  svg_attr(height, "%d", 100),
+                  svg_attr(preserveAspectRatio, "%s", "none"),
+                  svg_attr(viewBox, "0 0 %d 100", data->max_length)
+                  );
+
+    /* Set background color */
+    svg_simple_tag("rect", 3,
+                   svg_attr(width,  "%s", "100%"),
+                   svg_attr(height, "%s", "100%"),
+                   svg_attr(fill, "%s", "#EEE")
+                   );
+                 
+    for (x = 0; x < data->max_length; x++) {
+      if( data->bases[x].kmer_count > 0)
+        svg_simple_tag("rect", 6,
+                       svg_attr(x,      "%d", x),
+                       svg_attr(y,      "%d", 0),
+                       svg_attr(width,  "%d", 1),
+                       svg_attr(height, "%d", data->bases[x].kmer_count),
+                       svg_attr(stroke, "%s", "none"),
+                       svg_attr(fill,   "%s", "steelblue")
+                       );
+    }
+
+    svg_end_tag("svg"); // Adapter Distro
+  }
 
   svg_end_tag("g"); // rug plot
     
@@ -707,13 +734,13 @@ int main (int argc, char **argv)
   
     sequence_data *data = read_fastq(((paired)?arguments.forward:arguments.unpaired), kmers);
     sequence_data *transformed_data = transform(data);
-    draw(transformed_data, 0, 1);
+    draw(transformed_data, 0, adapters);
     free(data);
     
     if(paired){
       data = read_fastq(arguments.reverse, kmers);
       transformed_data = transform(data);
-      draw(transformed_data, 1, 1);
+      draw(transformed_data, 1, adapters);
       free(data);
     }
 
