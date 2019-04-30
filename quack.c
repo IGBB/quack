@@ -308,7 +308,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     
   /* Group for the vertical section of rug plot */
   svg_start_tag("g", 1, 
-                svg_attr(transform, "translate(%d 10)", (position == 1)?610:110)
+                svg_attr(transform, "translate(%d 0)", (position == 1)?610:130)
                 );
 
   
@@ -535,7 +535,55 @@ void draw(sequence_data* data, int position, int adapters_used) {
     svg_end_tag("svg"); // Adapter Distro
   }
 
-  svg_end_tag("g"); // rug plot
+  svg_end_tag("g"); // rug plot vertical section
+
+  /*************** Score Distro ***************/
+
+  /* Score Distro graph is shown on either side of the heatmap, so it needs to
+     flip vertically if position == 0 negative y*/
+    svg_start_tag("svg", 7,
+                  svg_attr(x,      "%d", (position == 0)?-120:1070),
+                  svg_attr(y,      "%d", -360),
+                  svg_attr(width,  "%d", 100),
+                  svg_attr(height, "%d", 250),
+                  svg_attr(preserveAspectRatio, "%s", "none"),
+                  svg_attr(viewBox, "0 0 100 %d", max_score),
+                  svg_attr(transform, "scale(%d, %d)", (position == 0)?-1:1,-1)
+                  );
+
+    /* Set background color */
+    svg_simple_tag("rect", 3,
+                   svg_attr(width,  "%s", "100%"),
+                   svg_attr(height, "%s", "100%"),
+                   svg_attr(fill, "%s", "#EEE")
+                   );
+                 
+    for (y = 0; y < max_score; y++) {
+      if(total_counts[y] > 0)
+        svg_simple_tag("rect", 6,
+                       svg_attr(x,      "%d", 0),
+                       svg_attr(y,      "%d", y),
+                       svg_attr(width,  "%d", total_counts[y]*100/number_of_bases),
+                       svg_attr(height, "%d", 1),
+                       svg_attr(stroke, "%s", "none"),
+                       svg_attr(fill,   "%s", "steelblue")
+                       );
+    }
+
+    svg_end_tag("svg"); // Score Distro
+
+      /* // score distribution */
+    /* printf("<rect x=\"%d\" y=\"125\" width=\"100\" height=\"254\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 60+(position == 1)*450); */
+    /* printf("<svg x=\"%d\" y=\"125\" width=\"100\" height=\"254\" preserveAspectRatio=\"none\" viewBox=\"0 0 100 %d\">\n", 60+(position == 1)*450, max_score); */
+    /* for (i = 0; i < max_score+offset; i++){ */
+    /*     printf("<rect x=\"%lu\" y=\"%d\" width=\"%lu\" height=\"1\" style=\"fill:steelblue;fill-opacity:1\" />", (uint64_t)abs(100*(position == 0)-(100*total_counts[i]/number_of_bases)*(position == 0)), max_score - i -1+offset, (uint64_t)100*total_counts[i]/number_of_bases); */
+    /* } */
+    /* printf("</svg>\n"); */
+
+
+
+
+
     
     /* // adjust the x position of the SVG based on whether this is paired end data */
     /* int adjust = (position == 1)*120; */
