@@ -11,6 +11,46 @@
 #define unlikely(x) __builtin_expect ((x), 0)
 #define likely(x)       __builtin_expect((x),1)
 
+
+#define svg_axis_label( posx, posy, rot, label)                 \
+  svg_start_tag("text", 7,                                      \
+                svg_attr(x,           "%d", posx),              \
+                svg_attr(fill,        "%s", "#AAA"),            \
+                svg_attr(y,           "%d", posy),              \
+                svg_attr(font-family, "%s", "sans-serif"),      \
+                svg_attr(font-size,   "%s", "15px"),            \
+                svg_attr(text-anchor, "%s", "middle"),          \
+                svg_attr(transform, "rotate(%d)", rot)          \
+                );                                              \
+  printf("%s\n", label);                                        \
+  svg_end_tag("text");
+#define svg_axis_number( posx, posy, a, number)                  \
+  svg_start_tag("text", 6,                                       \
+                svg_attr(x,           "%d", posx),               \
+                svg_attr(fill,        "%s", "#AAA"),             \
+                svg_attr(y,           "%d", posy),               \
+                svg_attr(font-family, "%s", "sans-serif"),       \
+                svg_attr(font-size,   "%s", "10px"),             \
+                svg_attr(text-anchor, "%s", a)                  \
+                );                                               \
+  printf("%d\n", number);                                        \
+  svg_end_tag("text");
+
+#define svg_center_label( posx, posy, fillv, label_format, label)   \
+  svg_start_tag("text", 7,                                          \
+                svg_attr(x,           "%d", posx),                  \
+                svg_attr(y,           "%d", posy),                  \
+                svg_attr(fill,        "%s", fillv),                 \
+                svg_attr(font-family, "%s", "sans-serif"),          \
+                svg_attr(font-size,   "%s", "15px"),                \
+                svg_attr(font-weight, "%s", "bold"),                \
+                svg_attr(text-anchor, "%s", "middle")              \
+                );                                                  \
+  printf(label_format, label);                                      \
+  svg_end_tag("text");
+
+
+
 const char *program_version = "quack 1.1.1";
 struct arguments {
     char *name, *forward, *reverse, *unpaired, *adapters;
@@ -103,6 +143,8 @@ typedef struct {
     uint64_t number_of_sequences;
 } sequence_data;
 
+/* Convert ASCII to Integer for A T C and G */
+/*                A     C           G                                      T */
 int lookup[20] = {0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3};
 
 KSEQ_INIT(gzFile, gzread)
@@ -306,6 +348,10 @@ void draw(sequence_data* data, int position, int adapters_used) {
     max_score = max_score - offset;
   }
     
+  /* Group for rug plot */
+  svg_start_tag("g", 1, 
+                svg_attr(transform, "translate(%d %d)", 5, 10)
+                );
   /* Group for the vertical section of rug plot */
   svg_start_tag("g", 1, 
                 svg_attr(transform, "translate(%d 0)", (position == 1)?610:130)
@@ -388,14 +434,45 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   svg_end_tag("svg"); // Base Ratio
 
-  
+  /* Lables */
 
+  svg_start_tag("text", 5,
+                svg_attr(y,           "%d", 95),
+                svg_attr(fill,        "%s", "#CCC"),
+                svg_attr(x,           "%d", 5),
+                svg_attr(font-family, "%s", "sans-serif"),
+                svg_attr(font-size,   "%s", "15px")
+                );
+  printf("%s\n", "Base Content Percentage");
+  svg_end_tag("text");
+
+
+  /* Print Ratio labels in center, only needed the first time
+     465 = width of vertical section (450) + width of margin (30) halved 
+   */
+  if(position==0){
+    char *ratio_labels[4] = {"%A", "%C", "%G", "%T"};
+    for( i = 0; i < 4; i++){
+      svg_center_label(465, 20*(i+1), ratio_colors[i], "%s", ratio_labels[i]);
+    }
+  }
+
+  if(position == 0){
+    svg_axis_label(-50, -5, -90, "Percent");
+    svg_axis_number(-5, 100, "end", 0);
+    svg_axis_number(-5, 5,   "end", 100);
+  }else{
+    svg_axis_label(50, -455, 90, "Percent");
+    svg_axis_number(455, 100, "start", 0);
+    svg_axis_number(455, 5,   "start", 100);
+  }
+  
   /*************** Heatmap ***************/
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
      is negative to compensate for the horizontal flip */
   svg_start_tag("svg", 7,
                 svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", -360),
+                svg_attr(y,      "%d", -355),
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 250),
                 svg_attr(preserveAspectRatio, "%s", "none"),
@@ -459,17 +536,42 @@ void draw(sequence_data* data, int position, int adapters_used) {
                  svg_attr(fill,   "%s", "none")
                  );
    
-
+  free(mean_line_points);
     
   svg_end_tag("svg"); // Heatmap
 
+
+  /* Lables */
+
+  svg_start_tag("text", 5,
+                svg_attr(y,           "%d", 350),
+                svg_attr(fill,        "%s", "#888"),
+                svg_attr(x,           "%d", 5),
+                svg_attr(font-family, "%s", "sans-serif"),
+                svg_attr(font-size,   "%s", "15px")
+                );
+  printf("%s\n", "Per Base Sequence Quality");
+  svg_end_tag("text");
+
+
+  /* Print base quality labels in center, only needed the first time
+     465 = width of vertical section (450) + width of margin (30) halved 
+     112 = start of graph (105) + half size of text (7)
+   */
+  if(position==0){
+    svg_center_label(465, 112, "#888", "%d", max_score);
+    svg_center_label(465, 112+(int)((max_score-28)*250/max_score), "#888", "%d", 28);
+    svg_center_label(465, 112+(int)((max_score-20)*250/max_score), "#888", "%d", 20);
+  }
+
+  
   /*************** Length Distro ***************/
 
   /* Length Distro graph grows away from heatmap. No need to flip or have
      negative y*/
   svg_start_tag("svg", 6,
                 svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", 370),
+                svg_attr(y,      "%d", 360),
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 100),
                 svg_attr(preserveAspectRatio, "%s", "none"),
@@ -499,6 +601,30 @@ void draw(sequence_data* data, int position, int adapters_used) {
   
   svg_end_tag("svg"); // Length Distro
 
+
+  /* Lables */
+
+  svg_start_tag("text", 5,
+                svg_attr(y,           "%d", 455),
+                svg_attr(fill,        "%s", "#888"),
+                svg_attr(x,           "%d", 5),
+                svg_attr(font-family, "%s", "sans-serif"),
+                svg_attr(font-size,   "%s", "15px")
+                );
+  printf("%s\n", "Length Distribution");
+  svg_end_tag("text");
+
+  if(position == 0){
+    svg_axis_label(-410, -5, -90, "Percent");
+    svg_axis_number(-5, 370, "end", 0);
+    svg_axis_number(-5, 460, "end", 100);
+  }else{
+    svg_axis_label(410, -455, 90, "Percent");
+    svg_axis_number(455, 370, "start", 0);
+    svg_axis_number(455, 460, "start", 100);
+  }
+
+  
   /*************** Adapter Distro ***************/
 
   if(adapters_used==1){
@@ -506,7 +632,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
        negative y*/
     svg_start_tag("svg", 6,
                   svg_attr(x,      "%d", 0),
-                  svg_attr(y,      "%d", 480),
+                  svg_attr(y,      "%d", 465),
                   svg_attr(width,  "%d", 450),
                   svg_attr(height, "%d", 100),
                   svg_attr(preserveAspectRatio, "%s", "none"),
@@ -533,17 +659,41 @@ void draw(sequence_data* data, int position, int adapters_used) {
     }
 
     svg_end_tag("svg"); // Adapter Distro
+
+    /* Lables */
+
+    svg_start_tag("text", 5,
+                  svg_attr(y,           "%d", 560),
+                  svg_attr(fill,        "%s", "#888"),
+                  svg_attr(x,           "%d", 5),
+                  svg_attr(font-family, "%s", "sans-serif"),
+                  svg_attr(font-size,   "%s", "15px")
+                  );
+    printf("%s\n", "Adapter Distribution");
+    svg_end_tag("text");
+
+    if(position == 0){
+      svg_axis_label(-515, -5, -90, "Percent");
+      svg_axis_number(-5, 475, "end", 0);
+      svg_axis_number(-5, 565, "end", 100);
+    }else{
+      svg_axis_label(515, -455, 90, "Percent");
+      svg_axis_number(455, 475, "start", 0);
+      svg_axis_number(455, 565, "start", 100);
+    }
   }
 
+  
   svg_end_tag("g"); // rug plot vertical section
 
   /*************** Score Distro ***************/
 
   /* Score Distro graph is shown on either side of the heatmap, so it needs to
-     flip vertically if position == 0 negative y*/
+     flip vertically if position == 0. Flipped horizontally as well. Use
+     negative positions in directions svg is flipped*/
     svg_start_tag("svg", 7,
-                  svg_attr(x,      "%d", (position == 0)?-120:1070),
-                  svg_attr(y,      "%d", -360),
+                  svg_attr(x,      "%d", (position == 0)?-125:1065),
+                  svg_attr(y,      "%d", -355),
                   svg_attr(width,  "%d", 100),
                   svg_attr(height, "%d", 250),
                   svg_attr(preserveAspectRatio, "%s", "none"),
@@ -572,19 +722,63 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
     svg_end_tag("svg"); // Score Distro
 
-      /* // score distribution */
-    /* printf("<rect x=\"%d\" y=\"125\" width=\"100\" height=\"254\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 60+(position == 1)*450); */
-    /* printf("<svg x=\"%d\" y=\"125\" width=\"100\" height=\"254\" preserveAspectRatio=\"none\" viewBox=\"0 0 100 %d\">\n", 60+(position == 1)*450, max_score); */
-    /* for (i = 0; i < max_score+offset; i++){ */
-    /*     printf("<rect x=\"%lu\" y=\"%d\" width=\"%lu\" height=\"1\" style=\"fill:steelblue;fill-opacity:1\" />", (uint64_t)abs(100*(position == 0)-(100*total_counts[i]/number_of_bases)*(position == 0)), max_score - i -1+offset, (uint64_t)100*total_counts[i]/number_of_bases); */
-    /* } */
-    /* printf("</svg>\n"); */
+    /* Lables */
 
-
-
-
-
+    if(position == 0){
+      svg_start_tag("text", 5,
+                    svg_attr(y,           "%d", 335),
+                    svg_attr(fill,        "%s", "#888"),
+                    svg_attr(x,           "%d", 30),
+                    svg_attr(font-family, "%s", "sans-serif"),
+                    svg_attr(font-size,   "%s", "15px")
+                    );
+      svg_start_tag("tspan", 0);
+      printf("%s\n", "Score");
+      svg_end_tag("tspan");
     
+      svg_start_tag("tspan", 2, svg_attr(dy, "%d", 15), svg_attr(x, "%d", 30));
+      printf("%s\n", "Distribution");
+      svg_end_tag("tspan");
+
+      svg_end_tag("text");
+
+      svg_axis_label(72, 100, 0, "Percent");
+      /* svg_axis_number(125, 100, "middle", 0); */
+      svg_axis_number(25,  100, "middle", 100);
+
+      svg_axis_label(-230, 20, -90, "Score");
+      svg_axis_number(20, 110, "end", max_score);
+      svg_axis_number(20, 355, "end", 1);
+
+    }else{
+      svg_start_tag("text", 5,
+                    svg_attr(y,           "%d", 335),
+                    svg_attr(fill,        "%s", "#888"),
+                    svg_attr(x,           "%d", 1070),
+                    svg_attr(font-family, "%s", "sans-serif"),
+                    svg_attr(font-size,   "%s", "15px")
+                    );
+      svg_start_tag("tspan", 0);
+      printf("%s\n", "Score");
+      svg_end_tag("tspan");
+    
+      svg_start_tag("tspan", 2, svg_attr(dy, "%d", 15), svg_attr(x, "%d", 1070));
+      printf("%s\n", "Distribution");
+      svg_end_tag("tspan");
+
+      svg_end_tag("text");
+
+      svg_axis_label(1115,  100, 0, "Percent");
+      /* svg_axis_number(1070, 100, "middle", 0); */
+      svg_axis_number(1165, 100, "middle", 100);
+
+      svg_axis_label(230, -1170, 90, "Score");
+      svg_axis_number(1170, 110, "start", max_score);
+      svg_axis_number(1170, 355, "start", 1);
+    }
+
+    svg_end_tag("g"); // rug plot 
+   
     /* // adjust the x position of the SVG based on whether this is paired end data */
     /* int adjust = (position == 1)*120; */
     /* svg_start_tag("g", 3, */
@@ -618,121 +812,6 @@ void draw(sequence_data* data, int position, int adapters_used) {
     /* for (i = 1; i < 8; i++) { */
     /*     tickmarks(163+340*(position==1), 167+340*(position==1), i*254/8+125, i*254/8+125, i%2+1) */
     /* } */
-
-    /* // base ratios */
-    /* printf("<rect x=\"%d\" y=\"15\" width=\"450\" height=\"100\" style=\"fill:#89bc89;fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust); */
-    /* printf("<svg x=\"%d\" y=\"15\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length-1); */
-    /* printf("<polyline points=\"0,100 "); */
-    /* for (i=0; i<data->max_length; i++) { */
-    /*     int content = data->bases[i].content[0]; */
-    /*     printf("%d,%d ", i, content); */
-    /* } */
-    /* printf("%lu, 100 0,100\" style=\"fill:#648964;stroke:none\"/>\n", data->max_length-1); */
-    /* printf("<polyline points=\"0,100 "); */
-    /* for (i=0; i<data->max_length; i++) { */
-    /*     int content = data->bases[i].content[0] + data->bases[i].content[3]; */
-    /*     printf("%d,%d ", i, content); */
-    /* } */
-    /* printf("%lu, 100 0,100\" style=\"fill:#84accf;stroke:none\"/>\n", data->max_length-1); */
-    /* printf("<polyline points=\"0,100 "); */
-    /* for (i=0; i<data->max_length; i++) { */
-    /*     int content = data->bases[i].content[0] + data->bases[i].content[3] + data->bases[i].content[1]; */
-    /*     printf("%d,%d ", i, content); */
-    /* } */
-    /* printf("%lu, 100 0,100\" style=\"fill:#5d7992;stroke:none\"/>\n", data->max_length-1); */
-
-    /* printf("</svg>\n"); */
-
-    /* // score distribution */
-    /* printf("<rect x=\"%d\" y=\"125\" width=\"100\" height=\"254\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 60+(position == 1)*450); */
-    /* printf("<svg x=\"%d\" y=\"125\" width=\"100\" height=\"254\" preserveAspectRatio=\"none\" viewBox=\"0 0 100 %d\">\n", 60+(position == 1)*450, max_score); */
-    /* for (i = 0; i < max_score+offset; i++){ */
-    /*     printf("<rect x=\"%lu\" y=\"%d\" width=\"%lu\" height=\"1\" style=\"fill:steelblue;fill-opacity:1\" />", (uint64_t)abs(100*(position == 0)-(100*total_counts[i]/number_of_bases)*(position == 0)), max_score - i -1+offset, (uint64_t)100*total_counts[i]/number_of_bases); */
-    /* } */
-    /* printf("</svg>\n"); */
-
-    /* //length distribution */
-    /* printf("<rect x=\"%d\" y=\"390\" width=\"450\" height=\"100\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust); */
-    /* printf("<svg x=\"%d\" y=\"390\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length); */
-    /* for (i = 0; i < data->max_length; i++){ */
-    /*     printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].length_count); */
-    /* } */
-    /* printf("</svg>\n"); */
-
-    /* //kmer distribution */
-    /* if (adapters_used == 1) { */
-    /*     printf("<rect x=\"%d\" y=\"500\" width=\"450\" height=\"100\" style=\"fill:rgb(245,245,245);fill-opacity:1.0;stroke-opacity:1.0\" />\n", 170-adjust); */
-    /*     printf("<svg x=\"%d\" y=\"500\" width=\"450\" height=\"100\" preserveAspectRatio=\"none\" viewBox=\"0 0 %lu 100\">", 170-adjust, data->max_length); */
-    /*     for (i = 0; i < data->max_length; i++){ */
-    /*         printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].kmer_count); */
-    /*     } */
-    /*     printf("</svg>\n"); */
-    /* } */
-
-    /*  // labels */
-    /* if (position != 1) { */
-    /*     // score distribution */
-    /*     printf("<text x=\"-275\" y=\"50\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Score</text>"); */
-    /*     printf("<text x=\"60\" y=\"360\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Score</text>"); */
-    /*     printf("<text x=\"60\" y=\"375\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Distribution</text>"); */
-
-    /*     // base content distribution */
-    /*     printf("<text x=\"628\" y=\"40\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"#89bc89\" font-weight = \"bold\">%%A</text>"); */
-    /*     printf("<text x=\"628\" y=\"60\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"#648964\" font-weight = \"bold\">%%T</text>"); */
-    /*     printf("<text x=\"628\" y=\"80\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"#84accf\" font-weight = \"bold\">%%G</text>"); */
-    /*     printf("<text x=\"628\" y=\"100\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"#5d7992\" font-weight = \"bold\">%%C</text>"); */
-    /* } */
-    /* else if (position == 1) { */
-    /*     printf("<text x=\"-275\" y=\"630\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Score</text>"); */
-    /*     printf("<text x=\"510\" y=\"360\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Score</text>"); */
-    /*     printf("<text x=\"510\" y=\"375\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Distribution</text>"); */
-    /* } */
-
-    /* // score distribution */
-    /* printf("<text x=\"%d\" y=\"136\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%d</text>", 30+585*(position==1), max_score); */
-    /* printf("<text x=\"%d\" y=\"378\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 30+585*(position==1)); */
-
-    /* // base content */
-    /* printf("<text x=\"%d\" y=\"110\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"white\" fill-opacity=\"0.75\">Base Content Percentage</text>", 172-adjust); */
-
-    /* // length distribution */
-    /* printf("<text x=\"%d\" y=\"486\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Length Distribution</text>", 172-adjust); */
-
-    /* // kmer distribution */
-
-    /* if (adapters_used == 1) { */
-    /*     printf("<text x=\"%d\" y=\"596\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Adapter Content</text>", 172-adjust); */
-    /* } */
-
-    /* // common labels */
-    /* printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 60+(position == 1)*530); */
-    /* printf("<text x=\"%d\" y=\"24\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366); */
-    /* printf("<text x=\"%d\" y=\"490\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366); */
-    /* printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  154+(position == 1)*356); */
-    /* printf("<text x=\"%d\" y=\"400\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  147+(position == 1)*360); */
-    /* printf("<text x=\"-465\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360); */
-    /* printf("<text x=\"-90\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360); */
-    /* printf("<text x=\"%d\" y=\"115\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Percent</text>", 90+(position == 1)*437); */
-
-
-    /* if (adapters_used == 1) { */
-    /*     printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust); */
-    /*     printf("<text x=\"%d\" y=\"617\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%lu</text>", 600-adjust, data->original_max_length); */
-    /*     printf("<text x=\"%d\" y=\"620\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust); */
-    /*     printf("<text x=\"%d\" y=\"510\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">0</text>",  147+(position == 1)*360); */
-    /*     printf("<text x=\"-575\" y=\"%d\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" transform=\"rotate(-90)\" fill-opacity=\"0.5\">Percent</text>", 157+(position == 1)*360); */
-    /*     printf("<text x=\"%d\" y=\"600\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">100</text>", 137+(position == 1)*366); */
-    /* } */
-    /* else { */
-    /*     printf("<text x=\"%d\" y=\"517\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">1</text>", 170-adjust); */
-    /*     printf("<text x=\"%d\" y=\"517\" font-family=\"sans-serif\" font-size=\"12px\" fill=\"black\" fill-opacity=\"0.5\">%lu</text>", 600-adjust, data->original_max_length); */
-    /*     printf("<text x=\"%d\" y=\"520\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.5\">Base Pairs</text>", 350-adjust); */
-    /* } */
-
-    /* // encoding */
-    /* printf("<text x=\"%d\" y=\"375\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\" fill-opacity=\"0.75\">Per base sequence quality</text>", 172-adjust); */
-
-    /* printf("</g>\n"); */
 }
 
 int main (int argc, char **argv)
@@ -760,10 +839,10 @@ int main (int argc, char **argv)
     height = (adapters)?700:600;
     
     svg_start_tag("svg", 5,
-                svg_attr(width,   "%d", width),
-                svg_attr(height,  "%d", height),
-                svg_attr(viewBox, "%d %d %d %d", 20, 0, width, height),
-                svg_attr(xmlns,       "%s", "http://www.w3.org/2000/svg"),
+                  svg_attr(width,   "%d", width),
+                  svg_attr(height,  "%d", height),
+                  svg_attr(viewBox, "%d %d %d %d", 0, 0, width, height),
+                  svg_attr(xmlns,       "%s", "http://www.w3.org/2000/svg"),
                   svg_attr(xmlns:xlink, "%s", "http://www.w3.org/1999/xlink")
                   );
 
