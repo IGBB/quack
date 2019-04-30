@@ -313,7 +313,6 @@ void draw(sequence_data* data, int position, int adapters_used) {
                 svg_attr(transform, "translate(%d 50)", (position == 1)*610)
                 );
 
-
   /*************** Base Ratio ***************/
 
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
@@ -324,7 +323,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 100),
                 svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d 100", data->max_length-1),
+                svg_attr(viewBox, "0 0 %d 100", data->max_length),
                 svg_attr(transform, "scale(%d, %d)", 1,-1)
                 );
 
@@ -336,42 +335,59 @@ void draw(sequence_data* data, int position, int adapters_used) {
                  );
                  
   
-  /* Allocate 10 characters per base (A,C,T,G) per point. Set each string to
-     emtpy */
+  /* Allocate 10 characters per base (A,C,T,G) per point. */
   size_t ratio_points_length = 10*data->max_length;
   char * ratio_points[4];
+  char tmp[20];
   for(i = 0; i < 4; i++){
     ratio_points[i] = malloc(ratio_points_length);
-    ratio_points[i][0] = '\0';
   }
 
-  
+  /* Since coordinates for lines and rectangles don't work the same; set the
+     first point of each line to start off graph. Then, add 0.5 to the x of each
+     point. Finally, end the line off graph. */
+  y = 0;
+  for(i = 0; i < 4; i++){
+    y += data->bases[0].content[i];
+    snprintf(ratio_points[i], ratio_points_length, "0,%d ", y);
+  }
+
   /* Calculate cumlative sum for each x position and add it to point string */
   for (x = 0; x < data->max_length; x++) {
     y = 0;
     for(i = 0; i < 4; i++ ){
       y += data->bases[x].content[i];
       
-      char tmp[20];
-      snprintf(tmp, 20, "%d,%d ", x, y);
+      snprintf(tmp, 20, "%d.5,%d ", x, y);
       strncat(ratio_points[i], tmp, ratio_points_length);
     }
   }
 
+
+  /* Make lines end off graph */
+  y = 0;
+  for(i = 0; i < 4; i++){
+    y += data->bases[data->max_length-1].content[i];
+
+    snprintf(tmp, 20, "%d,%d ", data->max_length, y);
+    strncat(ratio_points[i], tmp, ratio_points_length);
+  }
+
+  
   /* Draw each distribution, in decending order so they stack */
   char *ratio_colors[4] = {"#648964", "#84accf", "#5d7992", "#89bc89"};
   for(i = 3; i >= 0; i--){
       svg_simple_tag("polyline", 3,
-                 svg_attr(points,      "0,0 %s 100,0", ratio_points[i]),
-                 svg_attr(fill, "%s", ratio_colors[i]),
-                 svg_attr(stroke, "%s", "none")
+                     svg_attr(points,      "0,0 %s %d,0", ratio_points[i], data->max_length),
+                     svg_attr(fill, "%s", ratio_colors[i]),
+                     svg_attr(stroke, "%s", "none")
                  );
   }
 
   for(i = 0; i < 4; i++)
     free(ratio_points[i]);
 
-  svg_end_tag("svg");
+  svg_end_tag("svg"); // Base Ratio
 
   
 
@@ -384,7 +400,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 255),
                 svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d %d", data->max_length-1, max_score),
+                svg_attr(viewBox, "0 0 %d %d", data->max_length, max_score),
                 svg_attr(transform, "scale(%d, %d)", 1,-1)
                 );
                   
@@ -404,10 +420,12 @@ void draw(sequence_data* data, int position, int adapters_used) {
   score_back(28,        "#ffffcc"); // yellow
   score_back(20,        "#fbb4ae"); // red
 
-  //Allocate 10 characters per point. Set string to empty
+  //Allocate 10 characters per point.
   size_t mean_line_points_length = 10*data->max_length;
   char * mean_line_points = malloc(mean_line_points_length);
-  mean_line_points[0] = '\0';
+
+  /* Make line start off graph */
+  snprintf(mean_line_points, mean_line_points_length, "0,%d ", averages[0]);
 
   for (x = 0; x < data->max_length; x++) {
     for (y = offset; y < max_score+offset; y++) {
@@ -424,11 +442,15 @@ void draw(sequence_data* data, int position, int adapters_used) {
                        );
     }
 
-    char tmp[20];
-    snprintf(tmp, 20, "%d,%lu ", x, averages[x]);
+    snprintf(tmp, 20, "%d.5,%lu ", x, averages[x]);
     strncat(mean_line_points, tmp, mean_line_points_length);
   }
 
+  /* Make line end off graph */
+  snprintf(tmp, 20, "%d,%d ", data->max_length, averages[data->max_length-1]);
+  strncat(mean_line_points, tmp, mean_line_points_length);
+
+  
   /* Print mean line */
   svg_simple_tag("polyline", 5,
                  svg_attr(points,      "%s", mean_line_points),
@@ -440,8 +462,50 @@ void draw(sequence_data* data, int position, int adapters_used) {
    
 
     
-  svg_end_tag("svg"); // heatmap
-   
+  svg_end_tag("svg"); // Heatmap
+
+  /*************** Length Distro ***************/
+
+  /* Length Distro graph grows away from heatmap. No need to flip or have
+     negative y*/
+  svg_start_tag("svg", 6,
+                svg_attr(x,      "%d", 0),
+                svg_attr(y,      "%d", 410),
+                svg_attr(width,  "%d", 450),
+                svg_attr(height, "%d", 100),
+                svg_attr(preserveAspectRatio, "%s", "none"),
+                svg_attr(viewBox, "0 0 %d 100", data->max_length)
+                );
+
+  /* Set background color */
+  svg_simple_tag("rect", 3,
+                svg_attr(width,  "%s", "100%"),
+                svg_attr(height, "%s", "100%"),
+                svg_attr(fill, "%s", "#EEE")
+                 );
+                 
+  for (x = 0; x < data->max_length; x++) {
+      if( data->bases[x].length_count > 0)
+        svg_simple_tag("rect", 6,
+                       svg_attr(x,      "%d", x),
+                       svg_attr(y,      "%d", 0),
+                       svg_attr(width,  "%d", 1),
+                       svg_attr(height, "%d", data->bases[x].length_count),
+                       svg_attr(stroke, "%s", "none"),
+                       svg_attr(fill,   "%s", "steelblue")
+                       );
+    }
+
+  
+  
+  svg_end_tag("svg"); // Length Distro
+
+
+  /* //length distribution */
+    /* for (i = 0; i < data->max_length; i++){ */
+    /*     printf("<rect x=\"%d\" y=\"0\" width=\"1\" height=\"%lu\" style=\"stroke:none;fill:steelblue;fill-opacity:1\" />", i, data->bases[i].length_count); */
+    /* } */
+    /* printf("</svg>\n"); */
     
 
   svg_end_tag("g"); // rug plot
