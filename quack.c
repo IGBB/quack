@@ -267,14 +267,14 @@ sequence_data* transform(sequence_data* data) {
     for (i = 0; i < data->max_length; i++) {
         int content_sum = 0;
         int score_sum = 0;
-        for (j = 0; j < 4; j++) {
-            content_sum = content_sum + data->bases[i].content[j];
-        }
-        if (content_sum != 0) {
-            for (j = 0; j < 4; j++) {
-                data->bases[i].content[j] = 100*data->bases[i].content[j]/content_sum;
-            }
-        }
+        /* for (j = 0; j < 4; j++) { */
+        /*     content_sum = content_sum + data->bases[i].content[j]; */
+        /* } */
+        /* if (content_sum != 0) { */
+        /*     for (j = 0; j < 4; j++) { */
+        /*         data->bases[i].content[j] = 100*data->bases[i].content[j]/content_sum; */
+        /*     } */
+        /* } */
         for (j = 0; j < 91; j++) {
             score_sum = score_sum + data->bases[i].scores[j];
         }
@@ -423,7 +423,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
                 svg_attr(width,  "%d", 450),
                 svg_attr(height, "%d", 100),
                 svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d 100", data->max_length),
+                svg_attr(viewBox, "0 0 %d %d", data->max_length, data->number_of_sequences),
                 svg_attr(transform, "scale(%d, %d)", 1,-1)
                 );
 
@@ -435,10 +435,18 @@ void draw(sequence_data* data, int position, int adapters_used) {
                  );
                  
   
-  /* Allocate 10 characters per base (A,C,T,G) per point. */
-  size_t ratio_points_length = 10*data->max_length;
+  /* Allocate 25 characters per base (A,C,T,G) per point. 
+     4 = max length is capped in kb range, will start compressing if larger
+     2 = '.5' added to point
+     1 = ','
+     15 = number of reads (10 quadrillion reads will break it)
+     1 = ' '
+     2 = padding for miscalculation
+     
+  */
+  size_t ratio_points_length = 25*data->max_length;
   char * ratio_points[4];
-  char tmp[20];
+  char tmp[25];
   for(i = 0; i < 4; i++){
     ratio_points[i] = malloc(ratio_points_length);
   }
