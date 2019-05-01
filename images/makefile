@@ -17,7 +17,12 @@ paired.adapter.svg : ../quack ERR1438847_1.fastq.gz ERR1438847_2.fastq.gz
 paired.noadapt.svg : ../quack ERR1438847_1.fastq.gz ERR1438847_2.fastq.gz
 	../quack -1 ERR1438847_1.fastq.gz -2 ERR1438847_2.fastq.gz -n ERR1438847 > $@
 
-explanation.png :  explanation.svg single.adapter.svg
+explanation.overlay.png : explanation.overlay.svg
+	convert -background none $< $@
+
+explanation.png :  explanation.overlay.png single.adapter.png
+	composite -gravity center $^ $@
+
 %.png: %.svg
 	convert $< $@
 
