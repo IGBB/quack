@@ -347,10 +347,31 @@ void draw(sequence_data* data, int position, int adapters_used) {
     offset = 31;
     max_score = max_score - offset;
   }
-    
+
+
+  /********** File Stats ***************/
+   svg_start_tag("text", 6,
+                 svg_attr(x, "%d", (position==0)?355:835),
+                 svg_attr(y, "%d", 20),
+                 svg_attr(text-anchor, "%s", "middle"),
+                 svg_attr(font-family, "%s", "sans-serif"),
+                 svg_attr(font-size, "%s", "15px"),
+                 svg_attr(fill, "%s", "#555")
+                 );
+   svg_start_tag("tspan", 0);
+   printf("%d", data->number_of_sequences);
+   svg_end_tag("tspan");
+   svg_start_tag("tspan", 1, svg_attr(fill, "%s", "#888"));
+   printf(" reads with endcoding ");
+   svg_end_tag("tspan");
+   svg_start_tag("tspan", 0);
+   printf("%s", encoding);
+   svg_end_tag("tspan");
+   svg_end_tag("text");
+  
   /* Group for rug plot */
   svg_start_tag("g", 1, 
-                svg_attr(transform, "translate(%d %d)", 5, 10)
+                svg_attr(transform, "translate(%d %d)", 5, 25)
                 );
 
   /* Horizontal Tick marks */
@@ -375,7 +396,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
   svg_start_tag("g", 1, 
                 svg_attr(transform, "translate(%d 0)", (position == 1)?610:130)
                 );
-
+ 
 
   /*************** Vertical Tick Marks ***************/
   y = (adapters_used == 0)?400:500;
@@ -845,7 +866,7 @@ int main (int argc, char **argv)
     if(adapters) kmers = read_adapters(arguments.adapters);
 
     width  = (paired)?1195:615;
-    height = (adapters)?600:500;
+    height = (adapters)?610:510;
 
     if(arguments.name != NULL)
       height += 30;
