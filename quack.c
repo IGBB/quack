@@ -145,7 +145,7 @@ typedef struct {
 
 /* Convert ASCII to Integer for A T C and G */
 /*                A     C           G                                      T */
-int lookup[20] = {0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3};
+int lookup[20] = {0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
 KSEQ_INIT(gzFile, gzread)
 
@@ -483,7 +483,8 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   
   /* Draw each distribution, in decending order so they stack */
-  char *ratio_colors[4] = {"#648964", "#84accf", "#5d7992", "#89bc89"};
+  char *ratio_labels[4] = {"%A", "%T", "%C", "%G"};
+  char *ratio_colors[4] = {"#648964", "#89bc89", "#84accf", "#5d7992"};
   for(i = 3; i >= 0; i--){
     svg_simple_tag("polyline", 3,
                    svg_attr(points,      "0,0 %s %d,0", ratio_points[i], data->max_length),
@@ -514,9 +515,8 @@ void draw(sequence_data* data, int position, int adapters_used) {
      465 = width of vertical section (450) + width of margin (30) halved 
    */
   if(position==0){
-    char *ratio_labels[4] = {"%A", "%C", "%G", "%T"};
     for( i = 0; i < 4; i++){
-      svg_center_label(465, 20*(i+1), ratio_colors[i], "%s", ratio_labels[i]);
+      svg_center_label(465, 20*(4-i), ratio_colors[i], "%s", ratio_labels[i]);
     }
   }
 
