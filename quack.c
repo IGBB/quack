@@ -378,13 +378,14 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
 
   /*************** Vertical Tick Marks ***************/
+  y = (adapters_used == 0)?400:500;
   for (i = 10; i < 100; i+=10){
     x = i * 450 / 100;
   svg_simple_tag("line",6,
                  svg_attr(x1, "%d", x),
                  svg_attr(x2, "%d", x),
                  svg_attr(y1, "%d", 10),
-                 svg_attr(y2, "%d", 500),
+                 svg_attr(y2, "%d", y),
                  svg_attr(stroke, "%s", "black"),
                  svg_attr(stroke-width, "%f", (i%20 == 10)?1:0.5)
                  );
@@ -716,6 +717,14 @@ void draw(sequence_data* data, int position, int adapters_used) {
     }
   }
 
+  /*************** Bottom Label ***************/
+  y = 470;
+  if(adapters_used==1) y+=105;
+  
+  svg_axis_label(225,  y+5, 0, "Base Pairs");
+  svg_axis_number(0,   y, "middle", 0);
+  svg_axis_number(450, y, "middle", 100);
+
   
   svg_end_tag("g"); // rug plot vertical section
 
@@ -835,8 +844,11 @@ int main (int argc, char **argv)
 
     if(adapters) kmers = read_adapters(arguments.adapters);
 
-    width  = (paired)?1230:700;
-    height = (adapters)?700:600;
+    width  = (paired)?1195:615;
+    height = (adapters)?600:500;
+
+    if(arguments.name != NULL)
+      height += 30;
     
     svg_start_tag("svg", 5,
                   svg_attr(width,   "%d", width),
@@ -849,14 +861,19 @@ int main (int argc, char **argv)
     // If name is given, add to middle of viewBox (half of width + min-x of viewbox)
     if(arguments.name != NULL){
       svg_start_tag("text", 6,
-                    svg_attr(x, "%d", (width/2+20)),
-                    svg_attr(y, "%d", 25),
+                    svg_attr(x, "%d", (width/2)),
+                    svg_attr(y, "%d", 30),
                     svg_attr(font-family, "%s", "sans-serif"),
                     svg_attr(text-anchor, "%s", "middle"),
                     svg_attr(font-size,   "%s", "30px"),
                     svg_attr(fill,        "%s", "black"));
       printf("%s", arguments.name);
       svg_end_tag("text");
+
+      svg_start_tag("g", 1, 
+                svg_attr(transform, "translate(%d %d)", 0, 30)
+                );
+
     }
   
     sequence_data *data = read_fastq(((paired)?arguments.forward:arguments.unpaired), kmers);
@@ -870,6 +887,8 @@ int main (int argc, char **argv)
       draw(transformed_data, 1, adapters);
       free(data);
     }
+
+    if(arguments.name != NULL) svg_end_tag("g");
 
     svg_end_tag("svg");
     
