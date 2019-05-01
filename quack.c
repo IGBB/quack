@@ -300,7 +300,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
   int max_score = 0;
   uint64_t number_of_bases = 0;
   uint64_t total_counts[91] = {0};
-  uint64_t averages[500] = {0};
+  float averages[500];
 
   // get encoding
   i = 0;
@@ -329,7 +329,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
       sum = sum + j*data->bases[i].scores[j];
       number_of_bases++;
     }
-    averages[i] = sum/100;
+    averages[i] = sum/100.0;
   }
 
   if (max_score < 40) {
@@ -551,12 +551,19 @@ void draw(sequence_data* data, int position, int adapters_used) {
   score_back(28,        "#ffffcc"); // yellow
   score_back(20,        "#fbb4ae"); // red
 
-  //Allocate 10 characters per point.
-  size_t mean_line_points_length = 10*data->max_length;
+  /* Allocate 15 characters per point. 
+     4 = max length is capped in kb range, will start compressing if larger
+     2 = '.5' added to point
+     1 = ','
+     5 = '##.##' for float average
+     1 = ' '
+     2 = padding for miscalculation
+   */
+  size_t mean_line_points_length = 15*data->max_length;
   char * mean_line_points = malloc(mean_line_points_length);
 
   /* Make line start off graph */
-  snprintf(mean_line_points, mean_line_points_length, "0,%d ", averages[0]);
+  snprintf(mean_line_points, mean_line_points_length, "0,%0.2f ", averages[0]);
 
   for (x = 0; x < data->max_length; x++) {
     for (y = offset; y < max_score+offset; y++) {
@@ -573,22 +580,23 @@ void draw(sequence_data* data, int position, int adapters_used) {
                        );
     }
 
-    snprintf(tmp, 20, "%d.5,%lu ", x, averages[x]);
+    snprintf(tmp, 20, "%d.5,%0.2f ", x, averages[x]);
     strncat(mean_line_points, tmp, mean_line_points_length);
   }
 
   /* Make line end off graph */
-  snprintf(tmp, 20, "%d,%d ", data->max_length, averages[data->max_length-1]);
+  snprintf(tmp, 20, "%d,%0.2f", data->max_length, averages[data->max_length-1]);
   strncat(mean_line_points, tmp, mean_line_points_length);
 
   
   /* Print mean line */
-  svg_simple_tag("polyline", 5,
+  svg_simple_tag("polyline", 6,
                  svg_attr(points,      "%s", mean_line_points),
                  svg_attr(stroke, "%s", "black"),
                  svg_attr(stroke-width, "%f", 0.5),
                  svg_attr(stroke-opacity, "%f", 0.5),
-                 svg_attr(fill,   "%s", "none")
+                 svg_attr(fill,   "%s", "none"),
+                 svg_attr(stroke-linejoin, "%s", "round")
                  );
    
   free(mean_line_points);

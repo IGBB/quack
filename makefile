@@ -1,8 +1,8 @@
 src = $(wildcard *.c)
 obj = $(src:.c=.o)
 
-LDFLAGS = -lz -lm
-CFLAGS = -Iklib -O3
+override LDFLAGS := -lz -lm $(LDFLAGS)
+override CFLAGS := -Iklib -O3 $(CFLAGS)
 
 quack: $(obj)
 	$(CC) -o $@ $^ $(LDFLAGS)
