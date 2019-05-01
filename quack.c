@@ -352,12 +352,45 @@ void draw(sequence_data* data, int position, int adapters_used) {
   svg_start_tag("g", 1, 
                 svg_attr(transform, "translate(%d %d)", 5, 10)
                 );
+
+  /* Horizontal Tick marks */
+  x = 100;
+  if (position==1)
+    x = 1000;
+  for (i = 10; i < 100; i+=10){
+    y = 105 + i * 250 / 100;
+    
+    svg_simple_tag("line",6,
+                 svg_attr(x1, "%d", x),
+                 svg_attr(x2, "%d", x+100),
+                 svg_attr(y1, "%d", y),
+                 svg_attr(y2, "%d", y),
+                 svg_attr(stroke, "%s", "black"),
+                 svg_attr(stroke-width, "%f", (i%20 == 10)?1:0.5)
+                 );
+  }
+
+
   /* Group for the vertical section of rug plot */
   svg_start_tag("g", 1, 
                 svg_attr(transform, "translate(%d 0)", (position == 1)?610:130)
                 );
 
-  
+
+  /*************** Vertical Tick Marks ***************/
+  for (i = 10; i < 100; i+=10){
+    x = i * 450 / 100;
+  svg_simple_tag("line",6,
+                 svg_attr(x1, "%d", x),
+                 svg_attr(x2, "%d", x),
+                 svg_attr(y1, "%d", 10),
+                 svg_attr(y2, "%d", 500),
+                 svg_attr(stroke, "%s", "black"),
+                 svg_attr(stroke-width, "%f", (i%20 == 10)?1:0.5)
+                 );
+  }
+
+
   /*************** Base Ratio ***************/
 
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
@@ -778,40 +811,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     }
 
     svg_end_tag("g"); // rug plot 
-   
-    /* // adjust the x position of the SVG based on whether this is paired end data */
-    /* int adjust = (position == 1)*120; */
-    /* svg_start_tag("g", 3, */
-    /*               svg_attr(width,  "%d", 700), */
-    /*               svg_attr(height, "%d", 700), */
-    /*               svg_attr(transform, "translate(%d 50)", (position == 1)*610) */
-    /*               ); */
-    /* if (position == 0) { */
-    /*     printf("<text x=\"395\" y=\"0\" text-anchor=\"middle\" font-family=\"sans-serif\" " */
-    /*            "font-size=\"15px\" fill=\"black\">%lu <tspan opacity=\"0.75\"> reads with " */
-    /*            "encoding</tspan> %s <tspan opacity=\"0.75\">in</tspan> forward <tspan " */
-    /*            "opacity=\"0.75\">read</tspan></text>\n", data->number_of_sequences, encoding); */
-    /* } */
-    /* else if (position == 1) { */
-    /*     printf("<text x=\"275\" y=\"0\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15px\" fill=\"black\">%lu <tspan opacity=\"0.75\"> reads with encoding</tspan> %s <tspan opacity=\"0.75\">in</tspan> reverse <tspan opacity=\"0.75\">read</tspan></text>\n", data->number_of_sequences, encoding); */
-    /* } */
 
-    /* // tick marks */
-
-    /* #define tickmarks(x1,x2,y1,y2, stroke_width) printf("<line x1=\"%d\" x2=\"%d\" y1=\"%d\" y2=\"%d\" style=\"stroke:black;stroke-width:%d;stroke-opacity:0.75\" />\n", x1,x2,y1,y2,stroke_width); */
-
-
-    /*     // vertical */
-    /* for (i = 1; i < 8; i++) { */
-    /*     tickmarks(i*450/8+50+120*(position==0), i*450/8+50+120*(position==0), 118, 122, (i+1)%2+1) */
-    /*     tickmarks(i*450/8+50+120*(position==0), i*450/8+50+120*(position==0), 383, 387, (i+1)%2+1) */
-    /*     tickmarks(i*450/8+50+120*(position==0), i*450/8+50+120*(position==0), 493, 497, (i+1)%2+1) */
-    /* } */
-
-    /*     // horizontal */
-    /* for (i = 1; i < 8; i++) { */
-    /*     tickmarks(163+340*(position==1), 167+340*(position==1), i*254/8+125, i*254/8+125, i%2+1) */
-    /* } */
 }
 
 int main (int argc, char **argv)
