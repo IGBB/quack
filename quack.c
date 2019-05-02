@@ -24,29 +24,29 @@
                 );                                              \
   printf("%s\n", label);                                        \
   svg_end_tag("text");
-#define svg_axis_number( posx, posy, a, number)                  \
-  svg_start_tag("text", 6,                                       \
-                svg_attr(x,           "%d", posx),               \
-                svg_attr(fill,        "%s", "#AAA"),             \
-                svg_attr(y,           "%d", posy),               \
-                svg_attr(font-family, "%s", "sans-serif"),       \
-                svg_attr(font-size,   "%s", "10px"),             \
+#define svg_axis_number( posx, posy, a, number)                 \
+  svg_start_tag("text", 6,                                      \
+                svg_attr(x,           "%d", posx),              \
+                svg_attr(fill,        "%s", "#AAA"),            \
+                svg_attr(y,           "%d", posy),              \
+                svg_attr(font-family, "%s", "sans-serif"),      \
+                svg_attr(font-size,   "%s", "10px"),            \
                 svg_attr(text-anchor, "%s", a)                  \
-                );                                               \
-  printf("%d\n", number);                                        \
+                );                                              \
+  printf("%d\n", number);                                       \
   svg_end_tag("text");
 
-#define svg_center_label( posx, posy, fillv, label_format, label)   \
-  svg_start_tag("text", 7,                                          \
-                svg_attr(x,           "%d", posx),                  \
-                svg_attr(y,           "%d", posy),                  \
-                svg_attr(fill,        "%s", fillv),                 \
-                svg_attr(font-family, "%s", "sans-serif"),          \
-                svg_attr(font-size,   "%s", "15px"),                \
-                svg_attr(font-weight, "%s", "bold"),                \
-                svg_attr(text-anchor, "%s", "middle")              \
-                );                                                  \
-  printf(label_format, label);                                      \
+#define svg_center_label( posx, posy, fillv, label_format, label)       \
+  svg_start_tag("text", 7,                                              \
+                svg_attr(x,           "%d", posx),                      \
+                svg_attr(y,           "%d", posy),                      \
+                svg_attr(fill,        "%s", fillv),                     \
+                svg_attr(font-family, "%s", "sans-serif"),              \
+                svg_attr(font-size,   "%s", "15px"),                    \
+                svg_attr(font-weight, "%s", "bold"),                    \
+                svg_attr(text-anchor, "%s", "middle")                   \
+                );                                                      \
+  printf(label_format, label);                                          \
   svg_end_tag("text");
 
 
