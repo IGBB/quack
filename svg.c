@@ -16,8 +16,18 @@ void svg_vprintf(int num, va_list vl){
     char* format = va_arg(vl, char*);
     vprintf(format, vl);
 
+    // MinGW and CYGWIN implementations of vprintf do not consume arguments
+    // from the va_list. Since every argument in the va_last is cast to a 
+    // (void*) during construction in the MinGW implementation, all data
+    // become 8 bytes wide (at least on 64bit architecture). The va_list
+    // is incremented manually by the number of '%' characters * 8 (width of
+    // data)
     #if defined _WIN32 || defined __CYGWIN__
     char* s = format;
+    
+    // loop over the format string to find '%' characters and count how many
+    // there are. Multiple the number of '%' times 8 to increment the va_list
+    // to the correct location
     for (j=0; s[j]; s[j]=='%' ? j++ : *s++);
     vl = vl+j*8;
     #endif
