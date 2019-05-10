@@ -5,13 +5,22 @@
 
 
 #define INDENT "  "
+
 int _svg_indent_level = 0;
 
 void svg_vprintf(int num, va_list vl){
   int i;
-  
+  int j;
+
   for(i = 0; i < num; i++){
-    vprintf(va_arg(vl, char*), vl);
+    char* format = va_arg(vl, char*);
+    vprintf(format, vl);
+
+    #if defined _WIN32 || defined __CYGWIN__
+    char* s = format;
+    for (j=0; s[j]; s[j]=='%' ? j++ : *s++);
+    vl = vl+j*8;
+    #endif
   }
 
   
