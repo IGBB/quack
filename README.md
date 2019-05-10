@@ -20,9 +20,7 @@ git clone https://github.com/IGBB/quack.git
 
 cd quack/
 
-git submodule update --init --recursive
-
-gcc quack.c -o quack -lz -lm -I klib -O3
+make && make test
 
 ## Binaries
 
@@ -64,7 +62,7 @@ Quack takes gzipped FASTQ-formatted files as input for data and gzipped As outpu
 Quack is capable of producing output for single-ended data and paired-end data. Only the singled-ended data is labeled, since the paried-end data has all the same parts.
 
 #### Single-ended Data
-<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0003269718300630-gr4.jpg">
+![explanation](images/explanation.png)
 
 
 A. The base content distribution showing the percentage of each nucleotide in each column of an array.  
@@ -74,4 +72,4 @@ D. Length distribution graph showing the percentage of reads of a given length
 E. Adapter content distribution graph showing how adapter content is distributed throughout an array  
 
 #### Paired-end Data
-<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0003269718300630-gr5.jpg">
+![paired](images/paired.adapter.png)
