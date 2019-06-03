@@ -2,75 +2,90 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 
 #define INDENT "  "
-
 int _svg_indent_level = 0;
 
-void svg_vprintf(int num, va_list vl){
-  int i;
-  int j;
 
-  for(i = 0; i < num; i++){
-    char* format = va_arg(vl, char*);
-    vprintf(format, vl);
+char* svg_attr(const char* name, const char* fmt, ...){
+  char *attr;
+  int retval, length, cur_length;
+  va_list vl;
 
-    // MinGW and CYGWIN implementations of vprintf do not consume arguments
-    // from the va_list. Since every argument in the va_last is cast to a 
-    // (void*) during construction in the MinGW implementation, all data
-    // become 8 bytes wide (at least on 64bit architecture). The va_list
-    // is incremented manually by the number of '%' characters * 8 (width of
-    // data)
-    #if defined _WIN32 || defined __CYGWIN__
-    char* s = format;
-    
-    // loop over the format string to find '%' characters and count how many
-    // there are. Multiple the number of '%' times 8 to increment the va_list
-    // to the correct location
-    for (j=0; s[j]; s[j]=='%' ? j++ : *s++);
-    vl = vl+j*8;
-    #endif
+  /* Use vsnprintf to get the length of value string before allocating memory*/
+  va_start(vl, fmt);
+  retval = vsnprintf(NULL, 0, fmt, vl);
+  va_end(vl);
+  if(retval < 0) return NULL;
+
+  /* Allocate enough memory for entire attribute string: 
+       ' $name="$value"'
+       length($name) + length($value) + 4 literals [ =""] + null char
+   */
+  length = retval + strlen(name) + 5;
+  attr = malloc(length);
+  if(attr == NULL) return NULL;
+
+
+  /* Print beginning of attribute: ' $name="' ; freeing memory if failed*/
+  retval = snprintf(attr, length-1, " %s=\"", name);
+  if(retval < 0){
+    free(attr);
+    return NULL;
   }
+  cur_length = retval;
 
+  /* Print attribute value; freeing memory if failed*/
+  va_start(vl, fmt);
+  retval = vsnprintf(attr + cur_length, length-cur_length-1, fmt, vl);
+  va_end(vl);
+  if(retval < 0){
+    free(attr);
+    return NULL;
+  }
+  cur_length += retval;
+
+  /* Close quote and terminate string */
+  attr[cur_length] = '"';
+  attr[cur_length+1] = '\0';
   
-  return;
+  return attr;
 }
 
 
-void svg_start_tag(const char* type, int num, ...){
-  int i = 0;
 
+void _svg_tag(const int simple, const char* type, int num, ...){
+  int i = 0;
+  va_list vl;
+  char* attr;
+
+  /* Indent current tag */
   for( i = 0; i < _svg_indent_level; i++)
     printf(INDENT);
 
-  _svg_indent_level++;
+  /* Increase indent level if started tag with internal elements */
+  if(!simple)
+    _svg_indent_level++;
 
-
-  va_list vl;
-  va_start(vl, num);
-
+  /* Open tag */
   printf("<%s", type);
-  svg_vprintf(num, vl);
+
+  /* Print each attribute, free memory as used */
+  va_start(vl, num);
+  for(i = 0; i < num; i++){
+    attr = va_arg(vl, char*);
+    printf("%s", attr);
+    free(attr);
+  }
+  va_end(vl);
+
+  /* print nested closing tag if no internal elements expected */
+  if(simple) printf("/");
+
+  /* close tag */
   printf(">\n");
-
-  va_end(vl);
-
-}
-void svg_simple_tag(const char* type, int num, ...){
-  int i = 0;
-
-  for( i = 0; i < _svg_indent_level; i++)
-    printf(INDENT);
-
-  va_list vl;
-  va_start(vl, num);
-
-  printf("<%s", type);
-  svg_vprintf(num, vl);
-  printf("/>\n");
-
-  va_end(vl);
 }
 
 

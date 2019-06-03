@@ -14,37 +14,37 @@
 
 #define svg_axis_label( posx, posy, rot, label)                 \
   svg_start_tag("text", 7,                                      \
-                svg_attr(x,           "%d", posx),              \
-                svg_attr(fill,        "%s", "#AAA"),            \
-                svg_attr(y,           "%d", posy),              \
-                svg_attr(font-family, "%s", "sans-serif"),      \
-                svg_attr(font-size,   "%s", "15px"),            \
-                svg_attr(text-anchor, "%s", "middle"),          \
-                svg_attr(transform, "rotate(%d)", rot)          \
+                svg_attr("x",           "%d", posx),              \
+                svg_attr("fill",        "%s", "#AAA"),            \
+                svg_attr("y",           "%d", posy),              \
+                svg_attr("font-family", "%s", "sans-serif"),      \
+                svg_attr("font-size",   "%s", "15px"),            \
+                svg_attr("text-anchor", "%s", "middle"),          \
+                svg_attr("transform", "rotate(%d)", rot)          \
                 );                                              \
   printf("%s\n", label);                                        \
   svg_end_tag("text");
 #define svg_axis_number( posx, posy, a, number)                 \
   svg_start_tag("text", 6,                                      \
-                svg_attr(x,           "%d", posx),              \
-                svg_attr(fill,        "%s", "#AAA"),            \
-                svg_attr(y,           "%d", posy),              \
-                svg_attr(font-family, "%s", "sans-serif"),      \
-                svg_attr(font-size,   "%s", "10px"),            \
-                svg_attr(text-anchor, "%s", a)                  \
+                svg_attr("x",           "%d", posx),              \
+                svg_attr("fill",        "%s", "#AAA"),            \
+                svg_attr("y",           "%d", posy),              \
+                svg_attr("font-family", "%s", "sans-serif"),      \
+                svg_attr("font-size",   "%s", "10px"),            \
+                svg_attr("text-anchor", "%s", a)                  \
                 );                                              \
   printf("%d\n", number);                                       \
   svg_end_tag("text");
 
 #define svg_center_label( posx, posy, fillv, label_format, label)       \
   svg_start_tag("text", 7,                                              \
-                svg_attr(x,           "%d", posx),                      \
-                svg_attr(y,           "%d", posy),                      \
-                svg_attr(fill,        "%s", fillv),                     \
-                svg_attr(font-family, "%s", "sans-serif"),              \
-                svg_attr(font-size,   "%s", "15px"),                    \
-                svg_attr(font-weight, "%s", "bold"),                    \
-                svg_attr(text-anchor, "%s", "middle")                   \
+                svg_attr("x",           "%d", posx),                      \
+                svg_attr("y",           "%d", posy),                      \
+                svg_attr("fill",        "%s", fillv),                     \
+                svg_attr("font-family", "%s", "sans-serif"),              \
+                svg_attr("font-size",   "%s", "15px"),                    \
+                svg_attr("font-weight", "%s", "bold"),                    \
+                svg_attr("text-anchor", "%s", "middle")                   \
                 );                                                      \
   printf(label_format, label);                                          \
   svg_end_tag("text");
@@ -351,17 +351,17 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   /********** File Stats ***************/
    svg_start_tag("text", 6,
-                 svg_attr(x, "%d", (position==0)?355:835),
-                 svg_attr(y, "%d", 20),
-                 svg_attr(text-anchor, "%s", "middle"),
-                 svg_attr(font-family, "%s", "sans-serif"),
-                 svg_attr(font-size, "%s", "15px"),
-                 svg_attr(fill, "%s", "#555")
+                 svg_attr("x", "%d", (position==0)?355:835),
+                 svg_attr("y", "%d", 20),
+                 svg_attr("text-anchor", "%s", "middle"),
+                 svg_attr("font-family", "%s", "sans-serif"),
+                 svg_attr("font-size", "%s", "15px"),
+                 svg_attr("fill", "%s", "#555")
                  );
    svg_start_tag("tspan", 0);
    printf("%d", data->number_of_sequences);
    svg_end_tag("tspan");
-   svg_start_tag("tspan", 1, svg_attr(fill, "%s", "#888"));
+   svg_start_tag("tspan", 1, svg_attr("fill", "%s", "#888"));
    printf(" reads with endcoding ");
    svg_end_tag("tspan");
    svg_start_tag("tspan", 0);
@@ -371,7 +371,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
   
   /* Group for rug plot */
   svg_start_tag("g", 1, 
-                svg_attr(transform, "translate(%d %d)", 5, 25)
+                svg_attr("transform", "translate(%d %d)", 5, 25)
                 );
 
   /* Horizontal Tick marks */
@@ -382,19 +382,19 @@ void draw(sequence_data* data, int position, int adapters_used) {
     y = 105 + i * 250 / 100;
     
     svg_simple_tag("line",6,
-                 svg_attr(x1, "%d", x),
-                 svg_attr(x2, "%d", x+100),
-                 svg_attr(y1, "%d", y),
-                 svg_attr(y2, "%d", y),
-                 svg_attr(stroke, "%s", "black"),
-                 svg_attr(stroke-width, "%f", (i%20 == 10)?1:0.5)
+                 svg_attr("x1", "%d", x),
+                 svg_attr("x2", "%d", x+100),
+                 svg_attr("y1", "%d", y),
+                 svg_attr("y2", "%d", y),
+                 svg_attr("stroke", "%s", "black"),
+                 svg_attr("stroke-width", "%f", (i%20 == 10)?1:0.5)
                  );
   }
 
 
   /* Group for the vertical section of rug plot */
   svg_start_tag("g", 1, 
-                svg_attr(transform, "translate(%d 0)", (position == 1)?610:130)
+                svg_attr("transform", "translate(%d 0)", (position == 1)?610:130)
                 );
  
 
@@ -403,12 +403,12 @@ void draw(sequence_data* data, int position, int adapters_used) {
   for (i = 10; i < 100; i+=10){
     x = i * 450 / 100;
   svg_simple_tag("line",6,
-                 svg_attr(x1, "%d", x),
-                 svg_attr(x2, "%d", x),
-                 svg_attr(y1, "%d", 10),
-                 svg_attr(y2, "%d", y),
-                 svg_attr(stroke, "%s", "black"),
-                 svg_attr(stroke-width, "%f", (i%20 == 10)?1:0.5)
+                 svg_attr("x1", "%d", x),
+                 svg_attr("x2", "%d", x),
+                 svg_attr("y1", "%d", 10),
+                 svg_attr("y2", "%d", y),
+                 svg_attr("stroke", "%s", "black"),
+                 svg_attr("stroke-width", "%f", (i%20 == 10)?1:0.5)
                  );
   }
 
@@ -418,20 +418,20 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
      is negative to compensate for the horizontal flip */
   svg_start_tag("svg", 7,
-                svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", -100),
-                svg_attr(width,  "%d", 450),
-                svg_attr(height, "%d", 100),
-                svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d %d", data->max_length, data->number_of_sequences),
-                svg_attr(transform, "scale(%d, %d)", 1,-1)
+                svg_attr("x",      "%d", 0),
+                svg_attr("y",      "%d", -100),
+                svg_attr("width",  "%d", 450),
+                svg_attr("height", "%d", 100),
+                svg_attr("preserveAspectRatio", "%s", "none"),
+                svg_attr("viewBox", "0 0 %d %d", data->max_length, data->number_of_sequences),
+                svg_attr("transform", "scale(%d, %d)", 1,-1)
                 );
 
   /* Set background color */
   svg_simple_tag("rect", 3,
-                 svg_attr(width,  "%s", "100%"),
-                 svg_attr(height, "%s", "100%"),
-                 svg_attr(fill, "%s", "#CCC")
+                 svg_attr("width",  "%s", "100%"),
+                 svg_attr("height", "%s", "100%"),
+                 svg_attr("fill", "%s", "#CCC")
                  );
                  
   
@@ -487,9 +487,9 @@ void draw(sequence_data* data, int position, int adapters_used) {
   char *ratio_colors[4] = {"#648964", "#89bc89", "#84accf", "#5d7992"};
   for(i = 3; i >= 0; i--){
     svg_simple_tag("polyline", 3,
-                   svg_attr(points,      "0,0 %s %d,0", ratio_points[i], data->max_length),
-                   svg_attr(fill, "%s", ratio_colors[i]),
-                   svg_attr(stroke, "%s", "none")
+                   svg_attr("points",      "0,0 %s %d,0", ratio_points[i], data->max_length),
+                   svg_attr("fill", "%s", ratio_colors[i]),
+                   svg_attr("stroke", "%s", "none")
                    );
   }
 
@@ -501,11 +501,11 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Lables */
 
   svg_start_tag("text", 5,
-                svg_attr(y,           "%d", 95),
-                svg_attr(fill,        "%s", "#CCC"),
-                svg_attr(x,           "%d", 5),
-                svg_attr(font-family, "%s", "sans-serif"),
-                svg_attr(font-size,   "%s", "15px")
+                svg_attr("y",           "%d", 95),
+                svg_attr("fill",        "%s", "#CCC"),
+                svg_attr("x",           "%d", 5),
+                svg_attr("font-family", "%s", "sans-serif"),
+                svg_attr("font-size",   "%s", "15px")
                 );
   printf("%s\n", "Base Content Percentage");
   svg_end_tag("text");
@@ -534,13 +534,13 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
      is negative to compensate for the horizontal flip */
   svg_start_tag("svg", 7,
-                svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", -355),
-                svg_attr(width,  "%d", 450),
-                svg_attr(height, "%d", 250),
-                svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d %d", data->max_length, max_score),
-                svg_attr(transform, "scale(%d, %d)", 1,-1)
+                svg_attr("x",      "%d", 0),
+                svg_attr("y",      "%d", -355),
+                svg_attr("width",  "%d", 450),
+                svg_attr("height", "%d", 250),
+                svg_attr("preserveAspectRatio", "%s", "none"),
+                svg_attr("viewBox", "0 0 %d %d", data->max_length, max_score),
+                svg_attr("transform", "scale(%d, %d)", 1,-1)
                 );
                   
 
@@ -548,12 +548,12 @@ void draw(sequence_data* data, int position, int adapters_used) {
      background will overwrite all other backgrounds */
   #define score_back(score, color)                      \
     svg_simple_tag("rect", 6,                           \
-                   svg_attr(x,      "%d", 0),           \
-                   svg_attr(y,      "%d", 0),           \
-                   svg_attr(width,  "%s", "100%"),      \
-                   svg_attr(height, "%d", score),       \
-                   svg_attr(stroke, "%s", "none"),      \
-                   svg_attr(fill,   "%s", color)        \
+                   svg_attr("x",      "%d", 0),           \
+                   svg_attr("y",      "%d", 0),           \
+                   svg_attr("width",  "%s", "100%"),      \
+                   svg_attr("height", "%d", score),       \
+                   svg_attr("stroke", "%s", "none"),      \
+                   svg_attr("fill",   "%s", color)        \
                    )
   score_back(max_score, "#ccebc5"); // green
   score_back(28,        "#ffffcc"); // yellow
@@ -577,14 +577,14 @@ void draw(sequence_data* data, int position, int adapters_used) {
     for (y = offset; y < max_score+offset; y++) {
       if(data->bases[x].scores[y] > 0)
         svg_simple_tag("rect", 8,
-                       svg_attr(x,      "%d", x),
-                       svg_attr(y,      "%d", y),
-                       svg_attr(fill-opacity, "%f", (float)(data->bases[x].scores[y])/100.0),
-                       svg_attr(width,  "%d", 1),
-                       svg_attr(height, "%d", 1),
-                       svg_attr(stroke, "%s", "none"),
-                       svg_attr(stroke-width, "%d", 0),
-                       svg_attr(fill,   "%s", "black")
+                       svg_attr("x",      "%d", x),
+                       svg_attr("y",      "%d", y),
+                       svg_attr("fill-opacity", "%f", (float)(data->bases[x].scores[y])/100.0),
+                       svg_attr("width",  "%d", 1),
+                       svg_attr("height", "%d", 1),
+                       svg_attr("stroke", "%s", "none"),
+                       svg_attr("stroke-width", "%d", 0),
+                       svg_attr("fill",   "%s", "black")
                        );
     }
 
@@ -599,12 +599,12 @@ void draw(sequence_data* data, int position, int adapters_used) {
   
   /* Print mean line */
   svg_simple_tag("polyline", 6,
-                 svg_attr(points,      "%s", mean_line_points),
-                 svg_attr(stroke, "%s", "black"),
-                 svg_attr(stroke-width, "%f", 0.5),
-                 svg_attr(stroke-opacity, "%f", 0.5),
-                 svg_attr(fill,   "%s", "none"),
-                 svg_attr(stroke-linejoin, "%s", "round")
+                 svg_attr("points",      "%s", mean_line_points),
+                 svg_attr("stroke", "%s", "black"),
+                 svg_attr("stroke-width", "%f", 0.5),
+                 svg_attr("stroke-opacity", "%f", 0.5),
+                 svg_attr("fill",   "%s", "none"),
+                 svg_attr("stroke-linejoin", "%s", "round")
                  );
    
   free(mean_line_points);
@@ -615,11 +615,11 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Lables */
 
   svg_start_tag("text", 5,
-                svg_attr(y,           "%d", 350),
-                svg_attr(fill,        "%s", "#888"),
-                svg_attr(x,           "%d", 5),
-                svg_attr(font-family, "%s", "sans-serif"),
-                svg_attr(font-size,   "%s", "15px")
+                svg_attr("y",           "%d", 350),
+                svg_attr("fill",        "%s", "#888"),
+                svg_attr("x",           "%d", 5),
+                svg_attr("font-family", "%s", "sans-serif"),
+                svg_attr("font-size",   "%s", "15px")
                 );
   printf("%s\n", "Per Base Sequence Quality");
   svg_end_tag("text");
@@ -641,30 +641,30 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Length Distro graph grows away from heatmap. No need to flip or have
      negative y*/
   svg_start_tag("svg", 6,
-                svg_attr(x,      "%d", 0),
-                svg_attr(y,      "%d", 360),
-                svg_attr(width,  "%d", 450),
-                svg_attr(height, "%d", 100),
-                svg_attr(preserveAspectRatio, "%s", "none"),
-                svg_attr(viewBox, "0 0 %d 100", data->max_length)
+                svg_attr("x",      "%d", 0),
+                svg_attr("y",      "%d", 360),
+                svg_attr("width",  "%d", 450),
+                svg_attr("height", "%d", 100),
+                svg_attr("preserveAspectRatio", "%s", "none"),
+                svg_attr("viewBox", "0 0 %d 100", data->max_length)
                 );
 
   /* Set background color */
   svg_simple_tag("rect", 3,
-                 svg_attr(width,  "%s", "100%"),
-                 svg_attr(height, "%s", "100%"),
-                 svg_attr(fill, "%s", "#EEE")
+                 svg_attr("width",  "%s", "100%"),
+                 svg_attr("height", "%s", "100%"),
+                 svg_attr("fill", "%s", "#EEE")
                  );
                  
   for (x = 0; x < data->max_length; x++) {
     if( data->bases[x].length_count > 0)
       svg_simple_tag("rect", 6,
-                     svg_attr(x,      "%d", x),
-                     svg_attr(y,      "%d", 0),
-                     svg_attr(width,  "%d", 1),
-                     svg_attr(height, "%d", data->bases[x].length_count),
-                     svg_attr(stroke, "%s", "none"),
-                     svg_attr(fill,   "%s", "steelblue")
+                     svg_attr("x",      "%d", x),
+                     svg_attr("y",      "%d", 0),
+                     svg_attr("width",  "%d", 1),
+                     svg_attr("height", "%d", data->bases[x].length_count),
+                     svg_attr("stroke", "%s", "none"),
+                     svg_attr("fill",   "%s", "steelblue")
                      );
   }
 
@@ -676,11 +676,11 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Lables */
 
   svg_start_tag("text", 5,
-                svg_attr(y,           "%d", 455),
-                svg_attr(fill,        "%s", "#888"),
-                svg_attr(x,           "%d", 5),
-                svg_attr(font-family, "%s", "sans-serif"),
-                svg_attr(font-size,   "%s", "15px")
+                svg_attr("y",           "%d", 455),
+                svg_attr("fill",        "%s", "#888"),
+                svg_attr("x",           "%d", 5),
+                svg_attr("font-family", "%s", "sans-serif"),
+                svg_attr("font-size",   "%s", "15px")
                 );
   printf("%s\n", "Length Distribution");
   svg_end_tag("text");
@@ -702,30 +702,30 @@ void draw(sequence_data* data, int position, int adapters_used) {
     /* Adapter Distro graph grows away from heatmap. No need to flip or have
        negative y*/
     svg_start_tag("svg", 6,
-                  svg_attr(x,      "%d", 0),
-                  svg_attr(y,      "%d", 465),
-                  svg_attr(width,  "%d", 450),
-                  svg_attr(height, "%d", 100),
-                  svg_attr(preserveAspectRatio, "%s", "none"),
-                  svg_attr(viewBox, "0 0 %d 100", data->max_length)
+                  svg_attr("x",      "%d", 0),
+                  svg_attr("y",      "%d", 465),
+                  svg_attr("width",  "%d", 450),
+                  svg_attr("height", "%d", 100),
+                  svg_attr("preserveAspectRatio", "%s", "none"),
+                  svg_attr("viewBox", "0 0 %d 100", data->max_length)
                   );
 
     /* Set background color */
     svg_simple_tag("rect", 3,
-                   svg_attr(width,  "%s", "100%"),
-                   svg_attr(height, "%s", "100%"),
-                   svg_attr(fill, "%s", "#EEE")
+                   svg_attr("width",  "%s", "100%"),
+                   svg_attr("height", "%s", "100%"),
+                   svg_attr("fill", "%s", "#EEE")
                    );
                  
     for (x = 0; x < data->max_length; x++) {
       if( data->bases[x].kmer_count > 0)
         svg_simple_tag("rect", 6,
-                       svg_attr(x,      "%d", x),
-                       svg_attr(y,      "%d", 0),
-                       svg_attr(width,  "%d", 1),
-                       svg_attr(height, "%d", data->bases[x].kmer_count),
-                       svg_attr(stroke, "%s", "none"),
-                       svg_attr(fill,   "%s", "steelblue")
+                       svg_attr("x",      "%d", x),
+                       svg_attr("y",      "%d", 0),
+                       svg_attr("width",  "%d", 1),
+                       svg_attr("height", "%d", data->bases[x].kmer_count),
+                       svg_attr("stroke", "%s", "none"),
+                       svg_attr("fill",   "%s", "steelblue")
                        );
     }
 
@@ -734,11 +734,11 @@ void draw(sequence_data* data, int position, int adapters_used) {
     /* Lables */
 
     svg_start_tag("text", 5,
-                  svg_attr(y,           "%d", 560),
-                  svg_attr(fill,        "%s", "#888"),
-                  svg_attr(x,           "%d", 5),
-                  svg_attr(font-family, "%s", "sans-serif"),
-                  svg_attr(font-size,   "%s", "15px")
+                  svg_attr("y",           "%d", 560),
+                  svg_attr("fill",        "%s", "#888"),
+                  svg_attr("x",           "%d", 5),
+                  svg_attr("font-family", "%s", "sans-serif"),
+                  svg_attr("font-size",   "%s", "15px")
                   );
     printf("%s\n", "Adapter Distribution");
     svg_end_tag("text");
@@ -771,31 +771,31 @@ void draw(sequence_data* data, int position, int adapters_used) {
      flip vertically if position == 0. Flipped horizontally as well. Use
      negative positions in directions svg is flipped*/
     svg_start_tag("svg", 7,
-                  svg_attr(x,      "%d", (position == 0)?-125:1065),
-                  svg_attr(y,      "%d", -355),
-                  svg_attr(width,  "%d", 100),
-                  svg_attr(height, "%d", 250),
-                  svg_attr(preserveAspectRatio, "%s", "none"),
-                  svg_attr(viewBox, "0 0 100 %d", max_score),
-                  svg_attr(transform, "scale(%d, %d)", (position == 0)?-1:1,-1)
+                  svg_attr("x",      "%d", (position == 0)?-125:1065),
+                  svg_attr("y",      "%d", -355),
+                  svg_attr("width",  "%d", 100),
+                  svg_attr("height", "%d", 250),
+                  svg_attr("preserveAspectRatio", "%s", "none"),
+                  svg_attr("viewBox", "0 0 100 %d", max_score),
+                  svg_attr("transform", "scale(%d, %d)", (position == 0)?-1:1,-1)
                   );
 
     /* Set background color */
     svg_simple_tag("rect", 3,
-                   svg_attr(width,  "%s", "100%"),
-                   svg_attr(height, "%s", "100%"),
-                   svg_attr(fill, "%s", "#EEE")
+                   svg_attr("width",  "%s", "100%"),
+                   svg_attr("height", "%s", "100%"),
+                   svg_attr("fill", "%s", "#EEE")
                    );
                  
     for (y = 0; y < max_score; y++) {
       if(total_counts[y] > 0)
         svg_simple_tag("rect", 6,
-                       svg_attr(x,      "%d", 0),
-                       svg_attr(y,      "%d", y),
-                       svg_attr(width,  "%d", total_counts[y]*100/number_of_bases),
-                       svg_attr(height, "%d", 1),
-                       svg_attr(stroke, "%s", "none"),
-                       svg_attr(fill,   "%s", "steelblue")
+                       svg_attr("x",      "%d", 0),
+                       svg_attr("y",      "%d", y),
+                       svg_attr("width",  "%d", total_counts[y]*100/number_of_bases),
+                       svg_attr("height", "%d", 1),
+                       svg_attr("stroke", "%s", "none"),
+                       svg_attr("fill",   "%s", "steelblue")
                        );
     }
 
@@ -805,17 +805,17 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
     if(position == 0){
       svg_start_tag("text", 5,
-                    svg_attr(y,           "%d", 335),
-                    svg_attr(fill,        "%s", "#888"),
-                    svg_attr(x,           "%d", 30),
-                    svg_attr(font-family, "%s", "sans-serif"),
-                    svg_attr(font-size,   "%s", "15px")
+                    svg_attr("y",           "%d", 335),
+                    svg_attr("fill",        "%s", "#888"),
+                    svg_attr("x",           "%d", 30),
+                    svg_attr("font-family", "%s", "sans-serif"),
+                    svg_attr("font-size",   "%s", "15px")
                     );
       svg_start_tag("tspan", 0);
       printf("%s\n", "Score");
       svg_end_tag("tspan");
     
-      svg_start_tag("tspan", 2, svg_attr(dy, "%d", 15), svg_attr(x, "%d", 30));
+      svg_start_tag("tspan", 2, svg_attr("dy", "%d", 15), svg_attr("x", "%d", 30));
       printf("%s\n", "Distribution");
       svg_end_tag("tspan");
 
@@ -831,17 +831,17 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
     }else{
       svg_start_tag("text", 5,
-                    svg_attr(y,           "%d", 335),
-                    svg_attr(fill,        "%s", "#888"),
-                    svg_attr(x,           "%d", 1070),
-                    svg_attr(font-family, "%s", "sans-serif"),
-                    svg_attr(font-size,   "%s", "15px")
+                    svg_attr("y",           "%d", 335),
+                    svg_attr("fill",        "%s", "#888"),
+                    svg_attr("x",           "%d", 1070),
+                    svg_attr("font-family", "%s", "sans-serif"),
+                    svg_attr("font-size",   "%s", "15px")
                     );
       svg_start_tag("tspan", 0);
       printf("%s\n", "Score");
       svg_end_tag("tspan");
     
-      svg_start_tag("tspan", 2, svg_attr(dy, "%d", 15), svg_attr(x, "%d", 1070));
+      svg_start_tag("tspan", 2, svg_attr("dy", "%d", 15), svg_attr("x", "%d", 1070));
       printf("%s\n", "Distribution");
       svg_end_tag("tspan");
 
@@ -888,27 +888,27 @@ int main (int argc, char **argv)
       height += 30;
     
     svg_start_tag("svg", 5,
-                  svg_attr(width,   "%d", width),
-                  svg_attr(height,  "%d", height),
-                  svg_attr(viewBox, "%d %d %d %d", 0, 0, width, height),
-                  svg_attr(xmlns,       "%s", "http://www.w3.org/2000/svg"),
-                  svg_attr(xmlns:xlink, "%s", "http://www.w3.org/1999/xlink")
+                  svg_attr("width",   "%d", width),
+                  svg_attr("height",  "%d", height),
+                  svg_attr("viewBox", "%d %d %d %d", 0, 0, width, height),
+                  svg_attr("xmlns",       "%s", "http://www.w3.org/2000/svg"),
+                  svg_attr("xmlns:xlink", "%s", "http://www.w3.org/1999/xlink")
                   );
 
     // If name is given, add to middle of viewBox (half of width + min-x of viewbox)
     if(arguments.name != NULL){
       svg_start_tag("text", 6,
-                    svg_attr(x, "%d", (width/2)),
-                    svg_attr(y, "%d", 30),
-                    svg_attr(font-family, "%s", "sans-serif"),
-                    svg_attr(text-anchor, "%s", "middle"),
-                    svg_attr(font-size,   "%s", "30px"),
-                    svg_attr(fill,        "%s", "black"));
+                    svg_attr("x", "%d", (width/2)),
+                    svg_attr("y", "%d", 30),
+                    svg_attr("font-family", "%s", "sans-serif"),
+                    svg_attr("text-anchor", "%s", "middle"),
+                    svg_attr("font-size",   "%s", "30px"),
+                    svg_attr("fill",        "%s", "black"));
       printf("%s", arguments.name);
       svg_end_tag("text");
 
       svg_start_tag("g", 1, 
-                svg_attr(transform, "translate(%d %d)", 0, 30)
+                svg_attr("transform", "translate(%d %d)", 0, 30)
                 );
 
     }
