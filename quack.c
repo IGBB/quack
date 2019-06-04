@@ -417,7 +417,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   /* Flip svg to make svg coordinate system match cartesian coordinate. Must use
      a group since imagemagick uses SVG v1.1*/
-  svg_start_tag("g", 1, svg_attr("transform", "translate(%d,%d),scale(%d, %d)", 0, 100, 1,-1));
+  svg_start_tag("g", 1, svg_attr("transform", "translate(%d,%d) scale(%d, %d)", 0, 100, 1,-1));
                 
   svg_start_tag("svg", 4,
                 svg_attr("width",  "%d", 450),
@@ -533,7 +533,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /*************** Heatmap ***************/
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
      is negative to compensate for the horizontal flip */
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%d,%d),scale(%d, %d)", 0, 355, 1,-1));
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%d,%d) scale(%d, %d)", 0, 355, 1,-1));
 
     svg_start_tag("svg", 4,
                 svg_attr("width",  "%d", 450),
@@ -772,7 +772,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
      negative positions in directions svg is flipped*/
 
   svg_start_tag("g", 1,
-                svg_attr("transform", "translate(%d,%d),scale(%d, %d)",
+                svg_attr("transform", "translate(%d,%d) scale(%d, %d)",
                          (position == 0)?125:1065, 355, (position == 0)?-1:1,-1));
 
   svg_start_tag("svg", 4,
