@@ -362,7 +362,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
    printf("%d", data->number_of_sequences);
    svg_end_tag("tspan");
    svg_start_tag("tspan", 1, svg_attr("fill", "%s", "#888"));
-   printf(" reads with endcoding ");
+   printf("&#160;reads with endcoding&#160;");
    svg_end_tag("tspan");
    svg_start_tag("tspan", 0);
    printf("%s", encoding);
