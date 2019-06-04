@@ -5,8 +5,9 @@
      - `name` = name of attribute. 
      - `fmt`  = printf format
      - `...`  = are variables passed to printf
+
+  Allocates memory for return string. MUST be free'd after use 
  */
-/* #define svg_attr(name, type, ...) " " #name "=" #type , __VA_ARGS__ */
 char* svg_attr(const char* name, const char* fmt, ...);
 
 /* Print an svg tag (i.e <type ...>). `svg_start_tag` doesn't add a final '/',

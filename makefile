@@ -1,4 +1,4 @@
-src = $(wildcard *.c)
+src = $(wildcard src/*.c)
 obj = $(src:.c=.o)
 
 override LDFLAGS := -lz -lm $(LDFLAGS)
