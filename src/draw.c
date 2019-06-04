@@ -328,6 +328,13 @@ void draw(sequence_data* data, int position, int adapters_used) {
   size_t mean_line_points_length = 15*data->max_length;
   char * mean_line_points = malloc(mean_line_points_length);
 
+  #define running_average_length 5
+  float running_average_data[running_average_length], running_average;
+
+  for (i = 0; i < running_average_length; i++){
+    running_average_data[i] = averages[i];
+  }
+  
   /* Make line start off graph */
   snprintf(mean_line_points, mean_line_points_length, "0,%0.2f ", averages[0]);
 
@@ -346,12 +353,22 @@ void draw(sequence_data* data, int position, int adapters_used) {
                        );
     }
 
-    snprintf(tmp, 20, "%d.5,%0.2f ", x, averages[x]);
+    /* Replace the oldest data point with a new one. This will make the first
+       $running_average_length average the same; however, after that they should
+       start moving. */
+    running_average_data[x%running_average_length] = averages[x];
+    running_average = 0;
+    for (i = 0; i < running_average_length; i++)
+      running_average += running_average_data[i];
+    running_average /= running_average_length;
+
+    
+    snprintf(tmp, 20, "%d.5,%0.2f ", x, running_average);
     strncat(mean_line_points, tmp, mean_line_points_length);
   }
 
   /* Make line end off graph */
-  snprintf(tmp, 20, "%d,%0.2f", data->max_length, averages[data->max_length-1]);
+  snprintf(tmp, 20, "%d,%0.2f", data->max_length, running_average);
   strncat(mean_line_points, tmp, mean_line_points_length);
 
   
