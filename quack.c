@@ -415,16 +415,15 @@ void draw(sequence_data* data, int position, int adapters_used) {
 
   /*************** Base Ratio ***************/
 
-  /* Flip svg to make svg coordinate system match cartesian coordinate. The y
-     is negative to compensate for the horizontal flip */
-  svg_start_tag("svg", 7,
-                svg_attr("x",      "%d", 0),
-                svg_attr("y",      "%d", -100),
+  /* Flip svg to make svg coordinate system match cartesian coordinate. Must use
+     a group since imagemagick uses SVG v1.1*/
+  svg_start_tag("g", 1, svg_attr("transform", "translate(%d,%d),scale(%d, %d)", 0, 100, 1,-1));
+                
+  svg_start_tag("svg", 4,
                 svg_attr("width",  "%d", 450),
                 svg_attr("height", "%d", 100),
                 svg_attr("preserveAspectRatio", "%s", "none"),
-                svg_attr("viewBox", "0 0 %d %d", data->max_length, data->number_of_sequences),
-                svg_attr("transform", "scale(%d, %d)", 1,-1)
+                svg_attr("viewBox", "0 0 %d %d", data->max_length, data->number_of_sequences)
                 );
 
   /* Set background color */
@@ -497,6 +496,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     free(ratio_points[i]);
 
   svg_end_tag("svg"); // Base Ratio
+  svg_end_tag("g"); // Base Ratio
 
   /* Lables */
 
@@ -533,14 +533,13 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /*************** Heatmap ***************/
   /* Flip svg to make svg coordinate system match cartesian coordinate. The y
      is negative to compensate for the horizontal flip */
-  svg_start_tag("svg", 7,
-                svg_attr("x",      "%d", 0),
-                svg_attr("y",      "%d", -355),
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%d,%d),scale(%d, %d)", 0, 355, 1,-1));
+
+    svg_start_tag("svg", 4,
                 svg_attr("width",  "%d", 450),
                 svg_attr("height", "%d", 250),
                 svg_attr("preserveAspectRatio", "%s", "none"),
-                svg_attr("viewBox", "0 0 %d %d", data->max_length, max_score),
-                svg_attr("transform", "scale(%d, %d)", 1,-1)
+                svg_attr("viewBox", "0 0 %d %d", data->max_length, max_score)
                 );
                   
 
@@ -610,6 +609,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
   free(mean_line_points);
     
   svg_end_tag("svg"); // Heatmap
+  svg_end_tag("g"); // Heatmap
 
 
   /* Lables */
@@ -770,14 +770,16 @@ void draw(sequence_data* data, int position, int adapters_used) {
   /* Score Distro graph is shown on either side of the heatmap, so it needs to
      flip vertically if position == 0. Flipped horizontally as well. Use
      negative positions in directions svg is flipped*/
-    svg_start_tag("svg", 7,
-                  svg_attr("x",      "%d", (position == 0)?-125:1065),
-                  svg_attr("y",      "%d", -355),
+
+  svg_start_tag("g", 1,
+                svg_attr("transform", "translate(%d,%d),scale(%d, %d)",
+                         (position == 0)?125:1065, 355, (position == 0)?-1:1,-1));
+
+  svg_start_tag("svg", 4,
                   svg_attr("width",  "%d", 100),
                   svg_attr("height", "%d", 250),
                   svg_attr("preserveAspectRatio", "%s", "none"),
-                  svg_attr("viewBox", "0 0 100 %d", max_score),
-                  svg_attr("transform", "scale(%d, %d)", (position == 0)?-1:1,-1)
+                  svg_attr("viewBox", "0 0 100 %d", max_score)
                   );
 
     /* Set background color */
@@ -800,6 +802,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
     }
 
     svg_end_tag("svg"); // Score Distro
+    svg_end_tag("g"); // Score Distro
 
     /* Lables */
 
