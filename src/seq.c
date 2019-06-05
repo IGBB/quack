@@ -23,6 +23,13 @@ int* read_adapters(char *adapters_file) {
     kseq_t *seq;
     int i, l, index;
     fp = gzopen(adapters_file, "r");
+
+    /* Print error and exit if adapter file can't be opened */
+    if(fp == NULL){
+      perror("Can't open adapter file");
+      exit(EXIT_FAILURE);
+    }
+    
     seq = kseq_init(fp);
     int *kmers = malloc(array_size*sizeof(int));
     memset(kmers, 0, array_size*sizeof(int));
