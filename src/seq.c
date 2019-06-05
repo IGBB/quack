@@ -1,6 +1,5 @@
 #include "seq.h"
 
-#include <math.h>
 #include <stdio.h>
 #include <zlib.h>
 
@@ -10,38 +9,68 @@
 #define likely(x)       __builtin_expect((x),1)
 
 
-/* Convert ASCII to Integer for A T C and G, grouping A-T and G-C */
+/* Convert ASCII to Integer for A T C and G, grouping A-T and G-C. Padding
+   database to next power of 2 to make it easy to bind index to array bounds */
 /*                A     C           G                                      T */
-int lookup[20] = {0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+int lookup[32] = {0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+/* Hash function to encode A,T,C,G to 2-bit integer
+     base - 65   = Removes the bottom section of ASCII table. Makes 'A' = 0
+     ... & 31    = Converts lowercase letters to uppercase and forces index 
+                     within lookup array bounds
+     lookup[...] = Translates ascii ATCG to integer
+*/
+#define encode_base(base) (lookup[(base - 65) & 31])
+
+/* Create next kmer
+                                 / Make room for newest base by shift kmer by 2
+                                 |             / endcode base to 2-bit integer
+                                 |             |                 / Remove oldest base
+                                 |             |                 |
+ */
+#define next_kmer(kmer, base) (((kmer << 2) + encode_base(base)) & ADAPTER_DB_MASK)
 
 KSEQ_INIT(gzFile, gzread)
 
 int* read_adapters(char *adapters_file) {
-    int kmer_size = 10;
-    int array_size = pow(4, kmer_size);
     gzFile fp;
     kseq_t *seq;
     int i, l, index;
-    fp = gzopen(adapters_file, "r");
 
+    /* Create kmer hash database, making sure it's zero'd */
+    int *kmers = calloc(ADAPTER_DB_SIZE, sizeof(int));
+    if(kmers == NULL){
+      perror("Can't create adapter database");
+      exit(EXIT_FAILURE);
+    }
+    
+    /* Open adapter file */
+    fp = gzopen(adapters_file, "r");
     /* Print error and exit if adapter file can't be opened */
     if(fp == NULL){
       perror("Can't open adapter file");
       exit(EXIT_FAILURE);
     }
     
+    /* Loop through each adapter sequence, storing each adapter kmer hash in
+       database */
     seq = kseq_init(fp);
-    int *kmers = malloc(array_size*sizeof(int));
-    memset(kmers, 0, array_size*sizeof(int));
     while ((l = kseq_read(seq)) >= 0) {
-        index = 0;
-            for (i = 0; i < kmer_size; i++) {
-                index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
-            }
-        for (; i < seq->seq.l; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
-            kmers[index] = 1;
-        }
+      /* Clear index kmer */
+      index = 0;
+
+      /* Fill index with first (kmer-1) bases */
+      for (i = 0; i < ADAPTER_KMER_SIZE-1; i++) {
+        index = next_kmer(index, seq->seq.s[i]);
+      }
+
+      /* Loop through remaining bases of adapter, adding sliding kmer to
+         database */
+      for (; i < seq->seq.l; i++) {
+        index = next_kmer(index, seq->seq.s[i]);
+        kmers[index] = 1;
+      }
 
     }
     kseq_destroy(seq);
@@ -53,49 +82,77 @@ sequence_data* read_fastq(char *fastq_file, int *kmers) {
     gzFile fp;
     kseq_t *seq;
     int i, l, index;
-    int kmer_size = 10;
-    int array_size = pow(4, kmer_size);
     int max_length = 0;
-    fp = gzopen(fastq_file, "r");
-    seq = kseq_init(fp);
     base_information *bases = NULL;
     sequence_data *to_return = malloc(sizeof(sequence_data));
     int number_of_sequences = 0;
 
+
+    fp = gzopen(fastq_file, "r");
+    /* Print error and exit if adapter file can't be opened */
+    if(fp == NULL){
+      perror("Can't open fastq file");
+      exit(EXIT_FAILURE);
+    }
+
+    /* Parse each sequence in fastq */
+    seq = kseq_init(fp);
     while ((l = kseq_read(seq)) >= 0) {
-        if (unlikely(seq->seq.l > max_length)) {
-            bases = realloc(bases, seq->seq.l*sizeof(base_information));
-            memset(bases+max_length, 0, (seq->seq.l - max_length)*sizeof(base_information));
-            max_length = seq->seq.l;
-        }
-        for (i = 0; i < seq->seq.l; i++) {
-            int base = seq->seq.s[i];
-            int offset = lookup[base-65 & ~32];
-            bases[i].content[offset]++;
-            int quality = seq->qual.s[i]-33;
-            bases[i].scores[quality]++;
-        }
+
+      /* if current sequence is longer than any sequence previously read,
+         increase base information size and set all new base counts to zero.
+         Shouldn't happen very much unless input file is sorted by length.*/
+      if (unlikely(seq->seq.l > max_length)) {
+        bases = realloc(bases, seq->seq.l*sizeof(base_information));
+        memset(bases+max_length, 0, (seq->seq.l - max_length)*sizeof(base_information));
+        max_length = seq->seq.l;
+      }
+
+      /* Save base and quality info 
+           encode base to 2-bit integer
+           
+           There are currently two encodings for quality score: phred + 33 and
+           phred + 64. We will assume the encoding is phred33 and correct later
+           if the assumption is wrong.
+       */
+      for (i = 0; i < seq->seq.l; i++) {
+        bases[i].content[encode_base(seq->seq.s[i])]++;
+        bases[i].scores[seq->qual.s[i] - 33]++;
+      }
+
+      /* Search kmer database if it exists */
+      if(kmers) {
+        /* Clear index kmer */
         index = 0;
-        for (i = 0; i < kmer_size; i++) {
-            index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
+
+        /* Fill kmer index with first bases */
+        for (i = 0; i < ADAPTER_KMER_SIZE; i++) {
+          index = next_kmer(index, seq->seq.s[i]);
         }
-        if (kmers) {
-            for (; kmers[index] == 0 && i < seq->seq.l; i++) {
-                index = ((index << 2) + (lookup[seq->seq.s[i]-65 & ~32])) & (array_size-1);
-            }
+
+        /* Loop through remaining bases, searching kmer database, stoping if kmer is found */
+        for (; !kmers[index] && i < seq->seq.l; i++) {
+          index = next_kmer(index, seq->seq.s[i]);
         }
+
+        /* Add to base kmer count if i didn't reach the end of the sequence */
         if (i < seq->seq.l) {
             bases[i].kmer_count++;
         }
 
-        bases[seq->seq.l-1].length_count++;
-        number_of_sequences++;
+      }
+
+      /* record length and number of sequences */
+      bases[seq->seq.l-1].length_count++;
+      number_of_sequences++;
     }
     kseq_destroy(seq);
     gzclose(fp);
+
     to_return->bases = bases;
     to_return->max_length = max_length;
     to_return->number_of_sequences = number_of_sequences;
+
     return to_return;
 }
 
