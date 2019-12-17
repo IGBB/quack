@@ -760,7 +760,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
   
   svg_axis_label(225,  y+5, 0, "Base Pairs");
   svg_axis_number(0,   y, "middle", 0);
-  svg_axis_number(450, y, "middle", 100);
+  svg_axis_number(450, y, "middle", data->max_length);
 
   
   svg_end_tag("g"); // rug plot vertical section
