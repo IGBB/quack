@@ -292,60 +292,50 @@ sequence_data* transform(sequence_data* data) {
 
 void draw(sequence_data* data, int position, int adapters_used) {
   int i, j, x, y;
-  int offset = 0;
-  int sum = 0;
   int counter = 0;
-  char *encoding = "";
-  uint64_t min_score = UINT32_MAX;
   int max_score = 0;
   uint64_t number_of_bases = 0;
   uint64_t total_counts[91] = {0};
   float averages[500];
 
-  // get encoding
-  i = 0;
-  while (i < data->max_length && strcmp(encoding, "") == 0) {
-    if (min_score < 31) {
-      encoding = "phred33";
+  /********** Get Encoding ***************/
+  char *encoding = "phred64";
+  int offset = 31;
+  /* Loop through every base */
+  for( i=0; i < data->max_length; i++ ){
+
+    /* Loop through scores, breaking when first non-zero is found for current
+     * base */
+    for(j=0; j < 31; j++){
+      if(data->bases[i].scores[j] > 0) break;
     }
-    for (j = 0; j < 91; j++) {
-      if (j < min_score) {
-        if (data->bases[i].scores[j] != 0) {
-          min_score = j;
-        }
-      }
+
+    /* Found encoding if j is lower than 31 (lower than possible for phred64
+     * encoding) */
+    if(j < 31){
+      encoding="phred33";
+      offset=0;
+      break;
     }
-    i++;
   }
 
-  // get max score and score distribution and average scores at each position
+
+  // get max score, score distribution, and average scores at each position
+  max_score = 40;
   for (i = 0; i < data->max_length; i++) {
-    sum = 0;
-    for (j = 0; j < 91; j++) {
-      if (data->bases[i].scores[j] > 0 && j > max_score) {
-        max_score = j;
+    int sum = 0;
+    for (j = offset; j < 91; j++) {
+      if (data->bases[i].scores[j] > 0 && (j-offset) > max_score) {
+        max_score = j - offset;
       }
-      total_counts[j] = total_counts[j] + data->bases[i].scores[j];
-      sum = sum + j*data->bases[i].scores[j];
-      number_of_bases++;
+      total_counts[j - offset] += data->bases[i].scores[j];
+      sum += (j - offset)*data->bases[i].scores[j];
+
     }
+    number_of_bases ++;
+    /* score counts are already converted to percentage of total counts; so, all
+     * that needs to be done to find average is divide by 100 */
     averages[i] = sum/100.0;
-  }
-
-  if (max_score < 40) {
-    max_score = 40;
-  }
-  else {
-    max_score++;
-  }
-
-  if (min_score < 31) {
-    encoding = "phred33";
-  }
-  else {
-    encoding = "phred64";
-    offset = 31;
-    max_score = max_score - offset;
   }
 
 
@@ -573,12 +563,12 @@ void draw(sequence_data* data, int position, int adapters_used) {
   snprintf(mean_line_points, mean_line_points_length, "0,%0.2f ", averages[0]);
 
   for (x = 0; x < data->max_length; x++) {
-    for (y = offset; y < max_score+offset; y++) {
-      if(data->bases[x].scores[y] > 0)
+    for (y = 0; y < max_score; y++) {
+      if(data->bases[x].scores[y+offset] > 0)
         svg_simple_tag("rect", 8,
                        svg_attr("x",      "%d", x),
                        svg_attr("y",      "%d", y),
-                       svg_attr("fill-opacity", "%f", (float)(data->bases[x].scores[y])/100.0),
+                       svg_attr("fill-opacity", "%f", (float)(data->bases[x].scores[y+offset])/100.0),
                        svg_attr("width",  "%d", 1),
                        svg_attr("height", "%d", 1),
                        svg_attr("stroke", "%s", "none"),
@@ -794,7 +784,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
         svg_simple_tag("rect", 6,
                        svg_attr("x",      "%d", 0),
                        svg_attr("y",      "%d", y),
-                       svg_attr("width",  "%d", total_counts[y]*100/number_of_bases),
+                       svg_attr("width",  "%d", total_counts[y]/number_of_bases),
                        svg_attr("height", "%d", 1),
                        svg_attr("stroke", "%s", "none"),
                        svg_attr("fill",   "%s", "steelblue")
