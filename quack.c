@@ -110,17 +110,19 @@ struct arguments parse_options(int argc, char **argv) {
                 arguments.name = argv[counter+1];
             }
             else {
-                printf("Usage: quack [OPTION...]\n"
-                "quack -- A FASTQ quality assessment tool\n\n"
-                "  -1, --forward file.1.fq.gz      Forward strand\n"
-                "  -2, --reverse file.2.fq.gz      Reverse strand\n"
-                "  -a, --adapters adapters.fa.gz    Adapters file\n"
-                "  -n, --name NAME            Display in output\n"
-                "  -u, --unpaired unpaired.fq.gz        Data (only use with -u)\n"
-                "  -?, --help                 Give this help list\n"
-                "      --usage                (use alone)\n"
-                "  -V, --version              Print program version (use alone)\n"
-                "Report bugs to <thrash@igbb.msstate.edu>.\n");
+              fprintf(stderr, "Usage: quack [OPTION...]\n"
+                      "quack -- A FASTQ quality assessment tool\n\n"
+                      "  -1, --forward file.1.fq.gz      Forward strand\n"
+                      "  -2, --reverse file.2.fq.gz      Reverse strand\n"
+                      "  -a, --adapters adapters.fa.gz    Adapters file\n"
+                      "  -n, --name NAME            Display in output\n"
+                      "  -u, --unpaired unpaired.fq.gz        Data (only use with -u)\n"
+                      "  -?, --help                 Give this help list\n"
+                      "      --usage                (use alone)\n"
+                      "  -V, --version              Print program version (use alone)\n"
+                      "Report bugs to <thrash@igbb.msstate.edu>.\n");
+
+              exit(EXIT_FAILURE);
             }
 
             counter = counter+2;
