@@ -422,7 +422,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
                 svg_attr("width",  "%d", 450),
                 svg_attr("height", "%d", 100),
                 svg_attr("preserveAspectRatio", "%s", "none"),
-                svg_attr("viewBox", "0 0 %d 100", data->max_length)
+                svg_attr("viewBox", "0 0 %d %d", data->max_length, data->number_of_sequences)
                 );
 
   /* Set background color */
@@ -483,7 +483,7 @@ void draw(sequence_data* data, int position, int adapters_used) {
                   svg_attr("width",  "%d", 450),
                   svg_attr("height", "%d", 100),
                   svg_attr("preserveAspectRatio", "%s", "none"),
-                  svg_attr("viewBox", "0 0 %d 100", data->max_length)
+                  svg_attr("viewBox", "0 0 %d %d", data->max_length, data->number_of_sequences)
                   );
 
     /* Set background color */

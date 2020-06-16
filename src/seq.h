@@ -11,14 +11,24 @@
 
      ADAPTER_DB_SIZE = The maximum number of kmers possible with a given kmer
      length (4^length). Bit shifting can be used in place of the math::pow
-     function since we only encode 4 bases, removing the need for the math
-     library.
+     function since the number of bases we encode is a power of 2, removing the
+     need for the math library. To use bit shifting, the ADAPTER_KMER_SIZE needs
+     to be multpled by the number of bits each base encoding takes (i.e. 2)
 
      ADAPTER_DB_MASK = Mask for the kmer hash. Since the db size will always be
      a power of 2, we can subtract 1 to get a mask of all 1s.*/
 #define ADAPTER_KMER_SIZE 10
-#define ADAPTER_DB_SIZE (4 << ADAPTER_KMER_SIZE)
+#define ADAPTER_DB_SIZE (1 << (ADAPTER_KMER_SIZE * 2))
 #define ADAPTER_DB_MASK (ADAPTER_DB_SIZE - 1)
+
+extern int lookup[];
+extern char rev_lookup[];
+
+typedef enum {
+    guess = 0,
+    phred33 = 33,
+    phred64 = 64
+} encoding_t;
 
 typedef struct {
     uint64_t scores[91];
@@ -30,12 +40,15 @@ typedef struct {
 typedef struct {
     base_information *bases;
     uint64_t max_length;
-    uint64_t original_max_length;
     uint64_t number_of_sequences;
+    int max_score;
+    int min_score;
+    encoding_t encoding;
+    float * avg_score;
 } sequence_data;
 
 int* read_adapters(char *adapters_file);
-sequence_data* read_fastq(char *fastq_file, int *kmers);
-sequence_data* transform(sequence_data* data);
+sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding);
+/* sequence_data* transform(sequence_data* data); */
 
 #endif
