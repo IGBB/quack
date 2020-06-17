@@ -181,11 +181,6 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding) {
         bases[i].kmer_count = kmer_count;
 
 
-        /* Calculate avg_score */
-        data->avg_score[i] = 0;
-        for(j = 0; j < 91; j++)
-            data->avg_score[i] += (float)bases[i].scores[j];
-        data->avg_score[i] = data->avg_score[i] / data->bases[i].length_count;
 
         /* Search the scores below min for non-zero */
         for(j = 0; bases[i].scores[j] == 0 && j < min; j++);
@@ -206,15 +201,38 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding) {
         data->encoding = phred64;
     }
 
-    data->max_score = max;
-    data->min_score = min;
-
     /* Fail if encoding is set and doesn't match guess */
     if( encoding != guess && data->encoding != encoding ){
         perror("Can't open fastq file");
         exit(EXIT_FAILURE);
     }
 
+    if(data->encoding == phred64){
+        /* Move score data so that 0 is the first possible score. Remove possibility
+         * for negative phred score */
+        for(i = 0; i < max_length; i++){
+            for(j = min; j <= max; j++){
+                bases[i].scores[j - 31] = bases[i].scores[j];
+                bases[i].scores[j] = 0;
+            }
+        }
+
+        /* Adjust min and max score accordingly */
+        min -= 31;
+        max -= 31;
+    }
+
+    data->max_score = max;
+    data->min_score = min;
+
+    /* Calculate avg_score */
+
+    for(i = 0; i < max_length; i++){
+        data->avg_score[i] = 0;
+        for(j = min; j <= max; j++)
+            data->avg_score[i] += (float)bases[i].scores[j] * j;
+        data->avg_score[i] = data->avg_score[i] / data->bases[i].length_count;
+    }
     return data;
 }
 
