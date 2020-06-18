@@ -11,119 +11,192 @@
 #define GRAPH_WIDTH  450.0
 #define GRAPH_HEIGHT 250.0
 #define PERF_SIZE 100.0
+#define GRAPH_PAD 5
+
+char *ratio_labels[4] = {"%A", "%T", "%C", "%G"};
+char *ratio_colors[4] = {"#648964", "#89bc89", "#84accf", "#5d7992"};
 
 
-char * point_string(int length, float* x, float* y){
+
+typedef struct {
+    float x,y;
+} fpair_t;
+
+char * point_string(int length, fpair_t* p){
     char * points, *cur_pos;
     size_t max = 0;
     int i = 0;
 
     /* Find lenght of each point string */
     for(i = 0; i < length; i++)
-        max += snprintf(NULL, 0, " %.2f,%.2f ", x[i], y[i]);
+        max += snprintf(NULL, 0, " %.2f,%.2f ", p[i].x, p[i].y);
     max++;
 
     /* Alloc enough memory and create string */
     points = malloc(sizeof(char[max]));
     cur_pos = points;
     for(i = 0; i < length; i++){
-        max = sprintf(cur_pos, " %.2f,%.2f ", x[i], y[i]);
+        max = sprintf(cur_pos, " %.2f,%.2f ", p[i].x, p[i].y);
         cur_pos += max;
     }
 
     return points;
 }
 
-void draw_svg_content(sequence_data* data){
+#define draw_svg_background(wdth, hght)                          \
+    svg_simple_tag("rect", 3,                                    \
+                   svg_attr("width",  "%f", (float)(wdth)),      \
+                   svg_attr("height", "%f", (float)(hght)),      \
+                   svg_attr("fill", "%s", "#EEE")                \
+                   )
+
+#define svg_start_label(posx, posy)                                     \
+    svg_start_tag("text", 5,                                            \
+                  svg_attr("x",           "%f", (float)(posx)),         \
+                  svg_attr("y",           "%f", (float)(posy)),         \
+                  svg_attr("fill",        "%s", "#AAA"),                \
+                  svg_attr("font-family", "%s", "sans-serif"),          \
+                  svg_attr("font-size",   "%s", "15px")                 \
+    )
+
+#define svg_end_label() svg_end_tag("text")
+
+
+void draw_svg_distro(int length, fpair_t* p,
+                     fpair_t original, fpair_t final,
+                     fpair_t flip, fpair_t translate,
+                     char* label){
+
+    fpair_t scale = (fpair_t){final.x/original.x, final.y/original.y};
+    fpair_t scale_translate = (fpair_t){0,0};
+
+    if(flip.x){
+        scale.x *= -1;
+        scale_translate.x = final.x;
+    }
+    if(flip.y){
+        scale.y *= -1;
+        scale_translate.y = final.y;
+    }
+
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                                   scale_translate.x, scale_translate.y,
+                                   scale.x, scale.y
+                  )
+    );
+
+    draw_svg_background(original.x, original.y);
+
+    /* Draw distribution */
+    char* points = point_string(length, p);
+
+    svg_simple_tag("polyline", 3,
+                   svg_attr("points", "%s", points),
+                   svg_attr("fill", "%s", "steelblue"),
+                   svg_attr("stroke", "%s", "none")
+    );
+
+    free(points);
+
+    svg_end_tag("g");
+
+    /* Add graph label */
+    svg_start_label(GRAPH_PAD, final.y - GRAPH_PAD);
+    printf("%s\n", label);
+    svg_end_label();
+
+    svg_end_tag("g");
+
+}
+
+void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
 
     int i, j;
     uint64_t len, y;
     char * points;
 
-    float *perc[4], *x;
-    for(i = 0; i < 4; i++)
-        perc[i] = malloc(data->max_length * sizeof(float));
-    x = malloc(data->max_length * sizeof(float));
+    fpair_t *perc[4];
+    for(i = 0; i < 4; i++){
+        perc[i] = malloc(sizeof(fpair_t[data->max_length+4]));
+        perc[i][0] = (fpair_t){0,0};
+    }
 
     /* Calculate cumulative percentage of base content, in decending order so
      * they stack */
     for(i = 0; i < data->max_length; i++){
-        x[i] = i + 0.5;
 
         y = 0;
         len = data->bases[i].length_count;
         for (j = 3; j >= 0; j--) {
+            perc[j][i+2].x = i +0.5;
+
             y += data->bases[i].content[j];
-            perc[j][i] = y * 100.0 / len;
+            perc[j][i+2].y = y * 100.0 / len;
         }
     }
 
 
+    for(i = 0; i < 4; i++){
+        perc[i][1] = (fpair_t){0, perc[i][2].y};
+
+        perc[i][data->max_length+2] = (fpair_t){data->max_length, perc[i][data->max_length+1].y};
+        perc[i][data->max_length+3] = (fpair_t){data->max_length, 0};
+    }
+
+
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%d %d)", translate_x, translate_y));
     svg_start_tag("g", 1,
-                  svg_attr("transform", "scale(%f %d)", GRAPH_WIDTH/data->max_length, 1)
+                  svg_attr("transform", "scale(%f %f)",
+                           GRAPH_WIDTH/data->max_length, PERF_SIZE/100.0)
+
                   );
 
-    /* Set background color */
-    svg_simple_tag("rect", 3,
-                   svg_attr("width",  "%d", data->max_length),
-                   svg_attr("height", "%d", 100),
-                   svg_attr("fill", "%s", "#CCC")
-                   );
+
+    draw_svg_background(data->max_length, 100);
 
     /* Draw each distribution */
-    char *ratio_labels[4] = {"%A", "%T", "%C", "%G"};
-    char *ratio_colors[4] = {"#648964", "#89bc89", "#84accf", "#5d7992"};
     for(i = 0; i < 4; i++){
 
-        points = point_string(data->max_length, x, perc[i]);
+        points = point_string(data->max_length+4, perc[i]);
 
         svg_simple_tag("polyline", 3,
-     /* Since coordinates for lines and rectangles don't work the same; set the
-       first point of each line to start off graph. Then, add 0.5 to the x of each
-       point. Finally, end the line off graph. */
-                      svg_attr("points", "0,0 0,%6.2f %s %d,%6.2f %d,0",
-                                perc[i][0],
-                                points,
-                                data->max_length,
-                                perc[i][data->max_length-1],
-                                data->max_length),
+                      svg_attr("points", "%s", points),
                        svg_attr("fill", "%s", ratio_colors[i]),
                        svg_attr("stroke", "%s", "none")
                        );
 
         free(points);
-    }
 
-    free(x);
+        free(perc[i]);
+    }
 
     svg_end_tag("g");
 
     /* Add graph label */
-    svg_start_tag("text", 5,
-                  svg_attr("y",           "%d", 95),
-                  svg_attr("fill",        "%s", "#CCC"),
-                  svg_attr("x",           "%d", 5),
-                  svg_attr("font-family", "%s", "sans-serif"),
-                  svg_attr("font-size",   "%s", "15px")
-                  );
+    svg_start_label(GRAPH_PAD, PERF_SIZE - GRAPH_PAD);
     printf("%s\n", "Base Content Percentage");
-    svg_end_tag("text");
+    svg_end_label();
 
+
+    svg_end_tag("g");
 
 }
 
 
-void draw_svg_quality(sequence_data* data){
+void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
     int i, j;
-    float perc, *x;
+    float perc;
+    fpair_t *p;
 
-    x = malloc(sizeof(float[data->max_length]));
+    p = malloc(sizeof(fpair_t[data->max_length]));
 
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%d %d)", translate_x, translate_y));
     svg_start_tag("g", 1,
                   svg_attr("transform", "translate(0, %f) scale(%f %f)",
                            GRAPH_HEIGHT,
-                           GRAPH_WIDTH/(data->max_length+1),
-                           -1.0 * GRAPH_HEIGHT/data->max_score)
+                           GRAPH_WIDTH/data->max_length,
+                           -1.0 * GRAPH_HEIGHT/(data->max_score+1))
                   );
 
    /* Define background for heatmap. Must be in descending order or highest score
@@ -144,7 +217,9 @@ void draw_svg_quality(sequence_data* data){
 
     /* Draw each heatmap */
     for(i = 0; i < data->max_length; i++){
-        x[i] = i + 0.5;
+        p[i].x = i + 0.5;
+        p[i].y = data->avg_score[i];
+
         for(j = data->min_score; j <= data->max_score; j++){
             if(data->bases[i].scores[j] == 0)
                 continue;
@@ -163,17 +238,13 @@ void draw_svg_quality(sequence_data* data){
     }
 
 
-    char* points = point_string(data->max_length, x, data->avg_score);
+    char* points = point_string(data->max_length, p);
 
     svg_simple_tag("polyline", 5,
                    /* Since coordinates for lines and rectangles don't work the same; set the
                       first point of each line to start off graph. Then, add 0.5 to the x of each
                       point. Finally, end the line off graph. */
-                   svg_attr("points", "0,%.2f %s %d,%.2f ",
-                            data->avg_score[0],
-                            points,
-                            data->max_length,
-                            data->avg_score[data->max_length-1]),
+                   svg_attr("points", "%s", points),
                    svg_attr("fill", "%s", "none"),
                    svg_attr("stroke", "%s", "black"),
                    /* The stroke width needs to be the inverse of the height
@@ -184,144 +255,122 @@ void draw_svg_quality(sequence_data* data){
     );
 
     free(points);
-    free(x);
+    free(p);
 
 
     svg_end_tag("g");
 
     /* Add graph label */
-    svg_start_tag("text", 5,
-                  svg_attr("y",           "%f", GRAPH_HEIGHT-5),
-                  svg_attr("fill",        "%s", "#AAA"),
-                  svg_attr("x",           "%d", 5),
-                  svg_attr("font-family", "%s", "sans-serif"),
-                  svg_attr("font-size",   "%s", "15px")
-                  );
+    svg_start_label(GRAPH_PAD, GRAPH_HEIGHT - GRAPH_PAD);
     printf("%s\n", "Per Base Sequence Quality");
-    svg_end_tag("text");
+    svg_end_label();
 
+    svg_end_tag("g");
 
 }
 
 
-void draw_svg_length(sequence_data * data){
+void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
     int i;
-    char * points;
-    float *y, *x;
-    x = malloc(data->max_length * sizeof(float));
-    y = malloc(data->max_length * sizeof(float));
+    fpair_t *points = malloc(sizeof(fpair_t[data->max_length + 4]));
+    fpair_t original_size, final_size, translate, flip;
 
     for(i = 0; i < data->max_length; i++){
-        x[i] = i + 0.5;
-        y[i] = data->bases[i].length_count*100.0/data->number_of_sequences;
+        points[i+2].x = i + 0.5;
+        points[i+2].y = data->bases[i].length_count*100.0/data->number_of_sequences;
     }
 
-    points = point_string(data->max_length, x, y);
+    points[0] = (fpair_t){0,0};
+    points[1] = (fpair_t){0, points[2].y};
 
-    svg_start_tag("g", 1,
-                  svg_attr("transform", "scale(%f %d)", GRAPH_WIDTH/data->max_length, 1)
-                  );
+    points[data->max_length+2] = (fpair_t){data->max_length, points[data->max_length+1].y};
+    points[data->max_length+3] = (fpair_t){data->max_length, 0};
 
-    /* Set background color */
-    svg_simple_tag("rect", 3,
-                   svg_attr("width",  "%d", data->max_length),
-                   svg_attr("height", "%d", 100),
-                   svg_attr("fill", "%s", "#CCC")
-                   );
+    original_size = (fpair_t){data->max_length, 100};
+    final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
+    translate     = (fpair_t){translate_x, translate_y};
+    flip          = (fpair_t){0,0};
 
-    /* Draw length distribution */
-
-    svg_simple_tag("polyline", 3,
-                   /* Since coordinates for lines and rectangles don't work the same; set the
-                      first point of each line to start off graph. Then, add 0.5 to the x of each
-                      point. Finally, end the line off graph. */
-                   svg_attr("points", "0,0 0,%6.2f %s %d,%6.2f %d,0",
-                            y[0],
-                            points,
-                            data->max_length,
-                            y[data->max_length-1],
-                            data->max_length),
-                   svg_attr("fill", "%s", "steelblue"),
-                   svg_attr("stroke", "%s", "none")
-    );
+    draw_svg_distro(data->max_length+4, points,
+                    original_size, final_size, flip,
+                    translate, "Length Distribution");
 
     free(points);
-    free(x);
-    free(y);
-
-    svg_end_tag("g");
-
-    /* Add graph label */
-    svg_start_tag("text", 5,
-                  svg_attr("y",           "%d", 95),
-                  svg_attr("fill",        "%s", "#AAA"),
-                  svg_attr("x",           "%d", 5),
-                  svg_attr("font-family", "%s", "sans-serif"),
-                  svg_attr("font-size",   "%s", "15px")
-                  );
-    printf("%s\n", "Length Distibution");
-    svg_end_tag("text");
 
 
 }
 
-void draw_svg_adapter(sequence_data * data){
-    int i;
-    char * points;
-    float *y, *x;
-    x = malloc(data->max_length * sizeof(float));
-    y = malloc(data->max_length * sizeof(float));
+void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int flipx){
+    int i,j;
+    float total;
 
-    for(i = 0; i < data->max_length; i++){
-        x[i] = i + 0.5;
-        y[i] = data->bases[i].kmer_count*100.0/data->number_of_sequences;
+    fpair_t* points = malloc(sizeof(fpair_t[data->max_score+5]));
+    fpair_t original_size, final_size, translate, flip;
+
+    for(i = 0; i <= data->max_score; i++){
+        points[i+2].x = 0;
+        points[i+2].y = i + 0.5; data->bases[i].length_count*100.0/data->number_of_sequences;
     }
 
-    points = point_string(data->max_length, x, y);
+    for(i = 0; i < data->max_length; i++){
+        for(j =0; j <= data->max_score; j++){
+            total += data->bases[i].scores[j];
+            points[j+2].x += data->bases[i].scores[j];
+        }
+    }
 
-    svg_start_tag("g", 1,
-                  svg_attr("transform", "scale(%f %d)", GRAPH_WIDTH/data->max_length, 1)
-                  );
+    points[0] = (fpair_t){0,0};
+    points[1] = (fpair_t){points[2].x, 0};
 
-    /* Set background color */
-    svg_simple_tag("rect", 3,
-                   svg_attr("width",  "%d", data->max_length),
-                   svg_attr("height", "%d", 100),
-                   svg_attr("fill", "%s", "#CCC")
-                   );
+    points[data->max_score+3] = (fpair_t){points[data->max_score+2].x, data->max_score+1};
+    points[data->max_score+4] = (fpair_t){0, data->max_score+1};
 
-    /* Draw length distribution */
+    for(i = 0; i < data->max_score + 5; i++)
+        points[i].x = points[i].x * 100.0 / total;
 
-    svg_simple_tag("polyline", 3,
-                   /* Since coordinates for lines and rectangles don't work the same; set the
-                      first point of each line to start off graph. Then, add 0.5 to the x of each
-                      point. Finally, end the line off graph. */
-                   svg_attr("points", "0,0 0,%6.2f %s %d,%6.2f %d,0",
-                            y[0],
-                            points,
-                            data->max_length,
-                            y[data->max_length-1],
-                            data->max_length),
-                   svg_attr("fill", "%s", "steelblue"),
-                   svg_attr("stroke", "%s", "none")
-    );
+    original_size = (fpair_t){100, data->max_score + 1};
+    final_size    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
+    translate     = (fpair_t){translate_x, translate_y};
+    flip          = (fpair_t){!flipx, 1};
+
+    char label[256] = "<tspan dy=\"-15\">Score</tspan>"
+                      "<tspan dy=\"15\" x=\"5\">Distribution</tspan>";
+
+
+    draw_svg_distro(data->max_score+5, points,
+                    original_size, final_size, flip,
+                    translate, label);
 
     free(points);
-    free(x);
-    free(y);
 
-    svg_end_tag("g");
+}
 
-    /* Add graph label */
-    svg_start_tag("text", 5,
-                  svg_attr("y",           "%d", 95),
-                  svg_attr("fill",        "%s", "#AAA"),
-                  svg_attr("x",           "%d", 5),
-                  svg_attr("font-family", "%s", "sans-serif"),
-                  svg_attr("font-size",   "%s", "15px")
-                  );
-    printf("%s\n", "Adapter Distibution");
-    svg_end_tag("text");
+void draw_svg_adapter(sequence_data * data, int translate_x, int translate_y){
+    int i;
+    fpair_t *points = malloc(sizeof(fpair_t[data->max_length + 4]));
+    fpair_t original_size, final_size, translate, flip;
+
+    for(i = 0; i < data->max_length; i++){
+        points[i+2].x = i + 0.5;
+        points[i+2].y = data->bases[i].kmer_count*100.0/data->number_of_sequences;
+    }
+
+    points[0] = (fpair_t){0,0};
+    points[1] = (fpair_t){0, points[2].y};
+
+    points[data->max_length+2] = (fpair_t){data->max_length, points[data->max_length+1].y};
+    points[data->max_length+3] = (fpair_t){data->max_length, 0};
+
+    original_size = (fpair_t){data->max_length, 100};
+    final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
+    translate     = (fpair_t){translate_x, translate_y};
+    flip          = (fpair_t){0,0};
+
+    draw_svg_distro(data->max_length+4, points,
+                    original_size, final_size, flip,
+                    translate, "Adapter Distribution");
+
+    free(points);
 
 
 }
@@ -341,6 +390,8 @@ void draw_svg(sequence_data* forward,
     int height = 510;
     if(adapters_used)
         height = 610;
+    if(name != NULL)
+        height += 30;
 
     // Start svg
     svg_start_tag("svg", 5,
@@ -353,7 +404,6 @@ void draw_svg(sequence_data* forward,
 
     /* If name is given, add to middle of viewBox (half of width + min-x of viewbox) */
     if(name != NULL){
-        height += 30;
         svg_start_tag("text", 6,
                       svg_attr("x", "%d", (width/2)),
                       svg_attr("y", "%d", 30),
@@ -365,43 +415,48 @@ void draw_svg(sequence_data* forward,
         svg_end_tag("text");
 
         svg_start_tag("g", 1,
-                      svg_attr("transform", "translate(%d %d)", 0, 30)
+                      svg_attr("transform", "translate(%d %d)", 0, 35)
         );
 
     }
 
-    svg_start_tag("g", 1,
-                      svg_attr("transform", "translate(%d %d)", 110, 10)
-    );
-    draw_svg_content(forward);
-    svg_end_tag("g");
+    int current_y = GRAPH_PAD;
+    int current_x = GRAPH_PAD*2 + PERF_SIZE;
+    draw_svg_content(forward, current_x, current_y);
 
-    svg_start_tag("g", 1,
-                      svg_attr("transform", "translate(%d %d)", 110, 130)
-    );
-    draw_svg_quality(forward);
-    svg_end_tag("g");
+    current_y += PERF_SIZE + GRAPH_PAD;
 
-    svg_start_tag("g", 1,
-                      svg_attr("transform", "translate(%d %d)", 110, 400)
-    );
-    draw_svg_length(forward);
-    svg_end_tag("g");
+    draw_svg_score(forward, GRAPH_PAD, current_y, 0);
+    draw_svg_quality(forward, current_x, current_y);
 
-     svg_start_tag("g", 1,
-                      svg_attr("transform", "translate(%d %d)", 110, 520)
-    );
-    draw_svg_adapter(forward);
-    svg_end_tag("g");
-   /* draw(data, 0, adapters); */
-    /* free(data); */
+    current_y += GRAPH_HEIGHT + GRAPH_PAD;
 
-    /* if(paired){ */
-    /*   data = read_fastq(arguments.reverse, kmers); */
-    /*   transformed_data = transform(data); */
-    /*   draw(data, 1, adapters); */
-    /*   free(data); */
-    /* } */
+    draw_svg_length(forward, current_x, current_y);
+
+    current_y += PERF_SIZE + GRAPH_PAD;
+    if(adapters_used)
+        draw_svg_adapter(forward, current_x, current_y);
+
+    if(reverse){
+        current_y = GRAPH_PAD;
+        current_x += GRAPH_PAD + GRAPH_WIDTH + 40;
+        draw_svg_content(reverse, current_x, current_y);
+
+        current_y += PERF_SIZE + GRAPH_PAD;
+
+        draw_svg_score(reverse, current_x + GRAPH_WIDTH + GRAPH_PAD, current_y, 1);
+        draw_svg_quality(reverse, current_x, current_y);
+
+        current_y += GRAPH_HEIGHT + GRAPH_PAD;
+
+        draw_svg_length(reverse, current_x, current_y);
+
+        current_y += PERF_SIZE + GRAPH_PAD;
+        if(adapters_used)
+            draw_svg_adapter(reverse, current_x, current_y);
+
+    }
+
 
     if(name != NULL) svg_end_tag("g");
 
