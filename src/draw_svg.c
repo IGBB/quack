@@ -16,7 +16,7 @@
 char *ratio_labels[4] = {"%A", "%T", "%C", "%G"};
 char *ratio_colors[4] = {"#648964", "#89bc89", "#84accf", "#5d7992"};
 
-
+#define PI 3.14159265
 
 typedef struct {
     float x,y;
@@ -60,6 +60,72 @@ char * point_string(int length, fpair_t* p){
     )
 
 #define svg_end_label() svg_end_tag("text")
+
+void draw_svg_axis_label(fpair_t start, fpair_t end) {
+
+    fpair_t middle = (fpair_t){ (start.x + end.x)/2.0 ,
+                                (start.y + end.y)/2.0};
+
+    char * baselines[2] = {"hanging", "baseline"};
+    char * anchor[2] = {"end", "end"};
+    if( start.y > end.y ){
+        baselines[0] = "baseline";
+        baselines[1] = "hanging";
+    }else if (start.y == end.y){
+        baselines[0] = "baseline";
+        anchor[1] = "start";
+    }
+
+    double rotate = atan2((end.y - start.y), (end.x -start.x)) * 180 / PI;
+
+    /* Convert to int for comparison to avoid odd floating point encoding artifats
+     * For example, atan2 returns -90.000000000000001 for a vertical line.
+     * */
+    if((int)rotate < -90 || (int)rotate >= 90)
+        rotate -= 180;
+
+    svg_start_tag("text", 8,
+                  svg_attr("x",           "%f", start.x),
+                  svg_attr("y",           "%f", start.y),
+                  svg_attr("fill",        "%s", "#AAA"),
+                  svg_attr("font-family", "%s", "sans-serif"),
+                  svg_attr("font-size",   "%s", "10px"),
+                  svg_attr("alignment-baseline",   "%s", baselines[0]),
+                  svg_attr("dominant-baseline",   "%s", baselines[0]),
+                  svg_attr("text-anchor",   "%s", anchor[0])
+                  );
+    printf("0");
+    svg_end_tag("text");
+
+    svg_start_tag("text", 8,
+                  svg_attr("x",           "%f", end.x),
+                  svg_attr("y",           "%f", end.y),
+                  svg_attr("fill",        "%s", "#AAA"),
+                  svg_attr("font-family", "%s", "sans-serif"),
+                  svg_attr("font-size",   "%s", "10px"),
+                  svg_attr("alignment-baseline",   "%s", baselines[1]),
+                  svg_attr("dominant-baseline",   "%s", baselines[1]),
+                  svg_attr("text-anchor",   "%s", anchor[1])
+                  );
+    printf("100");
+    svg_end_tag("text");
+
+    svg_start_tag("text", 8,
+                  svg_attr("x",           "%f", middle.x),
+                  svg_attr("y",           "%f", middle.y),
+                  svg_attr("fill",        "%s", "#AAA"),
+                  svg_attr("font-family", "%s", "sans-serif"),
+                  svg_attr("font-size",   "%s", "12px"),
+                  svg_attr("dominant-baseline",   "%s", "baseline"),
+                  svg_attr("text-anchor",   "%s", "middle"),
+                  svg_attr("transform", "rotate(%f %f,%f)", rotate, middle.x, middle.y)
+                  );
+    printf("Percent");
+    svg_end_tag("text");
+
+
+}
+
 
 
 void draw_svg_distro(int length, fpair_t* p,
@@ -422,27 +488,104 @@ void draw_svg(sequence_data* forward,
 
     int current_y = GRAPH_PAD;
     int current_x = GRAPH_PAD*2 + PERF_SIZE;
+
+
+    int i;
+
+    /* Add Vertial Axis */
+    for(i = 1; i < 10; i++){
+        svg_simple_tag("line", 6,
+                       svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
+                       svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
+                       svg_attr("y1", "%f", PERF_SIZE/2.0),
+                       svg_attr("y2", "%f", (float)height - PERF_SIZE),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-width", "%f", 0.5 + (i%2))
+        );
+    }
+
+
     draw_svg_content(forward, current_x, current_y);
+    draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE},
+                        (fpair_t){current_x - GRAPH_PAD, current_y});
+   
 
     current_y += PERF_SIZE + GRAPH_PAD;
 
+    /* add horizontal axis */
+    for(i = 1; i < 10; i++){
+        svg_simple_tag("line", 6,
+                       svg_attr("x1", "%f", PERF_SIZE/2.0),
+                       svg_attr("x2", "%f", (float) GRAPH_WIDTH + PERF_SIZE),
+                       svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
+                       svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-width", "%f", 0.5 + (i%2))
+        );
+    }
+
+
+
     draw_svg_score(forward, GRAPH_PAD, current_y, 0);
+    draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y - GRAPH_PAD},
+                        (fpair_t){GRAPH_PAD, current_y - GRAPH_PAD});
+
+
+
     draw_svg_quality(forward, current_x, current_y);
 
     current_y += GRAPH_HEIGHT + GRAPH_PAD;
 
     draw_svg_length(forward, current_x, current_y);
+    draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y},
+                        (fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE});
+
+
 
     current_y += PERF_SIZE + GRAPH_PAD;
-    if(adapters_used)
+    if(adapters_used){
         draw_svg_adapter(forward, current_x, current_y);
+
+        draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y},
+                            (fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE});
+
+    }
 
     if(reverse){
         current_y = GRAPH_PAD;
         current_x += GRAPH_PAD + GRAPH_WIDTH + 40;
+
+        /* Add Vertial Axis */
+        for(i = 1; i < 10; i++){
+            svg_simple_tag("line", 6,
+                           svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
+                           svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
+                           svg_attr("y1", "%f", PERF_SIZE/2.0),
+                           svg_attr("y2", "%f", (float)height - PERF_SIZE),
+                           svg_attr("stroke", "%s", "black"),
+                           svg_attr("stroke-width", "%f", 0.5 + (i%2))
+                           );
+        }
+
+
+
         draw_svg_content(reverse, current_x, current_y);
 
         current_y += PERF_SIZE + GRAPH_PAD;
+
+        /* add horizontal axis */
+        for(i = 1; i < 10; i++){
+            svg_simple_tag("line", 6,
+                           svg_attr("x1", "%f", (float) current_x + GRAPH_WIDTH),
+                           svg_attr("x2", "%f", (float) current_x + GRAPH_WIDTH + PERF_SIZE),
+                           svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
+                           svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
+                           svg_attr("stroke", "%s", "black"),
+                           svg_attr("stroke-width", "%f", 0.5 + (i%2))
+            );
+        }
+
+
 
         draw_svg_score(reverse, current_x + GRAPH_WIDTH + GRAPH_PAD, current_y, 1);
         draw_svg_quality(reverse, current_x, current_y);
