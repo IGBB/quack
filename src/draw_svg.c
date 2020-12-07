@@ -157,10 +157,11 @@ void draw_svg_distro(int length, fpair_t* p,
     /* Draw distribution */
     char* points = point_string(length, p);
 
-    svg_simple_tag("polyline", 3,
+    svg_simple_tag("polyline", 4,
                    svg_attr("points", "%s", points),
-                   svg_attr("fill", "%s", "steelblue"),
-                   svg_attr("stroke", "%s", "none")
+                   svg_attr("stroke", "%s", "steelblue"),
+                   svg_attr("fill", "%s", "none"),
+                   svg_attr("stroke-width", "%f", 2.0 * (original.x / final.x))
     );
 
     free(points);
@@ -175,6 +176,8 @@ void draw_svg_distro(int length, fpair_t* p,
     svg_end_tag("g");
 
 }
+
+
 
 void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
 
