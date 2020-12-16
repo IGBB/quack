@@ -47,7 +47,7 @@ char * point_string(int length, fpair_t* p){
     svg_simple_tag("rect", 3,                                    \
                    svg_attr("width",  "%f", (float)(wdth)),      \
                    svg_attr("height", "%f", (float)(hght)),      \
-                   svg_attr("fill", "%s", "#EEE")                \
+                   svg_attr("fill", "%s", "#FFF")                \
                    )
 
 #define svg_start_label(posx, posy)                                     \
@@ -131,10 +131,12 @@ void draw_svg_axis_label(fpair_t start, fpair_t end) {
 void draw_svg_distro(int length, fpair_t* p,
                      fpair_t original, fpair_t final,
                      fpair_t flip, fpair_t translate,
-                     char* label){
+                     float rotate, char* label){
 
     fpair_t scale = (fpair_t){final.x/original.x, final.y/original.y};
     fpair_t scale_translate = (fpair_t){0,0};
+
+    int i;
 
     if(flip.x){
         scale.x *= -1;
@@ -146,25 +148,58 @@ void draw_svg_distro(int length, fpair_t* p,
     }
 
     svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f) rotate(%f)",
                                    scale_translate.x, scale_translate.y,
-                                   scale.x, scale.y
+                                   scale.x, scale.y, rotate
                   )
     );
 
     draw_svg_background(original.x, original.y);
 
-    /* Draw distribution */
-    char* points = point_string(length, p);
+    /* /\* Draw distribution *\/ */
+    /* char* points = point_string(length, p); */
 
-    svg_simple_tag("polyline", 4,
-                   svg_attr("points", "%s", points),
-                   svg_attr("stroke", "%s", "steelblue"),
-                   svg_attr("fill", "%s", "none"),
-                   svg_attr("stroke-width", "%f", 2.0 * (original.x / final.x))
-    );
+    /* svg_simple_tag("polyline", 5, */
+    /*                svg_attr("points", "%s", points), */
+    /*                svg_attr("stroke", "%s", "steelblue"), */
+    /*                svg_attr("fill", "%s", "none"), */
+    /*                svg_attr("stroke-width", "%fpx", 0.5), */
+    /*                svg_attr("vector-effect", "%s", "non-scaling-stroke") */
+    /* ); */
 
-    free(points);
+    /* free(points); */
+
+    for( i = 0; i < length; i++  )
+        svg_simple_tag("rect",5,
+                       svg_attr("x",       "%f", p[i].x),
+                       svg_attr("height",  "%f", p[i].y),
+                       svg_attr("y",       "%f", 0.0),
+                       svg_attr("width",   "%f", 1.1),
+                       svg_attr("fill",   "%s", "steelblue")
+                       );
+
+    for(i = 20; i < 100; i+=20)
+        svg_simple_tag("line", 7,
+                       svg_attr("y1", "%d", i),
+                       svg_attr("y2", "%d", i),
+                       svg_attr("x1", "%d", 0),
+                       svg_attr("x2", "%f", original.x),
+                       svg_attr("stroke", "%s", "white"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 1.0)
+
+        );
+
+    svg_simple_tag("line", 7,
+                   svg_attr("y1", "%d", 0),
+                   svg_attr("y2", "%d", 0),
+                   svg_attr("x1", "%d", 0),
+                   svg_attr("x2", "%f", original.x),
+                   svg_attr("stroke", "%s", "black"),
+                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                   svg_attr("stroke-width", "%f", 0.5));
+
+
 
     svg_end_tag("g");
 
@@ -184,11 +219,11 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
     int i, j;
     uint64_t len, y;
     char * points;
+    float max;
 
     fpair_t *perc[4];
     for(i = 0; i < 4; i++){
-        perc[i] = malloc(sizeof(fpair_t[data->max_length+4]));
-        perc[i][0] = (fpair_t){0,0};
+        perc[i] = malloc(sizeof(fpair_t[data->max_length]));
     }
 
     /* Calculate cumulative percentage of base content, in decending order so
@@ -198,42 +233,48 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
         y = 0;
         len = data->bases[i].length_count;
         for (j = 3; j >= 0; j--) {
-            perc[j][i+2].x = i +0.5;
+            perc[j][i].x = i +0.5;
+            perc[j][i].y = data->bases[i].content[j] * 100.0 / len;
 
-            y += data->bases[i].content[j];
-            perc[j][i+2].y = y * 100.0 / len;
+            if(max < perc[j][i].y) max = perc[j][i].y;
         }
     }
 
-
-    for(i = 0; i < 4; i++){
-        perc[i][1] = (fpair_t){0, perc[i][2].y};
-
-        perc[i][data->max_length+2] = (fpair_t){data->max_length, perc[i][data->max_length+1].y};
-        perc[i][data->max_length+3] = (fpair_t){data->max_length, 0};
-    }
-
+    max = ceil(max / 10.0) * 10.0;
 
     svg_start_tag("g", 1, svg_attr("transform", "translate(%d %d)", translate_x, translate_y));
     svg_start_tag("g", 1,
                   svg_attr("transform", "scale(%f %f)",
-                           GRAPH_WIDTH/data->max_length, PERF_SIZE/100.0)
+                           GRAPH_WIDTH/data->max_length, PERF_SIZE/max)
 
                   );
 
 
     draw_svg_background(data->max_length, 100);
 
+    for (i = 10; i < max; i += 10)
+                svg_simple_tag("line", 7,
+                       svg_attr("y1", "%d", i),
+                       svg_attr("y2", "%d", i),
+                       svg_attr("x1", "%d", 0),
+                       svg_attr("x2", "%d", data->max_length),
+                       svg_attr("stroke", "%s", "#AAA"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 0.5));
+   
+
     /* Draw each distribution */
     for(i = 0; i < 4; i++){
 
-        points = point_string(data->max_length+4, perc[i]);
+        points = point_string(data->max_length, perc[i]);
 
-        svg_simple_tag("polyline", 3,
+        svg_simple_tag("polyline", 5,
                       svg_attr("points", "%s", points),
-                       svg_attr("fill", "%s", ratio_colors[i]),
-                       svg_attr("stroke", "%s", "none")
-                       );
+                       svg_attr("fill", "%s", "none"),
+                       svg_attr("stroke", "%s", ratio_colors[i]),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 2.0)
+        );
 
         free(points);
 
@@ -268,22 +309,38 @@ void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
                            -1.0 * GRAPH_HEIGHT/(data->max_score+1))
                   );
 
-   /* Define background for heatmap. Must be in descending order or highest score
-     background will overwrite all other backgrounds */
-    #define score_back(score, color)                                \
-    svg_simple_tag("rect", 6,                                       \
-                   svg_attr("x",      "%d", 0),                     \
-                   svg_attr("y",      "%d", 0),                     \
-                   svg_attr("width",  "%d", data->max_length),      \
-                   svg_attr("height", "%d", score),                 \
-                   svg_attr("stroke", "%s", "none"),                \
-                   svg_attr("fill",   "%s", color)                  \
-                   )
-    score_back(data->max_score+1, "#ccebc5"); // green
-    score_back(28,              "#ffffcc"); // yellow
-    score_back(20,              "#fbb4ae"); // red
+    int score_delineation[4] = {0,       20,       28, data->max_score+1};
+    char* score_color[4]      = {"", "#d73027","#ffffbf",         "#1a9850"};
 
-
+    for(i = 1; i <= 3; i++){
+        float line_width = 2.5;
+        int height = score_delineation[i] - score_delineation[i-1];
+        svg_simple_tag("rect", 5,
+                       svg_attr("y", "%d", score_delineation[i-1]),
+                       svg_attr("width", "%d", data->max_length),
+                       svg_attr("height", "%d", height),
+                       svg_attr("fill", "%s", score_color[i]),
+                       svg_attr("fill-opacity", "%f", 0.1)
+                       );
+        svg_simple_tag("line", 7,
+                       svg_attr("x1", "%d", 0),
+                       svg_attr("x2", "%d", 0),
+                       svg_attr("y1", "%d", score_delineation[i] ),
+                       svg_attr("y2", "%d", score_delineation[i-1]),
+                       svg_attr("stroke", "%s", score_color[i]),
+                       svg_attr("stroke-width", "%f", line_width),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+                       );
+        svg_simple_tag("line", 7,
+                       svg_attr("x1", "%d", data->max_length),
+                       svg_attr("x2", "%d", data->max_length),
+                       svg_attr("y1", "%d", score_delineation[i] ),
+                       svg_attr("y2", "%d", score_delineation[i-1]),
+                       svg_attr("stroke", "%s", score_color[i]),
+                       svg_attr("stroke-width", "%f", line_width),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+                       );
+    }
     /* Draw each heatmap */
     for(i = 0; i < data->max_length; i++){
         p[i].x = i + 0.5;
@@ -309,17 +366,15 @@ void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
 
     char* points = point_string(data->max_length, p);
 
-    svg_simple_tag("polyline", 5,
+    svg_simple_tag("polyline", 6,
                    /* Since coordinates for lines and rectangles don't work the same; set the
                       first point of each line to start off graph. Then, add 0.5 to the x of each
                       point. Finally, end the line off graph. */
                    svg_attr("points", "%s", points),
                    svg_attr("fill", "%s", "none"),
                    svg_attr("stroke", "%s", "black"),
-                   /* The stroke width needs to be the inverse of the height
-                    * scale to keep it at a constant thickness for any length of
-                    * sequence*/
-                   svg_attr("stroke-width", "%f", 2.0 * data->max_score/GRAPH_HEIGHT ),
+                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                   svg_attr("stroke-width", "%f", 1.0),
                    svg_attr("stroke-opacity", "%f", 0.6 )
     );
 
@@ -340,29 +395,36 @@ void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
 
 
 void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
-    int i;
-    fpair_t *points = malloc(sizeof(fpair_t[data->max_length + 4]));
+    int i, different;
+    fpair_t *points = malloc(sizeof(fpair_t[data->max_length]));
     fpair_t original_size, final_size, translate, flip;
+    float max;
 
     for(i = 0; i < data->max_length; i++){
-        points[i+2].x = i + 0.5;
-        points[i+2].y = data->bases[i].length_count*100.0/data->number_of_sequences;
+        points[i].x = (float) i;
+        points[i].y = data->bases[i].length_count*100.0/data->number_of_sequences;
     }
 
-    points[0] = (fpair_t){0,0};
-    points[1] = (fpair_t){0, points[2].y};
+    max = 0.0;
+    for(i = 0; i < data->max_length - 1; i++){
+        points[i].y -= points[i+1].y;
+        if(max < points[i].y) max = points[i].y;
+    }
 
-    points[data->max_length+2] = (fpair_t){data->max_length, points[data->max_length+1].y};
-    points[data->max_length+3] = (fpair_t){data->max_length, 0};
+    // check last point
+    if(max < points[i].y) max = points[i].y;
+
+    // Adjust max to nearest ten
+    max = ceil(max / 10.0) * 10.0;
 
     original_size = (fpair_t){data->max_length, 100};
     final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
     translate     = (fpair_t){translate_x, translate_y};
-    flip          = (fpair_t){0,0};
+    flip          = (fpair_t){0,1};
 
-    draw_svg_distro(data->max_length+4, points,
+    draw_svg_distro(data->max_length, points,
                     original_size, final_size, flip,
-                    translate, "Length Distribution");
+                    translate, 0.0, "Length Distribution");
 
     free(points);
 
@@ -371,44 +433,101 @@ void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
 
 void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int flipx){
     int i,j;
-    float total;
+    float total, max;
 
-    fpair_t* points = malloc(sizeof(fpair_t[data->max_score+5]));
-    fpair_t original_size, final_size, translate, flip;
+    fpair_t* points = calloc(data->max_score+1, sizeof(fpair_t));
+    fpair_t original, final, translate, scale;
 
     for(i = 0; i <= data->max_score; i++){
-        points[i+2].x = 0;
-        points[i+2].y = i + 0.5; data->bases[i].length_count*100.0/data->number_of_sequences;
+        points[i].x = i;
+        points[i].y = 0; 
     }
 
     for(i = 0; i < data->max_length; i++){
         for(j =0; j <= data->max_score; j++){
             total += data->bases[i].scores[j];
-            points[j+2].x += data->bases[i].scores[j];
+            points[j].y += data->bases[i].scores[j];
         }
     }
 
-    points[0] = (fpair_t){0,0};
-    points[1] = (fpair_t){points[2].x, 0};
+    max = 0.0;
+    for(i = 0; i <= data->max_score ; i++){
+        points[i].y = points[i].y * 100.0 / total;
+        if(max < points[i].y) max = points[i].y;
+    }
 
-    points[data->max_score+3] = (fpair_t){points[data->max_score+2].x, data->max_score+1};
-    points[data->max_score+4] = (fpair_t){0, data->max_score+1};
+    // Get next ten for max
+    max = ceil(max/10.0)*10.0;
 
-    for(i = 0; i < data->max_score + 5; i++)
-        points[i].x = points[i].x * 100.0 / total;
-
-    original_size = (fpair_t){100, data->max_score + 1};
-    final_size    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
+    original = (fpair_t){100, data->max_score+1};
+    final    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
     translate     = (fpair_t){translate_x, translate_y};
-    flip          = (fpair_t){!flipx, 1};
 
-    char label[256] = "<tspan dy=\"-15\">Score</tspan>"
-                      "<tspan dy=\"15\" x=\"5\">Distribution</tspan>";
+    scale = (fpair_t){final.x/original.x, final.y/original.y};
+    fpair_t scale_translate = (fpair_t){0,0};
 
 
-    draw_svg_distro(data->max_score+5, points,
-                    original_size, final_size, flip,
-                    translate, label);
+    if(!flipx){
+        scale.x *= -1;
+        scale_translate.x = final.x;
+    }
+
+    scale.y *= -1;
+    scale_translate.y = final.y;
+
+
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                                   scale_translate.x, scale_translate.y,
+                                   scale.x, scale.y
+                  )
+    );
+
+    draw_svg_background(original.x, original.y);
+
+
+    for( i = 0; i <= data->max_score; i++  )
+        svg_simple_tag("rect",5,
+                       svg_attr("y",      "%f", points[i].x),
+                       svg_attr("width",  "%f", points[i].y),
+                       svg_attr("x",      "%f", 0.0),
+                       svg_attr("height", "%f", 1.0),
+                       svg_attr("fill",   "%s", "steelblue")
+                       );
+
+
+    for(i = 20; i < 100; i+=20)
+        svg_simple_tag("line", 7,
+                       svg_attr("x1", "%d", i),
+                       svg_attr("x2", "%d", i),
+                       svg_attr("y1", "%d", 0),
+                       svg_attr("y2", "%d", data->max_score+1),
+                       svg_attr("stroke", "%s", "white"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%d", 1)
+
+        );
+
+    svg_simple_tag("line", 7,
+                   svg_attr("x1", "%d", 0),
+                   svg_attr("x2", "%d", 0),
+                   svg_attr("y1", "%d", 0),
+                   svg_attr("y2", "%f", original.y),
+                   svg_attr("stroke", "%s", "black"),
+                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                   svg_attr("stroke-width", "%f", 0.5));
+
+
+    svg_end_tag("g");
+
+    /* Add graph label */
+    svg_start_label(GRAPH_PAD, final.y - GRAPH_PAD);
+    printf("<tspan dy=\"-15\">Score</tspan>"
+           "<tspan dy=\"15\" x=\"5\">Distribution</tspan>");
+    svg_end_label();
+
+    svg_end_tag("g");
+
 
     free(points);
 
@@ -437,7 +556,7 @@ void draw_svg_adapter(sequence_data * data, int translate_x, int translate_y){
 
     draw_svg_distro(data->max_length+4, points,
                     original_size, final_size, flip,
-                    translate, "Adapter Distribution");
+                    translate, 0.0, "Adapter Distribution");
 
     free(points);
 
@@ -496,19 +615,19 @@ void draw_svg(sequence_data* forward,
     int i;
 
     /* Add Vertial Axis */
-    for(i = 1; i < 10; i++){
-        svg_simple_tag("line", 6,
-                       svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
-                       svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
-                       svg_attr("y1", "%f", PERF_SIZE/2.0),
-                       svg_attr("y2", "%f", (float)height - PERF_SIZE),
-                       svg_attr("stroke", "%s", "black"),
-                       svg_attr("stroke-width", "%f", 0.5 + (i%2))
-        );
-    }
+    /* for(i = 1; i < 10; i++){ */
+    /*     svg_simple_tag("line", 6, */
+    /*                    svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
+    /*                    svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
+    /*                    svg_attr("y1", "%f", PERF_SIZE/2.0), */
+    /*                    svg_attr("y2", "%f", (float)height - PERF_SIZE), */
+    /*                    svg_attr("stroke", "%s", "black"), */
+    /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
+    /*     ); */
+    /* } */
 
 
-    draw_svg_content(forward, current_x, current_y);
+    draw_svg_length(forward, current_x, current_y);
     draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE},
                         (fpair_t){current_x - GRAPH_PAD, current_y});
    
@@ -516,16 +635,16 @@ void draw_svg(sequence_data* forward,
     current_y += PERF_SIZE + GRAPH_PAD;
 
     /* add horizontal axis */
-    for(i = 1; i < 10; i++){
-        svg_simple_tag("line", 6,
-                       svg_attr("x1", "%f", PERF_SIZE/2.0),
-                       svg_attr("x2", "%f", (float) GRAPH_WIDTH + PERF_SIZE),
-                       svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
-                       svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
-                       svg_attr("stroke", "%s", "black"),
-                       svg_attr("stroke-width", "%f", 0.5 + (i%2))
-        );
-    }
+    /* for(i = 1; i < 10; i++){ */
+    /*     svg_simple_tag("line", 6, */
+    /*                    svg_attr("x1", "%f", PERF_SIZE/2.0), */
+    /*                    svg_attr("x2", "%f", (float) GRAPH_WIDTH + PERF_SIZE), */
+    /*                    svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
+    /*                    svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
+    /*                    svg_attr("stroke", "%s", "black"), */
+    /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
+    /*     ); */
+    /* } */
 
 
 
@@ -539,7 +658,7 @@ void draw_svg(sequence_data* forward,
 
     current_y += GRAPH_HEIGHT + GRAPH_PAD;
 
-    draw_svg_length(forward, current_x, current_y);
+    draw_svg_content(forward, current_x, current_y);
     draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y},
                         (fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE});
 
@@ -559,34 +678,34 @@ void draw_svg(sequence_data* forward,
         current_x += GRAPH_PAD + GRAPH_WIDTH + 40;
 
         /* Add Vertial Axis */
-        for(i = 1; i < 10; i++){
-            svg_simple_tag("line", 6,
-                           svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
-                           svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH),
-                           svg_attr("y1", "%f", PERF_SIZE/2.0),
-                           svg_attr("y2", "%f", (float)height - PERF_SIZE),
-                           svg_attr("stroke", "%s", "black"),
-                           svg_attr("stroke-width", "%f", 0.5 + (i%2))
-                           );
-        }
+        /* for(i = 1; i < 10; i++){ */
+        /*     svg_simple_tag("line", 6, */
+        /*                    svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
+        /*                    svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
+        /*                    svg_attr("y1", "%f", PERF_SIZE/2.0), */
+        /*                    svg_attr("y2", "%f", (float)height - PERF_SIZE), */
+        /*                    svg_attr("stroke", "%s", "black"), */
+        /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
+        /*                    ); */
+        /* } */
 
 
 
-        draw_svg_content(reverse, current_x, current_y);
+        draw_svg_length(reverse, current_x, current_y);
 
         current_y += PERF_SIZE + GRAPH_PAD;
 
         /* add horizontal axis */
-        for(i = 1; i < 10; i++){
-            svg_simple_tag("line", 6,
-                           svg_attr("x1", "%f", (float) current_x + GRAPH_WIDTH),
-                           svg_attr("x2", "%f", (float) current_x + GRAPH_WIDTH + PERF_SIZE),
-                           svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
-                           svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT),
-                           svg_attr("stroke", "%s", "black"),
-                           svg_attr("stroke-width", "%f", 0.5 + (i%2))
-            );
-        }
+        /* for(i = 1; i < 10; i++){ */
+        /*     svg_simple_tag("line", 6, */
+        /*                    svg_attr("x1", "%f", (float) current_x + GRAPH_WIDTH), */
+        /*                    svg_attr("x2", "%f", (float) current_x + GRAPH_WIDTH + PERF_SIZE), */
+        /*                    svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
+        /*                    svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
+        /*                    svg_attr("stroke", "%s", "black"), */
+        /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
+        /*     ); */
+        /* } */
 
 
 
@@ -595,7 +714,7 @@ void draw_svg(sequence_data* forward,
 
         current_y += GRAPH_HEIGHT + GRAPH_PAD;
 
-        draw_svg_length(reverse, current_x, current_y);
+        draw_svg_content(reverse, current_x, current_y);
 
         current_y += PERF_SIZE + GRAPH_PAD;
         if(adapters_used)
