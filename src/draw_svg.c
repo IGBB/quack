@@ -627,6 +627,17 @@ void draw_svg(sequence_data* forward,
     /* } */
 
 
+    svg_start_tag("text", 6,
+                      svg_attr("x", "%f", (GRAPH_WIDTH/2) + PERF_SIZE + GRAPH_PAD),
+                      svg_attr("y", "%d", 0),
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "15px"),
+                      svg_attr("fill",        "%s", "black"));
+        printf("%d reads encoded in phred%d\n", forward->number_of_sequences, forward->encoding);
+        svg_end_tag("text");
+
+
     draw_svg_length(forward, current_x, current_y);
     draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE},
                         (fpair_t){current_x - GRAPH_PAD, current_y});
@@ -689,6 +700,15 @@ void draw_svg(sequence_data* forward,
         /*                    ); */
         /* } */
 
+    svg_start_tag("text", 6,
+                      svg_attr("x", "%f", (GRAPH_WIDTH/2) + current_x),
+                      svg_attr("y", "%d", 0),
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "15px"),
+                      svg_attr("fill",        "%s", "black"));
+        printf("%d reads encoded in phred%d\n", reverse->number_of_sequences, reverse->encoding);
+        svg_end_tag("text");
 
 
         draw_svg_length(reverse, current_x, current_y);
