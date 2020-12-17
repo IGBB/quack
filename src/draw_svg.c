@@ -178,7 +178,7 @@ void draw_svg_distro(int length, fpair_t* p,
                        svg_attr("fill",   "%s", "steelblue")
                        );
 
-    for(i = 20; i < 100; i+=20)
+    for(i = 20; i < 100; i+=20){
         svg_simple_tag("line", 7,
                        svg_attr("y1", "%d", i),
                        svg_attr("y2", "%d", i),
@@ -188,8 +188,21 @@ void draw_svg_distro(int length, fpair_t* p,
                        svg_attr("vector-effect", "%s", "non-scaling-stroke"),
                        svg_attr("stroke-width", "%f", 1.0)
 
-        );
-
+                       );
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               original.x + 1, (float)i,
+                               1/scale.x, 1/scale.y ));
+        printf("%d%%", i);
+        svg_end_tag("text");
+    }
     svg_simple_tag("line", 7,
                    svg_attr("y1", "%d", 0),
                    svg_attr("y2", "%d", 0),
@@ -244,15 +257,16 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
 
     svg_start_tag("g", 1, svg_attr("transform", "translate(%d %d)", translate_x, translate_y));
     svg_start_tag("g", 1,
-                  svg_attr("transform", "scale(%f %f)",
-                           GRAPH_WIDTH/data->max_length, PERF_SIZE/max)
+                  svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                           0.0, PERF_SIZE,
+                           GRAPH_WIDTH/data->max_length, -1 * PERF_SIZE/max)
 
                   );
 
 
-    draw_svg_background(data->max_length, 100);
+    draw_svg_background(data->max_length, max);
 
-    for (i = 10; i < max; i += 10)
+    for (i = 10; i < max; i += 10){
                 svg_simple_tag("line", 7,
                        svg_attr("y1", "%d", i),
                        svg_attr("y2", "%d", i),
@@ -261,7 +275,7 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
                        svg_attr("stroke", "%s", "#AAA"),
                        svg_attr("vector-effect", "%s", "non-scaling-stroke"),
                        svg_attr("stroke-width", "%f", 0.5));
-   
+    }
 
     /* Draw each distribution */
     for(i = 0; i < 4; i++){
@@ -281,7 +295,32 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
         free(perc[i]);
     }
 
+
+    for (i = 10; i < max; i += 10){
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%d %d) scale(%f %f)",
+                               data->max_length + 1, i,
+                           1.0/(GRAPH_WIDTH/data->max_length), -1.0/(PERF_SIZE/max)));
+        printf("%d%%", i);
+        svg_end_tag("text");
+
+
+    }
+
+
+
+
     svg_end_tag("g");
+
+
+
 
     /* Add graph label */
     svg_start_label(GRAPH_PAD, PERF_SIZE - GRAPH_PAD);
@@ -322,24 +361,24 @@ void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
                        svg_attr("fill", "%s", score_color[i]),
                        svg_attr("fill-opacity", "%f", 0.1)
                        );
-        svg_simple_tag("line", 7,
-                       svg_attr("x1", "%d", 0),
-                       svg_attr("x2", "%d", 0),
-                       svg_attr("y1", "%d", score_delineation[i] ),
-                       svg_attr("y2", "%d", score_delineation[i-1]),
-                       svg_attr("stroke", "%s", score_color[i]),
-                       svg_attr("stroke-width", "%f", line_width),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
-                       );
-        svg_simple_tag("line", 7,
-                       svg_attr("x1", "%d", data->max_length),
-                       svg_attr("x2", "%d", data->max_length),
-                       svg_attr("y1", "%d", score_delineation[i] ),
-                       svg_attr("y2", "%d", score_delineation[i-1]),
-                       svg_attr("stroke", "%s", score_color[i]),
-                       svg_attr("stroke-width", "%f", line_width),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
-                       );
+        /* svg_simple_tag("line", 7, */
+        /*                svg_attr("x1", "%d", 0), */
+        /*                svg_attr("x2", "%d", 0), */
+        /*                svg_attr("y1", "%d", score_delineation[i] ), */
+        /*                svg_attr("y2", "%d", score_delineation[i-1]), */
+        /*                svg_attr("stroke", "%s", score_color[i]), */
+        /*                svg_attr("stroke-width", "%f", line_width), */
+        /*                svg_attr("vector-effect", "%s", "non-scaling-stroke") */
+        /*                ); */
+        /* svg_simple_tag("line", 7, */
+        /*                svg_attr("x1", "%d", data->max_length), */
+        /*                svg_attr("x2", "%d", data->max_length), */
+        /*                svg_attr("y1", "%d", score_delineation[i] ), */
+        /*                svg_attr("y2", "%d", score_delineation[i-1]), */
+        /*                svg_attr("stroke", "%s", score_color[i]), */
+        /*                svg_attr("stroke-width", "%f", line_width), */
+        /*                svg_attr("vector-effect", "%s", "non-scaling-stroke") */
+        /*                ); */
     }
     /* Draw each heatmap */
     for(i = 0; i < data->max_length; i++){
@@ -405,9 +444,14 @@ void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
         points[i].y = data->bases[i].length_count*100.0/data->number_of_sequences;
     }
 
+    different = 0;
     max = 0.0;
     for(i = 0; i < data->max_length - 1; i++){
         points[i].y -= points[i+1].y;
+
+        /* Set different flag if current point is greater than zero */
+        different |= (points[i].y > 0.0);
+
         if(max < points[i].y) max = points[i].y;
     }
 
@@ -428,6 +472,27 @@ void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
 
     free(points);
 
+    if(!different){
+        svg_simple_tag("rect", 6,
+                       svg_attr("x", "%f", translate.x),
+                       svg_attr("y", "%f", translate.y),
+                       svg_attr("width", "%f", final_size.x),
+                       svg_attr("height", "%f", final_size.y),
+                       svg_attr("fill", "%s", "#CCC"),
+                       svg_attr("opacity", "%f", 0.5)
+                       );
+
+        svg_start_tag("text", 7,
+                      svg_attr("x", "%f", translate.x + final_size.x/2),
+                      svg_attr("y", "%f", translate.y + final_size.y/2),
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("font-variant", "%s", "small-caps"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "12px"),
+                      svg_attr("fill",        "%s", "black"));
+        printf("All reads are %d-bp", data->max_length);
+        svg_end_tag("text");
+}
 
 }
 
@@ -496,7 +561,7 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
                        );
 
 
-    for(i = 20; i < 100; i+=20)
+    for(i = 20; i < 100; i+=20){
         svg_simple_tag("line", 7,
                        svg_attr("x1", "%d", i),
                        svg_attr("x2", "%d", i),
@@ -507,6 +572,20 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
                        svg_attr("stroke-width", "%d", 1)
 
         );
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f) rotate(-45)",
+                               (float)i,  original.y + 1,
+                               1/scale.x, 1/scale.y ));
+        printf("%d%%", i);
+        svg_end_tag("text");
+    }
 
     svg_simple_tag("line", 7,
                    svg_attr("x1", "%d", 0),
@@ -614,17 +693,6 @@ void draw_svg(sequence_data* forward,
 
     int i;
 
-    /* Add Vertial Axis */
-    /* for(i = 1; i < 10; i++){ */
-    /*     svg_simple_tag("line", 6, */
-    /*                    svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
-    /*                    svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
-    /*                    svg_attr("y1", "%f", PERF_SIZE/2.0), */
-    /*                    svg_attr("y2", "%f", (float)height - PERF_SIZE), */
-    /*                    svg_attr("stroke", "%s", "black"), */
-    /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
-    /*     ); */
-    /* } */
 
 
     svg_start_tag("text", 6,
@@ -639,29 +707,13 @@ void draw_svg(sequence_data* forward,
 
 
     draw_svg_length(forward, current_x, current_y);
-    draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE},
-                        (fpair_t){current_x - GRAPH_PAD, current_y});
-   
 
     current_y += PERF_SIZE + GRAPH_PAD;
 
-    /* add horizontal axis */
-    /* for(i = 1; i < 10; i++){ */
-    /*     svg_simple_tag("line", 6, */
-    /*                    svg_attr("x1", "%f", PERF_SIZE/2.0), */
-    /*                    svg_attr("x2", "%f", (float) GRAPH_WIDTH + PERF_SIZE), */
-    /*                    svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
-    /*                    svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
-    /*                    svg_attr("stroke", "%s", "black"), */
-    /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
-    /*     ); */
-    /* } */
 
 
 
     draw_svg_score(forward, GRAPH_PAD, current_y, 0);
-    draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y - GRAPH_PAD},
-                        (fpair_t){GRAPH_PAD, current_y - GRAPH_PAD});
 
 
 
@@ -670,8 +722,6 @@ void draw_svg(sequence_data* forward,
     current_y += GRAPH_HEIGHT + GRAPH_PAD;
 
     draw_svg_content(forward, current_x, current_y);
-    draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y},
-                        (fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE});
 
 
 
@@ -679,26 +729,12 @@ void draw_svg(sequence_data* forward,
     if(adapters_used){
         draw_svg_adapter(forward, current_x, current_y);
 
-        draw_svg_axis_label((fpair_t){current_x - GRAPH_PAD, current_y},
-                            (fpair_t){current_x - GRAPH_PAD, current_y + PERF_SIZE});
-
     }
 
     if(reverse){
         current_y = GRAPH_PAD;
         current_x += GRAPH_PAD + GRAPH_WIDTH + 40;
 
-        /* Add Vertial Axis */
-        /* for(i = 1; i < 10; i++){ */
-        /*     svg_simple_tag("line", 6, */
-        /*                    svg_attr("x1", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
-        /*                    svg_attr("x2", "%f", (float)current_x + i/10.0 * GRAPH_WIDTH), */
-        /*                    svg_attr("y1", "%f", PERF_SIZE/2.0), */
-        /*                    svg_attr("y2", "%f", (float)height - PERF_SIZE), */
-        /*                    svg_attr("stroke", "%s", "black"), */
-        /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
-        /*                    ); */
-        /* } */
 
     svg_start_tag("text", 6,
                       svg_attr("x", "%f", (GRAPH_WIDTH/2) + current_x),
@@ -714,18 +750,6 @@ void draw_svg(sequence_data* forward,
         draw_svg_length(reverse, current_x, current_y);
 
         current_y += PERF_SIZE + GRAPH_PAD;
-
-        /* add horizontal axis */
-        /* for(i = 1; i < 10; i++){ */
-        /*     svg_simple_tag("line", 6, */
-        /*                    svg_attr("x1", "%f", (float) current_x + GRAPH_WIDTH), */
-        /*                    svg_attr("x2", "%f", (float) current_x + GRAPH_WIDTH + PERF_SIZE), */
-        /*                    svg_attr("y1", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
-        /*                    svg_attr("y2", "%f", (float)current_y +  i/10.0 * GRAPH_HEIGHT), */
-        /*                    svg_attr("stroke", "%s", "black"), */
-        /*                    svg_attr("stroke-width", "%f", 0.5 + (i%2)) */
-        /*     ); */
-        /* } */
 
 
 
