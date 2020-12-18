@@ -213,6 +213,32 @@ void draw_svg_distro(int length, fpair_t* p,
                    svg_attr("stroke-width", "%f", 0.5));
 
 
+    /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 10 ticks */
+    int step = length/10;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
+
+
+
+    for (i = step; i <= length - step; i += step){
+        svg_simple_tag("line", 7,
+                       svg_attr("x1", "%f", i-0.5),
+                       svg_attr("y1", "%d", -2),
+                       svg_attr("x2", "%f", i-0.5),
+                       svg_attr("y2", "%d", 2),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-opacity", "%f", 0.5),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+                       );
+
+
+
+    }
+
+
 
     svg_end_tag("g");
 
@@ -782,7 +808,7 @@ void draw_svg_adapter(sequence_data * data, int translate_x, int translate_y){
     original_size = (fpair_t){data->max_length, 100};
     final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
     translate     = (fpair_t){translate_x, translate_y};
-    flip          = (fpair_t){0,0};
+    flip          = (fpair_t){0,1};
 
     draw_svg_distro(data->max_length+4, points,
                     original_size, final_size, flip,

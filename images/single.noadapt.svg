@@ -73,6 +73,15 @@ SRR1168757
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(52.000000 80.000000) scale(0.113333 -1.000000)">
 80%        </text>
         <line y1="0" y2="0" x1="0" x2="51.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <line x1="4.500000" y1="-2" x2="4.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="9.500000" y1="-2" x2="9.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="14.500000" y1="-2" x2="14.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="19.500000" y1="-2" x2="19.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="24.500000" y1="-2" x2="24.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="29.500000" y1="-2" x2="29.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="34.500000" y1="-2" x2="34.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="39.500000" y1="-2" x2="39.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="44.500000" y1="-2" x2="44.500000" y2="2" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
       </g>
       <text x="5.000000" y="95.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
 Length Distribution
