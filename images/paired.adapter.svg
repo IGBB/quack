@@ -137,8 +137,8 @@ Length Distribution
       </text>
     </g>
     <g transform="translate(5.000000 110.000000)">
-      <g transform="translate(100.000000 250.000000) scale(-1.000000 -6.097561)">
-        <rect width="100.000000" height="41.000000" fill="none"/>
+      <g transform="translate(100.000000 250.000000) scale(-2.000000 -6.097561)">
+        <rect width="50.000000" height="41.000000" fill="none"/>
         <rect y="0.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="1.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="2.000000" width="0.000835" x="0.000000" height="1.000000" fill="steelblue"/>
@@ -180,34 +180,34 @@ Length Distribution
         <rect y="38.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="39.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="40.000000" width="38.268398" x="0.000000" height="1.000000" fill="steelblue"/>
+        <line x1="10" x2="10" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(10.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
+10%        </text>
         <line x1="20" x2="20" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 42.000000) scale(-1.000000 -0.164000) rotate(-45)">
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
 20%        </text>
+        <line x1="30" x2="30" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(30.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
+30%        </text>
         <line x1="40" x2="40" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(40.000000 42.000000) scale(-1.000000 -0.164000) rotate(-45)">
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(40.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
 40%        </text>
-        <line x1="60" x2="60" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(60.000000 42.000000) scale(-1.000000 -0.164000) rotate(-45)">
-60%        </text>
-        <line x1="80" x2="80" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(80.000000 42.000000) scale(-1.000000 -0.164000) rotate(-45)">
-80%        </text>
         <line x1="0" x2="0" y1="0" y2="41.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 5.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 5.500000) scale(-0.500000 -0.164000)">
 5        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 10.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 10.500000) scale(-0.500000 -0.164000)">
 10        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 15.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 15.500000) scale(-0.500000 -0.164000)">
 15        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 20.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 20.500000) scale(-0.500000 -0.164000)">
 20        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 25.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 25.500000) scale(-0.500000 -0.164000)">
 25        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 30.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 30.500000) scale(-0.500000 -0.164000)">
 30        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 35.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 35.500000) scale(-0.500000 -0.164000)">
 35        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 40.500000) scale(-1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 40.500000) scale(-0.500000 -0.164000)">
 40        </text>
       </g>
       <text x="5.000000" y="245.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
@@ -1288,8 +1288,8 @@ Length Distribution
       </text>
     </g>
     <g transform="translate(1060.000000 110.000000)">
-      <g transform="translate(0.000000 250.000000) scale(1.000000 -6.097561)">
-        <rect width="100.000000" height="41.000000" fill="none"/>
+      <g transform="translate(0.000000 250.000000) scale(2.000000 -6.097561)">
+        <rect width="50.000000" height="41.000000" fill="none"/>
         <rect y="0.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="1.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="2.000000" width="0.000059" x="0.000000" height="1.000000" fill="steelblue"/>
@@ -1331,34 +1331,34 @@ Length Distribution
         <rect y="38.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="39.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="40.000000" width="34.536755" x="0.000000" height="1.000000" fill="steelblue"/>
+        <line x1="10" x2="10" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(10.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
+10%        </text>
         <line x1="20" x2="20" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 42.000000) scale(1.000000 -0.164000) rotate(-45)">
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
 20%        </text>
+        <line x1="30" x2="30" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(30.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
+30%        </text>
         <line x1="40" x2="40" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(40.000000 42.000000) scale(1.000000 -0.164000) rotate(-45)">
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(40.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
 40%        </text>
-        <line x1="60" x2="60" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(60.000000 42.000000) scale(1.000000 -0.164000) rotate(-45)">
-60%        </text>
-        <line x1="80" x2="80" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(80.000000 42.000000) scale(1.000000 -0.164000) rotate(-45)">
-80%        </text>
         <line x1="0" x2="0" y1="0" y2="41.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 5.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 5.500000) scale(0.500000 -0.164000)">
 5        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 10.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 10.500000) scale(0.500000 -0.164000)">
 10        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 15.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 15.500000) scale(0.500000 -0.164000)">
 15        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 20.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 20.500000) scale(0.500000 -0.164000)">
 20        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 25.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 25.500000) scale(0.500000 -0.164000)">
 25        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 30.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 30.500000) scale(0.500000 -0.164000)">
 30        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 35.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 35.500000) scale(0.500000 -0.164000)">
 35        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 40.500000) scale(1.000000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(50.000000 40.500000) scale(0.500000 -0.164000)">
 40        </text>
       </g>
       <text x="5.000000" y="245.000000" fill="#AAA" font-family="sans-serif" font-size="15px">

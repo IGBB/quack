@@ -552,11 +552,10 @@ void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
 }
 
 
-void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
+void draw_svg_length(sequence_data * data, int translate_x, int translate_y, float max){
     int i, different;
     fpair_t *points = malloc(sizeof(fpair_t[data->max_length]));
     fpair_t original_size, final_size, translate, flip;
-    float max;
 
     for(i = 0; i < data->max_length; i++){
         points[i].x = (float) i;
@@ -564,14 +563,11 @@ void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
     }
 
     different = 0;
-    max = 0.0;
     for(i = 0; i < data->max_length - 1; i++){
         points[i].y -= points[i+1].y;
 
         /* Set different flag if current point is greater than zero */
         different |= (points[i].y > 0.0);
-
-        if(max < points[i].y) max = points[i].y;
     }
 
     // check last point
@@ -580,7 +576,7 @@ void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
     // Adjust max to nearest ten
     max = ceil(max / 10.0) * 10.0;
 
-    original_size = (fpair_t){data->max_length, 100};
+    original_size = (fpair_t){data->max_length, max};
     final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
     translate     = (fpair_t){translate_x, translate_y};
     flip          = (fpair_t){0,1};
@@ -611,13 +607,13 @@ void draw_svg_length(sequence_data * data, int translate_x, int translate_y){
                       svg_attr("fill",        "%s", "black"));
         printf("All reads are %d-bp", data->max_length);
         svg_end_tag("text");
-}
+    }
 
 }
 
-void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int flipx){
+void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int flipx, float max){
     int i,j;
-    float total, max;
+    float total;
 
     fpair_t* points = calloc(data->max_score+1, sizeof(fpair_t));
     fpair_t original, final, translate, scale;
@@ -634,16 +630,14 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
         }
     }
 
-    max = 0.0;
     for(i = 0; i <= data->max_score ; i++){
         points[i].y = points[i].y * 100.0 / total;
-        if(max < points[i].y) max = points[i].y;
     }
 
     // Get next ten for max
     max = ceil(max/10.0)*10.0;
 
-    original = (fpair_t){100, data->max_score+1};
+    original = (fpair_t){max, data->max_score+1};
     final    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
     translate     = (fpair_t){translate_x, translate_y};
 
@@ -679,8 +673,15 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
                        svg_attr("fill",   "%s", "steelblue")
                        );
 
+    /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 10 ticks */
+    int step = max/4;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
 
-    for(i = 20; i < 100; i+=20){
+    for(i = step; i < max; i+=step){
         svg_simple_tag("line", 7,
                        svg_attr("x1", "%d", i),
                        svg_attr("x2", "%d", i),
@@ -720,7 +721,7 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
      * - at least 5
      * - divisible by 5,
      * - creates 10 ticks */
-    int step = data->max_score/10;
+    step = data->max_score/10;
     step = (step /5 )*5;
     if (step < 5) step = 5;
 
@@ -747,7 +748,7 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
                       svg_attr("fill",        "%s", "black"),
                       svg_attr("fill-opacity",        "%f", 0.5),
                       svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               100.0, i+0.5,
+                               max, i+0.5,
                                1.0/scale.x, 1.0/scale.y));
 
         printf("%d", i);
@@ -765,7 +766,7 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
                       svg_attr("fill",        "%s", "black"),
                       svg_attr("fill-opacity",        "%f", 0.5),
                       svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               100.0, data->max_score+0.5,
+                               max, data->max_score+0.5,
                                1.0/scale.x, 1.0/scale.y));
 
         printf("%d", data->max_score);
@@ -825,6 +826,54 @@ void draw_svg(sequence_data* forward,
               char* name,
               int adapters_used){
 
+    int i, j;
+    float max_length, max_score, max_content, max_adapter;
+
+    max_length = 0;
+    for(i = 0; i < forward->max_length; i++){
+        float current = forward->bases[i].length_count*100.0/forward->number_of_sequences;
+        if(current > max_length) max_length = current;
+    }
+    if(reverse){
+        for(i = 0; i < reverse->max_length; i++){
+            float current = reverse->bases[i].length_count*100.0/reverse->number_of_sequences;
+            if(current > max_length) max_length = current;
+        }
+    }
+
+    max_score = 0;
+    float*points = calloc(forward->max_score+1, sizeof(fpair_t));
+    float total = 0;
+    for(i = 0; i < forward->max_length; i++){
+        for(j =0; j <= forward->max_score; j++){
+            total += forward->bases[i].scores[j];
+            points[j] += forward->bases[i].scores[j];
+        }
+    }
+
+    for(i = 0; i <= forward->max_score ; i++){
+        float current = points[i] * 100.0 / total;
+        if(current > max_score) max_score = current;
+    }
+    free(points);
+
+    if(reverse){
+    points = calloc(reverse->max_score+1, sizeof(fpair_t));
+    total = 0;
+    for(i = 0; i < reverse->max_length; i++){
+        for(j =0; j <= reverse->max_score; j++){
+            total += reverse->bases[i].scores[j];
+            points[j] += reverse->bases[i].scores[j];
+        }
+    }
+
+    for(i = 0; i <= reverse->max_score ; i++){
+        float current = points[i] * 100.0 / total;
+        if(current > max_score) max_score = current;
+    }
+    free(points);
+    }
+
     /* Set width */
     int width = 615;
     if(reverse)
@@ -868,10 +917,6 @@ void draw_svg(sequence_data* forward,
     int current_x = GRAPH_PAD*2 + PERF_SIZE;
 
 
-    int i;
-
-
-
     svg_start_tag("text", 6,
                       svg_attr("x", "%f", (GRAPH_WIDTH/2) + PERF_SIZE + GRAPH_PAD),
                       svg_attr("y", "%d", 0),
@@ -883,14 +928,14 @@ void draw_svg(sequence_data* forward,
         svg_end_tag("text");
 
 
-    draw_svg_length(forward, current_x, current_y);
+    draw_svg_length(forward, current_x, current_y, max_length);
 
     current_y += PERF_SIZE + GRAPH_PAD;
 
 
 
 
-    draw_svg_score(forward, GRAPH_PAD, current_y, 0);
+    draw_svg_score(forward, GRAPH_PAD, current_y, 0, max_score);
 
 
 
@@ -924,13 +969,13 @@ void draw_svg(sequence_data* forward,
         svg_end_tag("text");
 
 
-        draw_svg_length(reverse, current_x, current_y);
+        draw_svg_length(reverse, current_x, current_y, max_length);
 
         current_y += PERF_SIZE + GRAPH_PAD;
 
 
 
-        draw_svg_score(reverse, current_x + GRAPH_WIDTH + GRAPH_PAD, current_y, 1);
+        draw_svg_score(reverse, current_x + GRAPH_WIDTH + GRAPH_PAD, current_y, 1, max_score);
         draw_svg_quality(reverse, current_x, current_y);
 
         current_y += GRAPH_HEIGHT + GRAPH_PAD;
