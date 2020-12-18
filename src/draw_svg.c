@@ -47,7 +47,7 @@ char * point_string(int length, fpair_t* p){
     svg_simple_tag("rect", 3,                                    \
                    svg_attr("width",  "%f", (float)(wdth)),      \
                    svg_attr("height", "%f", (float)(hght)),      \
-                   svg_attr("fill", "%s", "#FFF")                \
+                   svg_attr("fill", "%s", "none")                \
                    )
 
 #define svg_start_label(posx, posy)                                     \
@@ -314,7 +314,28 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
 
     }
 
+        /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 10 ticks */
+    int step = data->max_length/10;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
 
+
+
+    for (i = step; i <= data->max_length - step; i += step){
+        svg_simple_tag("line", 8,
+                       svg_attr("x1", "%f", i-0.5),
+                       svg_attr("y1", "%d", -1),
+                       svg_attr("x2", "%f", i-0.5),
+                       svg_attr("y2", "%f", max),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-opacity", "%f", 0.25),
+                       svg_attr("stroke-dasharray", "%d %d", 1, 9),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+                       );
+    }
 
 
     svg_end_tag("g");
@@ -327,6 +348,18 @@ void draw_svg_content(sequence_data* data, int translate_x, int translate_y){
     printf("%s\n", "Base Content Percentage");
     svg_end_label();
 
+
+    for(i = 0; i<4; i++){
+        svg_start_tag("text", 5,
+                      svg_attr("x",           "%f", -15.0),
+                      svg_attr("y",           "%f", PERF_SIZE * (i+1)/ 6.0),
+                      svg_attr("fill",        "%s", ratio_colors[i]),
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("font-size",   "%s", "15px")
+                      );
+        printf("%c", rev_lookup[i] );
+        svg_end_tag("text");
+    }
 
     svg_end_tag("g");
 
@@ -419,6 +452,66 @@ void draw_svg_quality(sequence_data* data, int translate_x, int translate_y){
 
     free(points);
     free(p);
+
+
+    /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 10 ticks */
+    int step = data->max_length/10;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
+
+    /*  invert scale */
+    fpair_t scale = { 1.0 / (GRAPH_WIDTH/data->max_length),
+                     -1.0 / (GRAPH_HEIGHT/(data->max_score+1)) };
+
+
+    for (i = step; i <= data->max_length - step; i += step){
+        svg_simple_tag("line", 8,
+                       svg_attr("x1", "%f", i-0.5),
+                       svg_attr("y1", "%d", -1),
+                       svg_attr("x2", "%f", i-0.5),
+                       svg_attr("y2", "%d", data->max_score+2),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-opacity", "%f", 0.25),
+                       svg_attr("stroke-dasharray", "%d %d", 1, 9),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+                       );
+
+
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               i-0.5, -2.0,
+                               scale.x, scale.y));
+
+        printf("%d", i);
+        svg_end_tag("text");
+
+
+    }
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%d %f) scale(%f %f)",
+                               data->max_length, -2.0,
+                               scale.x, scale.y));
+
+        printf("%d", data->max_length);
+        svg_end_tag("text");
+
 
 
     svg_end_tag("g");
@@ -595,6 +688,64 @@ void draw_svg_score(sequence_data * data, int translate_x, int translate_y, int 
                    svg_attr("stroke", "%s", "black"),
                    svg_attr("vector-effect", "%s", "non-scaling-stroke"),
                    svg_attr("stroke-width", "%f", 0.5));
+
+
+    /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 10 ticks */
+    int step = data->max_score/10;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
+
+    /*  loop through each step. excluded last step if too close to max score */
+    for (i = step; i < data->max_score - (step/2); i += step){
+        /* svg_simple_tag("line", 8, */
+        /*                svg_attr("x1", "%f", i-0.5), */
+        /*                svg_attr("y1", "%d", -1), */
+        /*                svg_attr("x2", "%f", i-0.5), */
+        /*                svg_attr("y2", "%d", data->max_score+2), */
+        /*                svg_attr("stroke", "%s", "black"), */
+        /*                svg_attr("stroke-opacity", "%f", 0.25), */
+        /*                svg_attr("stroke-dasharray", "%d %d", 1, 9), */
+        /*                svg_attr("vector-effect", "%s", "non-scaling-stroke") */
+        /*                ); */
+
+
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               100.0, i+0.5,
+                               1.0/scale.x, 1.0/scale.y));
+
+        printf("%d", i);
+        svg_end_tag("text");
+
+
+    }
+    /* add max score label */
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               100.0, data->max_score+0.5,
+                               1.0/scale.x, 1.0/scale.y));
+
+        printf("%d", data->max_score);
+        svg_end_tag("text");
+
+
 
 
     svg_end_tag("g");
