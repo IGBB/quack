@@ -115,7 +115,7 @@ void draw_svg_distro(int length, fpair_t* p,
      * - at least 5
      * - divisible by 5,
      * - creates 5 ticks */
-    int step = original.y/5;
+    int step = original.y/4;
     step = (step /5 )*5;
     if (step < 5) step = 5;
 
@@ -650,17 +650,6 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
 
     /*  loop through each step. excluded last step if too close to max score */
     for (i = step; i < data->max_score - (step/2); i += step){
-        /* svg_simple_tag("line", 8, */
-        /*                svg_attr("x1", "%f", i-0.5), */
-        /*                svg_attr("y1", "%d", -1), */
-        /*                svg_attr("x2", "%f", i-0.5), */
-        /*                svg_attr("y2", "%d", data->max_score+2), */
-        /*                svg_attr("stroke", "%s", "black"), */
-        /*                svg_attr("stroke-opacity", "%f", 0.25), */
-        /*                svg_attr("stroke-dasharray", "%d %d", 1, 9), */
-        /*                svg_attr("vector-effect", "%s", "non-scaling-stroke") */
-        /*                ); */
-
 
         svg_start_tag("text", 8,
                       svg_attr("font-family", "%s", "sans-serif"),
@@ -671,7 +660,7 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
                       svg_attr("fill",        "%s", "black"),
                       svg_attr("fill-opacity",        "%f", 0.5),
                       svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               -1.0, i-0.5,
+                               -1.0, i+0.5,
                                1.0/scale.x, 1.0/scale.y));
 
         printf("%d", i);
@@ -692,7 +681,7 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
                                -1.0, data->max_score+0.5,
                                1.0/scale.x, 1.0/scale.y));
 
-        printf("%d", data->max_score+1);
+        printf("%d", data->max_score);
         svg_end_tag("text");
 
 
