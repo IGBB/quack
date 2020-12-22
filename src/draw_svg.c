@@ -25,656 +25,9 @@ typedef struct {
     float x,y;
 } fpair_t;
 
-char * point_string(int length, fpair_t* p){
-    char * points, *cur_pos;
-    size_t max = 0;
-    int i = 0;
-
-    /* Find lenght of each point string */
-    for(i = 0; i < length; i++)
-        max += snprintf(NULL, 0, " %.2f,%.2f ", p[i].x, p[i].y);
-    max++;
-
-    /* Alloc enough memory and create string */
-    points = malloc(sizeof(char[max]));
-    cur_pos = points;
-    for(i = 0; i < length; i++){
-        max = sprintf(cur_pos, " %.2f,%.2f ", p[i].x, p[i].y);
-        cur_pos += max;
-    }
-
-    return points;
-}
-
-
-#define svg_start_label(posx, posy)                                     \
-    svg_start_tag("text", 5,                                            \
-                  svg_attr("x",           "%f", (float)(posx)),         \
-                  svg_attr("y",           "%f", (float)(posy)),         \
-                  svg_attr("fill",        "%s", "#AAA"),                \
-                  svg_attr("font-family", "%s", "sans-serif"),          \
-                  svg_attr("font-size",   "%s", "15px")                 \
-    )
-
-#define svg_end_label() svg_end_tag("text")
-
-
-int calc_step(float min, float max, int breaks){
-    float length = max - min;
-    /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 5 ticks */
-    int step = length/breaks;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
-
-    return step;
-}
-
-
-void draw_svg_distro(int length, fpair_t* p,
-                     fpair_t original, fpair_t final,
-                     fpair_t flip, fpair_t translate,
-                     float rotate, char* label){
-
-    fpair_t scale = (fpair_t){final.x/original.x, final.y/original.y};
-    fpair_t scale_translate = (fpair_t){0,0};
-
-    int i;
-
-    if(flip.x){
-        scale.x *= -1;
-        scale_translate.x = final.x;
-    }
-    if(flip.y){
-        scale.y *= -1;
-        scale_translate.y = final.y;
-    }
-
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f) rotate(%f)",
-                                   scale_translate.x, scale_translate.y,
-                                   scale.x, scale.y, rotate
-                  )
-    );
-
-
-
-    for( i = 0; i < length; i++  )
-        svg_simple_tag("rect",5,
-                       svg_attr("x",       "%f", p[i].x),
-                       svg_attr("height",  "%f", p[i].y),
-                       svg_attr("y",       "%f", 0.0),
-                       svg_attr("width",   "%f", 1.1),
-                       svg_attr("fill",   "%s", "steelblue")
-                       );
-
-
-    int step = calc_step(0,original.y,4);
-
-    for(i = step; i < original.y; i+=step){
-        svg_simple_tag("line", 7,
-                       svg_attr("y1", "%d", i),
-                       svg_attr("y2", "%d", i),
-                       svg_attr("x1", "%d", 0),
-                       svg_attr("x2", "%f", original.x),
-                       svg_attr("stroke", "%s", "white"),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                       svg_attr("stroke-width", "%f", 1.0)
-
-                       );
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", "start"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               original.x + 1, (float)i,
-                               1/scale.x, 1/scale.y ));
-        printf("%d%%", i);
-        svg_end_tag("text");
-    }
-    svg_simple_tag("line", 7,
-                   svg_attr("y1", "%d", 0),
-                   svg_attr("y2", "%d", 0),
-                   svg_attr("x1", "%d", 0),
-                   svg_attr("x2", "%f", original.x),
-                   svg_attr("stroke", "%s", "black"),
-                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                   svg_attr("stroke-width", "%f", 0.5));
-
-
-    /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 10 ticks */
-    step = calc_step(0, length, 10);
-
-    for (i = step; i <= length - step; i += step){
-        svg_simple_tag("line", 7,
-                       svg_attr("x1", "%f", i-0.5),
-                       svg_attr("y1", "%f", -2.0/scale.y),
-                       svg_attr("x2", "%f", i-0.5),
-                       svg_attr("y2", "%f", 2.0/scale.y),
-                       svg_attr("stroke", "%s", "black"),
-                       svg_attr("stroke-opacity", "%f", 0.5),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
-                       );
-
-
-
-    }
-
-
-
-    svg_end_tag("g");
-
-    /* Add graph label */
-    svg_start_label(GRAPH_PAD, final.y - GRAPH_PAD);
-    printf("%s\n", label);
-    svg_end_label();
-
-    svg_end_tag("g");
-
-}
-
-
-
-void draw_svg_content(sequence_data* data, fpair_t translate, float max){
-
-    unsigned int i, j;
-
-    uint64_t len;
-    char * points;
-
-    fpair_t *perc[4];
-    for(i = 0; i < 4; i++){
-        perc[i] = malloc(sizeof(fpair_t[data->max_length]));
-    }
-
-    /* Calculate cumulative percentage of base content */
-    for(i = 0; i < data->max_length; i++){
-        len = data->bases[i].length_count;
-        for (j = 0; j < 4; j++) {
-            perc[j][i].x = i +0.5;
-            perc[j][i].y = data->bases[i].content[j] * 100.0 / len;
-        }
-    }
-
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
-    svg_start_tag("g", 1,
-                  svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                           0.0, PERF_SIZE,
-                           GRAPH_WIDTH/data->max_length, -1 * PERF_SIZE/max)
-
-                  );
-
-
-
-    for (i = 10; i < max; i += 10){
-                svg_simple_tag("line", 7,
-                       svg_attr("y1", "%d", i),
-                       svg_attr("y2", "%d", i),
-                       svg_attr("x1", "%d", 0),
-                       svg_attr("x2", "%d", data->max_length),
-                       svg_attr("stroke", "%s", "#AAA"),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                       svg_attr("stroke-width", "%f", 0.5));
-    }
-
-    /* Draw each distribution */
-    for(i = 0; i < 4; i++){
-
-        points = point_string(data->max_length, perc[i]);
-
-        svg_simple_tag("polyline", 5,
-                      svg_attr("points", "%s", points),
-                       svg_attr("fill", "%s", "none"),
-                       svg_attr("stroke", "%s", ratio_colors[i]),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                       svg_attr("stroke-width", "%f", 2.0)
-        );
-
-        free(points);
-
-        free(perc[i]);
-    }
-
-
-    for (i = 10; i < max; i += 10){
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", "start"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%d %d) scale(%f %f)",
-                               data->max_length + 1, i,
-                           1.0/(GRAPH_WIDTH/data->max_length), -1.0/(PERF_SIZE/max)));
-        printf("%d%%", i);
-        svg_end_tag("text");
-
-
-    }
-
-    int step = calc_step(0, data->max_length, 10);
-
-
-
-    for (i = step; i <= data->max_length - step; i += step){
-        svg_simple_tag("line", 8,
-                       svg_attr("x1", "%f", i-0.5),
-                       svg_attr("y1", "%d", -1),
-                       svg_attr("x2", "%f", i-0.5),
-                       svg_attr("y2", "%f", max),
-                       svg_attr("stroke", "%s", "black"),
-                       svg_attr("stroke-opacity", "%f", 0.25),
-                       svg_attr("stroke-dasharray", "%d %d", 1, 9),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
-                       );
-    }
-
-
-    svg_end_tag("g");
-
-
-
-
-    /* Add graph label */
-    svg_start_label(GRAPH_PAD, PERF_SIZE - GRAPH_PAD);
-    printf("%s\n", "Base Content Percentage");
-    svg_end_label();
-
-
-    for(i = 0; i<4; i++){
-        svg_start_tag("text", 5,
-                      svg_attr("x",           "%f", -15.0),
-                      svg_attr("y",           "%f", PERF_SIZE * (i+1)/ 6.0),
-                      svg_attr("fill",        "%s", ratio_colors[i]),
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("font-size",   "%s", "15px")
-                      );
-        printf("%c", rev_lookup[i] );
-        svg_end_tag("text");
-    }
-
-    svg_end_tag("g");
-
-}
-
-
-void draw_svg_quality(sequence_data* data, fpair_t translate){
-    unsigned int i;
-    int j;
-    float perc;
-    fpair_t *p;
-
-    p = malloc(sizeof(fpair_t[data->max_length]));
-
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
-    svg_start_tag("g", 1,
-                  svg_attr("transform", "translate(0, %f) scale(%f %f)",
-                           GRAPH_HEIGHT,
-                           GRAPH_WIDTH/data->max_length,
-                           -1.0 * GRAPH_HEIGHT/(data->max_score+1))
-                  );
-
-    int score_delineation[4] = {0,       20,       28, data->max_score+1};
-    char* score_color[4]      = {"", "#d73027","#ffffbf",         "#1a9850"};
-
-    for(i = 1; i <= 3; i++){
-        int height = score_delineation[i] - score_delineation[i-1];
-        svg_simple_tag("rect", 5,
-                       svg_attr("y", "%d", score_delineation[i-1]),
-                       svg_attr("width", "%d", data->max_length),
-                       svg_attr("height", "%d", height),
-                       svg_attr("fill", "%s", score_color[i]),
-                       svg_attr("fill-opacity", "%f", 0.1)
-                       );
-    }
-
-    /* Draw each heatmap */
-    for(i = 0; i < data->max_length; i++){
-        p[i].x = i + 0.5;
-        p[i].y = data->avg_score[i];
-
-        for(j = data->min_score; j <= data->max_score; j++){
-            if(data->bases[i].scores[j] == 0)
-                continue;
-            perc =  ((float) data->bases[i].scores[j] )/data->bases[i].length_count;
-            svg_simple_tag("rect", 8,
-                       svg_attr("x",      "%d", i),
-                       svg_attr("y",      "%d", j),
-                       svg_attr("fill-opacity", "%f", perc),
-                       svg_attr("width",  "%d", 1),
-                       svg_attr("height", "%d", 1),
-                       svg_attr("stroke", "%s", "none"),
-                       svg_attr("stroke-width", "%d", 0),
-                       svg_attr("fill",   "%s", "black")
-                       );
-        }
-    }
-
-
-    char* points = point_string(data->max_length, p);
-
-    svg_simple_tag("polyline", 6,
-                   /* Since coordinates for lines and rectangles don't work the same; set the
-                      first point of each line to start off graph. Then, add 0.5 to the x of each
-                      point. Finally, end the line off graph. */
-                   svg_attr("points", "%s", points),
-                   svg_attr("fill", "%s", "none"),
-                   svg_attr("stroke", "%s", "black"),
-                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                   svg_attr("stroke-width", "%f", 1.0),
-                   svg_attr("stroke-opacity", "%f", 0.6 )
-    );
-
-    free(points);
-    free(p);
-
-
-    int step = calc_step(0, data->max_length, 10);
-
-    /*  invert scale */
-    fpair_t scale = { 1.0 / (GRAPH_WIDTH/data->max_length),
-                     -1.0 / (GRAPH_HEIGHT/(data->max_score+1)) };
-
-
-    for (i = step; i <= data->max_length - step; i += step){
-        svg_simple_tag("line", 8,
-                       svg_attr("x1", "%f", i-0.5),
-                       svg_attr("y1", "%d", -1),
-                       svg_attr("x2", "%f", i-0.5),
-                       svg_attr("y2", "%d", data->max_score+2),
-                       svg_attr("stroke", "%s", "black"),
-                       svg_attr("stroke-opacity", "%f", 0.25),
-                       svg_attr("stroke-dasharray", "%d %d", 1, 9),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
-                       );
-
-
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", "middle"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               i-0.5, -2.0,
-                               scale.x, scale.y));
-
-        printf("%d", i);
-        svg_end_tag("text");
-
-
-    }
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", "middle"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               data->max_length-0.5, -2.0,
-                               scale.x, scale.y));
-
-        printf("%" PRIu64, data->max_length);
-        svg_end_tag("text");
-
-
-
-    svg_end_tag("g");
-
-    /* Add graph label */
-    svg_start_label(GRAPH_PAD, GRAPH_HEIGHT - GRAPH_PAD);
-    printf("%s\n", "Per Base Sequence Quality");
-    svg_end_label();
-
-    svg_end_tag("g");
-
-}
-
-
-void draw_svg_length(sequence_data * data, fpair_t translate, float max){
-    unsigned int i, different;
-    fpair_t *points = malloc(sizeof(fpair_t[data->max_length]));
-    fpair_t original_size, final_size, flip;
-
-    for(i = 0; i < data->max_length; i++){
-        points[i].x = (float) i;
-        points[i].y = data->bases[i].length_count*100.0/data->number_of_sequences;
-    }
-
-    different = 0;
-    for(i = 0; i < data->max_length - 1; i++){
-        points[i].y -= points[i+1].y;
-
-        /* Set different flag if current point is greater than zero */
-        different |= (points[i].y > 0.0);
-    }
-
-
-    original_size = (fpair_t){data->max_length, max};
-    final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
-    flip          = (fpair_t){0,1};
-
-    draw_svg_distro(data->max_length, points,
-                    original_size, final_size, flip,
-                    translate, 0.0, "Length Distribution");
-
-    free(points);
-
-    if(!different){
-        svg_simple_tag("rect", 6,
-                       svg_attr("x", "%f", translate.x),
-                       svg_attr("y", "%f", translate.y),
-                       svg_attr("width", "%f", final_size.x),
-                       svg_attr("height", "%f", final_size.y),
-                       svg_attr("fill", "%s", "#CCC"),
-                       svg_attr("opacity", "%f", 0.5)
-                       );
-
-        svg_start_tag("text", 7,
-                      svg_attr("x", "%f", translate.x + final_size.x/2),
-                      svg_attr("y", "%f", translate.y + final_size.y/2),
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("font-variant", "%s", "small-caps"),
-                      svg_attr("text-anchor", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "12px"),
-                      svg_attr("fill",        "%s", "black"));
-        printf("All reads are %" PRIu64 "-bp", data->max_length);
-        svg_end_tag("text");
-    }
-
-}
-
-void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float max){
-    int i;
-    unsigned int j;
-    float total;
-
-    fpair_t* points = calloc(data->max_score+1, sizeof(fpair_t));
-    fpair_t original, final, scale;
-
-    for(i = 0; i <= data->max_score; i++){
-        points[i].x = i;
-        points[i].y = 0; 
-    }
-
-    for(j = 0; j < data->max_length; j++){
-        for(i =0; i <= data->max_score; i++){
-            total += data->bases[j].scores[i];
-            points[i].y += data->bases[j].scores[i];
-        }
-    }
-
-    for(i = 0; i <= data->max_score ; i++){
-        points[i].y = points[i].y * 100.0 / total;
-    }
-
-    original = (fpair_t){max, data->max_score+1};
-    final    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
-
-    scale = (fpair_t){final.x/original.x, final.y/original.y};
-    fpair_t scale_translate = (fpair_t){0,0};
-
-
-    if(!flipx){
-        scale.x *= -1;
-        scale_translate.x = final.x;
-    }
-
-    scale.y *= -1;
-    scale_translate.y = final.y;
-
-
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                                   scale_translate.x, scale_translate.y,
-                                   scale.x, scale.y
-                  )
-    );
-
-
-
-    for( i = 0; i <= data->max_score; i++  )
-        svg_simple_tag("rect",5,
-                       svg_attr("y",      "%f", points[i].x),
-                       svg_attr("width",  "%f", points[i].y),
-                       svg_attr("x",      "%f", 0.0),
-                       svg_attr("height", "%f", 1.0),
-                       svg_attr("fill",   "%s", "steelblue")
-                       );
-
-    int step = calc_step(0, max, 4);
-
-    for(i = step; i < max; i+=step){
-        svg_simple_tag("line", 7,
-                       svg_attr("x1", "%d", i),
-                       svg_attr("x2", "%d", i),
-                       svg_attr("y1", "%d", 0),
-                       svg_attr("y2", "%d", data->max_score+1),
-                       svg_attr("stroke", "%s", "white"),
-                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                       svg_attr("stroke-width", "%d", 1)
-
-        );
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", "start"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%f %f) scale(%f %f) rotate(-45)",
-                               (float)i,  original.y + 1,
-                               1/scale.x, 1/scale.y ));
-        printf("%d%%", i);
-        svg_end_tag("text");
-    }
-
-    svg_simple_tag("line", 7,
-                   svg_attr("x1", "%d", 0),
-                   svg_attr("x2", "%d", 0),
-                   svg_attr("y1", "%d", 0),
-                   svg_attr("y2", "%f", original.y),
-                   svg_attr("stroke", "%s", "black"),
-                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
-                   svg_attr("stroke-width", "%f", 0.5));
-
-
-    step = calc_step(0, data->max_score, 10);
-
-    /*  loop through each step. excluded last step if too close to max score */
-    for (i = step; i < data->max_score - (step/2); i += step){
-
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", (flipx)?"end":"start"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               -1.0, i+0.5,
-                               1.0/scale.x, 1.0/scale.y));
-
-        printf("%d", i);
-        svg_end_tag("text");
-
-
-    }
-    /* add max score label */
-        svg_start_tag("text", 8,
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", (flipx)?"end":"start"),
-                      svg_attr("dominant-baseline", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "8px"),
-                      svg_attr("vector-effect", "%s", "non-scaling-size"),
-                      svg_attr("fill",        "%s", "black"),
-                      svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
-                               -1.0, data->max_score+0.5,
-                               1.0/scale.x, 1.0/scale.y));
-
-        printf("%d", data->max_score);
-        svg_end_tag("text");
-
-
-
-
-    svg_end_tag("g");
-
-    /* Add graph label */
-    svg_start_label(GRAPH_PAD, final.y - GRAPH_PAD);
-    printf("<tspan dy=\"-15\">Score</tspan>"
-           "<tspan dy=\"15\" x=\"5\">Distribution</tspan>");
-    svg_end_label();
-
-    svg_end_tag("g");
-
-
-    free(points);
-
-}
-
-void draw_svg_adapter(sequence_data * data, fpair_t translate, float max){
-    unsigned int i;
-    fpair_t *points = malloc(sizeof(fpair_t[data->max_length]));
-    fpair_t original_size, final_size, flip;
-
-    for(i = 0; i < data->max_length; i++){
-        points[i].x = (float) i;
-        points[i].y = data->bases[i].kmer_count*100.0/data->number_of_sequences;
-    }
-
-    original_size = (fpair_t){data->max_length, max};
-    final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
-    flip          = (fpair_t){0,1};
-
-    draw_svg_distro(data->max_length, points,
-                    original_size, final_size, flip,
-                    translate, 0.0, "Adapter Distribution");
-
-    free(points);
-
-
-}
-
-/*  Generic find max function */
+/******************************************************************************/
+/*            Generic find max function                                       */
+/******************************************************************************/
 float get_max(sequence_data* f, sequence_data* r,
               int (*stop)(sequence_data*),
               float (*accessor)(sequence_data*, int)){
@@ -698,7 +51,9 @@ float get_max(sequence_data* f, sequence_data* r,
     return max;
 }
 
-/*  Iterator stops */
+/******************************************************************************/
+/*            Iterator Stops function                                        */
+/******************************************************************************/
 inline int length_stop(sequence_data* data){
     return data->max_length;
 }
@@ -750,6 +105,626 @@ inline float content_accessor(sequence_data* data, int i){
 float get_max_content(sequence_data* f, sequence_data* r){
     return get_max(f,r,length_stop,content_accessor);
 }
+
+
+
+char * point_string(int length, fpair_t* p){
+    char * points, *cur_pos;
+    size_t max = 0;
+    int i = 0;
+
+    /* Find lenght of each point string */
+    for(i = 0; i < length; i++)
+        max += snprintf(NULL, 0, " %.2f,%.2f ", p[i].x, p[i].y);
+    max++;
+
+    /* Alloc enough memory and create string */
+    points = malloc(sizeof(char[max]));
+    cur_pos = points;
+    for(i = 0; i < length; i++){
+        max = sprintf(cur_pos, " %.2f,%.2f ", p[i].x, p[i].y);
+        cur_pos += max;
+    }
+
+    return points;
+}
+
+
+#define svg_start_label(posx, posy)                                     \
+    svg_start_tag("text", 5,                                            \
+                  svg_attr("x",           "%f", (float)(posx)),         \
+                  svg_attr("y",           "%f", (float)(posy)),         \
+                  svg_attr("fill",        "%s", "#AAA"),                \
+                  svg_attr("font-family", "%s", "sans-serif"),          \
+                  svg_attr("font-size",   "%s", "15px")                 \
+    )
+
+#define svg_end_label() svg_end_tag("text")
+
+
+int calc_step(float min, float max, int breaks){
+    float length = max - min;
+    /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 5 ticks */
+    int step = length/breaks;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
+
+    return step;
+}
+
+void xaxis_length_ticks( fpair_t size, fpair_t scale){
+    int step = calc_step(0,size.x,10);
+    int i;
+
+    svg_simple_tag("line", 7,
+                   svg_attr("y1", "%d", 0),
+                   svg_attr("y2", "%d", 0),
+                   svg_attr("x1", "%d", 0),
+                   svg_attr("x2", "%f", size.x),
+                   svg_attr("stroke", "%s", "black"),
+                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                   svg_attr("stroke-width", "%f", 0.5));
+
+
+    for (i = step; i <= size.x - step; i += step){
+        svg_simple_tag("line", 7,
+                       svg_attr("x1", "%f", i-0.5),
+                       svg_attr("y1", "%f", -2.0 / scale.y),
+                       svg_attr("x2", "%f", i-0.5),
+                       svg_attr("y2", "%f", 2.0 / scale.y),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-opacity", "%f", 0.5),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+        );
+    }
+
+    svg_simple_tag("line", 7,
+                       svg_attr("x1", "%f", size.x-0.5),
+                       svg_attr("y1", "%f", -2.0 / scale.y),
+                       svg_attr("x2", "%f", size.x-0.5),
+                       svg_attr("y2", "%f", 2.0 / scale.y),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-opacity", "%f", 0.5),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+        );
+}
+
+void yaxis_score_labels( fpair_t size, fpair_t scale){
+
+    int i, step = calc_step(0, size.y, 10);
+
+    /*  loop through each step. excluded last step if too close to max score */
+    for (i = step; i < size.y - (step/2); i += step){
+
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               -4.0, i+0.5,
+                               1.0/scale.x, 1.0/scale.y));
+
+        printf("%d", i);
+        svg_end_tag("text");
+
+
+    }
+    /* add max score label */
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               -4.0, size.y-0.5,
+                               1.0/scale.x, 1.0/scale.y));
+
+        printf("%d", (int)size.y-1);
+        svg_end_tag("text");
+
+    svg_simple_tag("line", 7,
+                   svg_attr("x1", "%d", 0),
+                   svg_attr("x2", "%d", 0),
+                   svg_attr("y1", "%d", 0),
+                   svg_attr("y2", "%f", size.y),
+                   svg_attr("stroke", "%s", "black"),
+                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                   svg_attr("stroke-width", "%f", 0.5));
+
+}
+
+
+void xaxis_percent_labels( fpair_t size, fpair_t scale){
+    int i, step = calc_step(0, size.x, 4);
+
+    for(i = step; i < size.x; i+=step){
+        svg_simple_tag("line", 7,
+                       svg_attr("x1", "%d", i),
+                       svg_attr("x2", "%d", i),
+                       svg_attr("y1", "%d", 0),
+                       svg_attr("y2", "%d", size.y),
+                       svg_attr("stroke", "%s", "white"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%d", 1)
+
+        );
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f) rotate(-45)",
+                               (float)i,  size.y + 1,
+                               1/scale.x, 1/scale.y ));
+        printf("%d%%", i);
+        svg_end_tag("text");
+    }
+
+}
+
+
+void yaxis_percent_labels( fpair_t size, fpair_t scale){
+    int i, step = calc_step(0,size.y,4);
+
+    for(i = step; i < size.y; i+=step){
+        svg_simple_tag("line", 7,
+                       svg_attr("y1", "%d", i),
+                       svg_attr("y2", "%d", i),
+                       svg_attr("x1", "%d", 0),
+                       svg_attr("x2", "%f", size.x),
+                       svg_attr("stroke", "%s", "white"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 1.0)
+
+                       );
+        svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               size.x + 1, (float)i,
+                               1/scale.x, 1/scale.y ));
+        printf("%d%%", i);
+        svg_end_tag("text");
+    }
+
+}
+
+void draw_svg_graph(sequence_data* data,
+                     fpair_t original, fpair_t final,
+                     fpair_t flip, fpair_t translate,
+                     void (*graph_points)(sequence_data*),
+                     void (*xaxis)(fpair_t, fpair_t),
+                     void (*yaxis)(fpair_t, fpair_t),
+                     char* label){
+
+    fpair_t scale = (fpair_t){final.x/original.x, final.y/original.y};
+    fpair_t scale_translate = (fpair_t){0,0};
+
+    int i;
+
+    if(flip.x){
+        scale.x *= -1;
+        scale_translate.x = final.x;
+    }
+    if(flip.y){
+        scale.y *= -1;
+        scale_translate.y = final.y;
+    }
+
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
+    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                                   scale_translate.x, scale_translate.y,
+                                   scale.x, scale.y
+                  )
+    );
+
+
+
+    (*graph_points)(data);
+
+    if(xaxis != NULL) (*xaxis)(original, scale);
+    if(yaxis != NULL) (*yaxis)(original, scale);
+
+    svg_end_tag("g");
+
+    /* Add graph label */
+    svg_start_label(GRAPH_PAD, final.y - GRAPH_PAD);
+    printf("%s\n", label);
+    svg_end_label();
+
+    svg_end_tag("g");
+
+}
+
+void draw_histo_length(sequence_data* data){
+    int i;
+    float y;
+    for(i = 0; i < data->max_length-1; i++){
+        y = (data->bases[i].length_count - data->bases[i+1].length_count);
+        y = y*100.0/data->number_of_sequences;
+
+        svg_simple_tag("rect", 5,
+                       svg_attr("x", "%d", i),
+                       svg_attr("height", "%f", y),
+                       svg_attr("width", "%f", 1.1),
+                       svg_attr("y", "%d", 0),
+                       svg_attr("fill", "%s", "steelblue")
+                       );
+
+
+    }
+
+    /*  Draw last bar */
+    y = (data->bases[i].length_count)*100.0/data->number_of_sequences;
+
+    svg_simple_tag("rect", 5,
+                   svg_attr("x", "%d", i),
+                   svg_attr("height", "%f", y),
+                   svg_attr("width", "%f", 1.1),
+                   svg_attr("y", "%d", 0),
+                   svg_attr("fill", "%s", "steelblue")
+    );
+
+}
+
+void draw_svg_length(sequence_data * data, fpair_t translate, float max){
+    unsigned int i;
+    fpair_t original, final, flip;
+
+
+
+
+    original = (fpair_t){data->max_length, max};
+    final    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
+    flip     = (fpair_t){0,1};
+
+    draw_svg_graph(data, original, final, flip,
+                    translate, draw_histo_length,
+                    xaxis_length_ticks, yaxis_percent_labels, "Length Distribution");
+
+    for(i = 0; i < data->max_length - 1; i++){
+        /* Stop if current point is different than next */
+        if(data->bases[i].length_count != data->bases[i+1].length_count)
+            break;
+    }
+
+    if(i >= data->max_length -1){
+        svg_simple_tag("rect", 6,
+                       svg_attr("x", "%f", translate.x),
+                       svg_attr("y", "%f", translate.y),
+                       svg_attr("width", "%f", final.x),
+                       svg_attr("height", "%f", final.y),
+                       svg_attr("fill", "%s", "#CCC"),
+                       svg_attr("opacity", "%f", 0.5)
+                       );
+
+        svg_start_tag("text", 7,
+                      svg_attr("x", "%f", translate.x + final.x/2),
+                      svg_attr("y", "%f", translate.y + final.y/2),
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("font-variant", "%s", "small-caps"),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "12px"),
+                      svg_attr("fill",        "%s", "black"));
+        printf("All reads are %" PRIu64 "-bp", data->max_length);
+        svg_end_tag("text");
+    }
+
+}
+
+void draw_line_content(sequence_data* data){
+    uint64_t i;
+    int j;
+    char * points_string;
+
+    fpair_t *points = calloc(data->max_length, sizeof(fpair_t));
+
+    /* Calculate cumulative percentage of base content */
+    for(j = 0; j < 4; j++){
+        for(i = 0; i < data->max_length; i++){
+            points[i].x = i +0.5;
+            points[i].y = data->bases[i].content[j] * 100.0 / data->bases[i].length_count;
+        }
+       
+        points_string = point_string(data->max_length, points);
+
+        svg_simple_tag("polyline", 5,
+                      svg_attr("points", "%s", points_string),
+                       svg_attr("fill", "%s", "none"),
+                       svg_attr("stroke", "%s", ratio_colors[j]),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 2.0)
+        );
+
+        free(points_string);
+
+    }
+
+    free(points);
+}
+
+void xaxis_length_dotted(fpair_t size, fpair_t scale){
+    int i, step = calc_step(0, size.x, 10);
+    for (i = step; i <= size.x - step; i += step){
+        svg_simple_tag("line", 8,
+                       svg_attr("x1", "%f", i-0.5),
+                       svg_attr("y1", "%d", -1),
+                       svg_attr("x2", "%f", i-0.5),
+                       svg_attr("y2", "%f", size.y),
+                       svg_attr("stroke", "%s", "black"),
+                       svg_attr("stroke-opacity", "%f", 0.25),
+                       svg_attr("stroke-dasharray", "%d %d", 1, 9),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke")
+                       );
+    }
+}
+void xaxis_length_dotted_labels(fpair_t size, fpair_t scale){
+    int i, step = calc_step(0, size.x, 10);
+
+    xaxis_length_dotted(size, scale);
+
+    for (i = step; i <= size.x - step; i += step){
+        svg_start_tag("text", 7,
+                      svg_attr("font-family", "sans-serif"),
+                      svg_attr("text-anchor", "middle"),
+                      svg_attr("dominant-baseline", "middle"),
+                      svg_attr("font-size", "8px"),
+                      svg_attr("fill", "black"),
+                      svg_attr("fill-opacity", "0.5"),
+                      svg_attr("transform", "translate(%f %d) scale(%f %f)",
+                               i -0.5, -1,
+                               1/scale.x, 1/scale.y));
+
+        printf("%d", i);
+        svg_end_tag("text");
+    }
+        svg_start_tag("text", 7,
+                      svg_attr("font-family", "sans-serif"),
+                      svg_attr("text-anchor", "middle"),
+                      svg_attr("dominant-baseline", "middle"),
+                      svg_attr("font-size", "8px"),
+                      svg_attr("fill", "black"),
+                      svg_attr("fill-opacity", "0.5"),
+                      svg_attr("transform", "translate(%f %d) scale(%f %f)",
+                               size.x -0.5, -1,
+                               1/scale.x, 1/scale.y));
+
+        printf("%d", (int) size.x);
+        svg_end_tag("text");
+}
+
+void yaxis_content(fpair_t size, fpair_t scale){
+    int i;
+    for (i = 10; i < size.y; i += 10){
+                svg_simple_tag("line", 7,
+                       svg_attr("y1", "%d", i),
+                       svg_attr("y2", "%d", i),
+                       svg_attr("x1", "%d", 0),
+                       svg_attr("x2", "%f", size.x),
+                       svg_attr("stroke", "%s", "#AAA"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 0.5));
+
+                svg_start_tag("text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %d) scale(%f %f)",
+                               size.x, i,
+                           1/scale.x, 1/scale.y));
+        printf("%d%%", i);
+        svg_end_tag("text");
+    }
+
+    for(i = 0; i<4; i++){
+        svg_start_tag("g", 1,
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               -20.0 / scale.x , size.y * (i + 1) / 6.0,
+                               1/scale.x, 1/scale.y));
+        svg_simple_tag("rect", 5,
+                       svg_attr("y", "%d", -15),
+                       svg_attr("x", "%d", 15),
+                       svg_attr("width", "%d", 4),
+                       svg_attr("height", "%d", 16),
+                       svg_attr("fill",        "%s", ratio_colors[i]));
+
+        svg_start_tag("text", 6,
+                      svg_attr("x", "%d", 8),
+                      svg_attr("text-anchor", "%s", "middle"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("font-size",   "%s", "16px")
+
+        );
+        printf("%c", rev_lookup[i] );
+        svg_end_tag("text");
+        svg_end_tag("g");
+    }
+
+
+}
+void draw_svg_content(sequence_data* data, fpair_t translate, float max){
+    fpair_t original, final, flip;
+
+
+    original = (fpair_t){data->max_length, max};
+    final    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
+    flip     = (fpair_t){0, 1};
+
+    draw_svg_graph(data, original, final, flip,
+                    translate, draw_line_content,
+                   xaxis_length_dotted, yaxis_content,
+                   "Base Content Percentage");
+
+}
+
+void draw_heatmap_quality(sequence_data* data){
+    uint64_t i;
+    int j;
+    /* Draw heatmap background */
+    int score_delineation[4] = {0,       20,       28, data->max_score+1};
+    char* score_color[4]      = {"", "#d73027","#ffffbf",         "#1a9850"};
+
+    for(i = 1; i <= 3; i++){
+        int height = score_delineation[i] - score_delineation[i-1];
+        svg_simple_tag("rect", 5,
+                       svg_attr("y", "%d", score_delineation[i-1]),
+                       svg_attr("width", "%d", data->max_length),
+                       svg_attr("height", "%d", height),
+                       svg_attr("fill", "%s", score_color[i]),
+                       svg_attr("fill-opacity", "%f", 0.1)
+                       );
+    }
+
+    /* Draw each heatmap */
+
+    fpair_t * p = calloc(data->max_length, sizeof(fpair_t));
+    for(i = 0; i < data->max_length; i++){
+        p[i].x = i + 0.5;
+        p[i].y = data->avg_score[i];
+
+        for(j = data->min_score; j <= data->max_score; j++){
+            if(data->bases[i].scores[j] == 0)
+                continue;
+            float perc =  ((float) data->bases[i].scores[j] )/data->bases[i].length_count;
+            svg_simple_tag("rect", 8,
+                       svg_attr("x",      "%d", i),
+                       svg_attr("y",      "%d", j),
+                       svg_attr("fill-opacity", "%f", perc),
+                       svg_attr("width",  "%d", 1),
+                       svg_attr("height", "%d", 1),
+                       svg_attr("stroke", "%s", "none"),
+                       svg_attr("stroke-width", "%d", 0),
+                       svg_attr("fill",   "%s", "black")
+                       );
+        }
+    }
+
+
+    char* points = point_string(data->max_length, p);
+
+    svg_simple_tag("polyline", 6,
+                   /* Since coordinates for lines and rectangles don't work the same; set the
+                      first point of each line to start off graph. Then, add 0.5 to the x of each
+                      point. Finally, end the line off graph. */
+                   svg_attr("points", "%s", points),
+                   svg_attr("fill", "%s", "none"),
+                   svg_attr("stroke", "%s", "black"),
+                   svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                   svg_attr("stroke-width", "%f", 1.0),
+                   svg_attr("stroke-opacity", "%f", 0.6 )
+    );
+
+    free(points);
+    free(p);
+}
+
+void draw_svg_quality(sequence_data* data, fpair_t translate){
+    fpair_t original, final, flip;
+
+    original = (fpair_t){data->max_length, data->max_score+1};
+    final    = (fpair_t){GRAPH_WIDTH, GRAPH_HEIGHT};
+    flip     = (fpair_t){0, 1};
+
+    draw_svg_graph(data, original, final, flip,
+                    translate, draw_heatmap_quality,
+                   xaxis_length_dotted_labels, NULL,
+                  "Per Base Sequence Quality");
+
+}
+
+void draw_histo_score(sequence_data * data){
+    int i;
+
+    for(i = 0; i <= data->max_score; i++){
+        float y = score_accessor(data, i);
+        svg_simple_tag("rect",5,
+                       svg_attr("y",      "%d", i),
+                       svg_attr("width",  "%f", y),
+                       svg_attr("x",      "%f", 0.0),
+                       svg_attr("height", "%f", 1.0),
+                       svg_attr("fill",   "%s", "steelblue")
+                       );
+    }
+
+}
+
+void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float max){
+    fpair_t original, final, flip;
+
+
+    original = (fpair_t){max, data->max_score+1};
+    final    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
+    flip     = (fpair_t){!flipx, 1};
+
+    draw_svg_graph(data, original, final, flip,
+                    translate, draw_histo_score,
+                   xaxis_percent_labels, yaxis_score_labels,
+                   "<tspan dy=\"-15\">Score</tspan>"
+                   "<tspan dy=\"15\" x=\"5\">Distribution</tspan>");
+
+}
+
+void draw_histo_adapter(sequence_data * data){
+    int i;
+    float y;
+
+    for(i = 0; i < data->max_length; i++){
+        y = data->bases[i].kmer_count*100.0/data->number_of_sequences;
+
+        svg_simple_tag("rect", 5,
+                       svg_attr("x", "%d", i),
+                       svg_attr("height", "%f", y),
+                       svg_attr("width", "%f", 1.1),
+                       svg_attr("y", "%d", 0),
+                       svg_attr("fill", "%s", "steelblue")
+                       );
+
+
+    }
+
+}
+
+void draw_svg_adapter(sequence_data * data, fpair_t translate, float max){
+    unsigned int i;
+    fpair_t original_size, final_size, flip;
+
+
+    original_size = (fpair_t){data->max_length, max};
+    final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
+    flip          = (fpair_t){0,1};
+
+    draw_svg_graph(data,
+                   original_size, final_size, flip, translate,
+                   draw_histo_adapter, xaxis_length_ticks, yaxis_percent_labels,
+                   "Adapter Distribution");
+
+
+}
+
 
 void draw_svg(sequence_data* forward,
               sequence_data* reverse,

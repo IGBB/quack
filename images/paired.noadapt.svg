@@ -7,116 +7,107 @@ ERR1438847
 1069333 reads encoded in phred33
     </text>
     <g transform="translate(120.000000 5.000000)">
-      <g transform="translate(0.000000 100.000000) scale(4.500000 -1.000000) rotate(0.000000)">
-        <rect x="0.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="1.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="2.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="3.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="4.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="5.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="6.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="7.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="8.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="9.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="10.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="11.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="12.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="13.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="14.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="15.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="16.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="17.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="18.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="19.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="20.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="21.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="22.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="23.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="24.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="25.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="26.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="27.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="28.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="29.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="30.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="31.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="32.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="33.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="34.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="35.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="36.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="37.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="38.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="39.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="40.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="41.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="42.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="43.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="44.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="45.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="46.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="47.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="48.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="49.000000" height="0.004677" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="50.000000" height="0.004768" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="51.000000" height="0.004021" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="52.000000" height="0.004395" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="53.000000" height="0.005142" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="54.000000" height="0.005333" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="55.000000" height="0.004860" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="56.000000" height="0.005707" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="57.000000" height="0.005051" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="58.000000" height="0.005051" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="59.000000" height="0.006264" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="60.000000" height="0.006264" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="61.000000" height="0.005333" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="62.000000" height="0.006546" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="63.000000" height="0.005890" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="64.000000" height="0.007484" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="65.000000" height="0.007576" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="66.000000" height="0.006729" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="67.000000" height="0.007019" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="68.000000" height="0.008690" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="69.000000" height="0.008232" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="70.000000" height="0.009071" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="71.000000" height="0.009163" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="72.000000" height="0.011314" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="73.000000" height="0.010101" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="74.000000" height="0.011131" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="75.000000" height="0.011780" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="76.000000" height="0.013840" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="77.000000" height="0.013657" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="78.000000" height="0.016174" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="79.000000" height="0.017960" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="80.000000" height="0.021698" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="81.000000" height="0.021599" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="82.000000" height="0.023285" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="83.000000" height="0.026093" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="84.000000" height="0.029266" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="85.000000" height="0.035164" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="86.000000" height="0.041054" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="87.000000" height="0.049286" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="88.000000" height="0.060318" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="89.000000" height="0.074814" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="90.000000" height="0.092583" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="91.000000" height="0.112404" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="92.000000" height="0.158226" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="93.000000" height="0.219299" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="94.000000" height="0.334602" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="95.000000" height="0.480766" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="96.000000" height="0.865959" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="97.000000" height="1.564529" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="98.000000" height="4.025589" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="99.000000" height="91.514244" y="0.000000" width="1.100000" fill="steelblue"/>
-        <line y1="25" y2="25" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 25.000000) scale(0.222222 -1.000000)">
-25%        </text>
-        <line y1="50" y2="50" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 50.000000) scale(0.222222 -1.000000)">
-50%        </text>
-        <line y1="75" y2="75" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 75.000000) scale(0.222222 -1.000000)">
-75%        </text>
+      <g transform="translate(0.000000 100.000000) scale(4.500000 -1.000000)">
+        <rect x="0" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="1" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="2" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="3" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="4" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="5" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="6" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="7" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="8" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="9" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="10" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="11" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="12" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="13" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="14" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="15" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="16" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="17" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="18" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="19" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="20" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="21" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="22" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="23" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="24" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="25" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="26" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="27" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="28" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="29" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="30" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="31" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="32" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="33" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="34" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="35" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="36" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="37" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="38" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="39" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="40" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="41" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="42" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="43" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="44" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="45" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="46" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="47" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="48" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="49" height="0.004676" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="50" height="0.004769" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="51" height="0.004021" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="52" height="0.004395" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="53" height="0.005143" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="54" height="0.005330" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="55" height="0.004863" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="56" height="0.005704" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="57" height="0.005050" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="58" height="0.005050" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="59" height="0.006266" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="60" height="0.006266" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="61" height="0.005330" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="62" height="0.006546" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="63" height="0.005892" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="64" height="0.007481" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="65" height="0.007575" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="66" height="0.006733" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="67" height="0.007014" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="68" height="0.008697" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="69" height="0.008229" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="70" height="0.009071" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="71" height="0.009165" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="72" height="0.011315" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="73" height="0.010100" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="74" height="0.011128" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="75" height="0.011783" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="76" height="0.013840" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="77" height="0.013653" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="78" height="0.016178" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="79" height="0.017955" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="80" height="0.021696" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="81" height="0.021602" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="82" height="0.023286" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="83" height="0.026091" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="84" height="0.029271" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="85" height="0.035162" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="86" height="0.041054" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="87" height="0.049283" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="88" height="0.060318" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="89" height="0.074813" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="90" height="0.092581" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="91" height="0.112407" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="92" height="0.158229" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="93" height="0.219296" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="94" height="0.334601" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="95" height="0.480767" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="96" height="0.865960" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="97" height="1.564527" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="98" height="4.025594" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="99" height="91.514244" width="1.100000" y="0" fill="steelblue"/>
         <line y1="0" y2="0" x1="0" x2="100.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
         <line x1="9.500000" y1="2.000000" x2="9.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
         <line x1="19.500000" y1="2.000000" x2="19.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
@@ -127,6 +118,16 @@ ERR1438847
         <line x1="69.500000" y1="2.000000" x2="69.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
         <line x1="79.500000" y1="2.000000" x2="79.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
         <line x1="89.500000" y1="2.000000" x2="89.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="99.500000" y1="2.000000" x2="99.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line y1="25" y2="25" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 25.000000) scale(0.222222 -1.000000)">
+25%        </text>
+        <line y1="50" y2="50" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 50.000000) scale(0.222222 -1.000000)">
+50%        </text>
+        <line y1="75" y2="75" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 75.000000) scale(0.222222 -1.000000)">
+75%        </text>
       </g>
       <text x="5.000000" y="95.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
 Length Distribution
@@ -134,82 +135,83 @@ Length Distribution
     </g>
     <g transform="translate(5.000000 110.000000)">
       <g transform="translate(100.000000 250.000000) scale(-2.000000 -6.097561)">
-        <rect y="0.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="1.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="2.000000" width="0.000835" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="3.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="4.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="5.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="6.000000" width="0.133182" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="7.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="8.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="9.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="10.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="11.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="12.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="13.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="14.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="15.000000" width="0.336318" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="16.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="17.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="18.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="19.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="20.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="21.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="22.000000" width="0.504090" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="23.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="24.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="25.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="26.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="27.000000" width="1.786026" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="28.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="29.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="30.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="31.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="32.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="33.000000" width="12.278822" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="34.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="35.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="36.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="37.000000" width="46.692348" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="38.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="39.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="40.000000" width="38.268398" x="0.000000" height="1.000000" fill="steelblue"/>
-        <line x1="10" x2="10" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <rect y="0" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="1" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="2" width="0.000832" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="3" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="4" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="5" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="6" width="0.132777" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="7" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="8" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="9" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="10" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="11" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="12" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="13" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="14" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="15" width="0.335295" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="16" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="17" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="18" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="19" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="20" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="21" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="22" width="0.502557" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="23" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="24" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="25" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="26" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="27" width="1.780594" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="28" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="29" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="30" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="31" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="32" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="33" width="12.241480" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="34" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="35" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="36" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="37" width="46.550350" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="38" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="39" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="40" width="38.152020" x="0.000000" height="1.000000" fill="steelblue"/>
+        <line x1="10" x2="10" y1="0" y2="26717214" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(10.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
 10%        </text>
-        <line x1="20" x2="20" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="20" x2="20" y1="0" y2="26717214" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
 20%        </text>
-        <line x1="30" x2="30" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="30" x2="30" y1="0" y2="26717214" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(30.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
 30%        </text>
-        <line x1="40" x2="40" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="40" x2="40" y1="0" y2="26717214" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(40.000000 42.000000) scale(-0.500000 -0.164000) rotate(-45)">
 40%        </text>
-        <line x1="0" x2="0" y1="0" y2="41.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 5.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 5.500000) scale(-0.500000 -0.164000)">
 5        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 10.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 10.500000) scale(-0.500000 -0.164000)">
 10        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 15.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 15.500000) scale(-0.500000 -0.164000)">
 15        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 20.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 20.500000) scale(-0.500000 -0.164000)">
 20        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 25.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 25.500000) scale(-0.500000 -0.164000)">
 25        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 30.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 30.500000) scale(-0.500000 -0.164000)">
 30        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 35.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 35.500000) scale(-0.500000 -0.164000)">
 35        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 40.500000) scale(-0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 40.500000) scale(-0.500000 -0.164000)">
 40        </text>
+        <line x1="0" x2="0" y1="0" y2="41.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
       </g>
       <text x="5.000000" y="245.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
-<tspan dy="-15">Score</tspan><tspan dy="15" x="5">Distribution</tspan>      </text>
+<tspan dy="-15">Score</tspan><tspan dy="15" x="5">Distribution</tspan>
+      </text>
     </g>
     <g transform="translate(120.000000 110.000000)">
-      <g transform="translate(0, 250.000000) scale(4.500000 -6.097561)">
+      <g transform="translate(0.000000 250.000000) scale(4.500000 -6.097561)">
         <rect y="0" width="100" height="20" fill="#d73027" fill-opacity="0.100000"/>
         <rect y="20" width="100" height="8" fill="#ffffbf" fill-opacity="0.100000"/>
         <rect y="28" width="100" height="13" fill="#1a9850" fill-opacity="0.100000"/>
@@ -940,34 +942,34 @@ Length Distribution
         <rect x="99" y="33" fill-opacity="0.272315" width="1" height="1" stroke="none" stroke-width="0" fill="black"/>
         <rect x="99" y="37" fill-opacity="0.727685" width="1" height="1" stroke="none" stroke-width="0" fill="black"/>
         <polyline points=" 0.50,33.00  1.50,32.87  2.50,32.95  3.50,36.79  4.50,36.74  5.50,36.71  6.50,36.68  7.50,36.68  8.50,36.69  9.50,36.68  10.50,36.69  11.50,36.66  12.50,36.69  13.50,38.89  14.50,38.91  15.50,38.93  16.50,38.92  17.50,38.92  18.50,38.96  19.50,38.96  20.50,38.94  21.50,38.91  22.50,38.88  23.50,38.88  24.50,38.88  25.50,38.86  26.50,38.84  27.50,38.84  28.50,38.84  29.50,38.82  30.50,38.80  31.50,38.80  32.50,38.79  33.50,38.79  34.50,38.77  35.50,38.76  36.50,38.74  37.50,38.73  38.50,38.73  39.50,38.72  40.50,38.69  41.50,38.66  42.50,38.64  43.50,38.61  44.50,38.59  45.50,38.58  46.50,38.55  47.50,38.53  48.50,38.50  49.50,38.44  50.50,38.39  51.50,38.36  52.50,38.31  53.50,38.27  54.50,38.21  55.50,38.15  56.50,38.08  57.50,38.02  58.50,38.02  59.50,37.95  60.50,37.86  61.50,37.76  62.50,37.66  63.50,37.54  64.50,37.42  65.50,37.30  66.50,37.17  67.50,37.04  68.50,36.91  69.50,36.85  70.50,36.76  71.50,36.64  72.50,36.51  73.50,36.40  74.50,36.26  75.50,36.15  76.50,36.05  77.50,35.96  78.50,35.90  79.50,35.83  80.50,35.76  81.50,35.71  82.50,35.65  83.50,35.59  84.50,35.56  85.50,35.53  86.50,35.49  87.50,35.47  88.50,35.42  89.50,35.39  90.50,35.34  91.50,35.32  92.50,35.33  93.50,35.32  94.50,35.34  95.50,35.38  96.50,35.43  97.50,35.50  98.50,35.62  99.50,35.91 " fill="none" stroke="black" vector-effect="non-scaling-stroke" stroke-width="1.000000" stroke-opacity="0.600000"/>
-        <line x1="9.500000" y1="-1" x2="9.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(9.500000 -2.000000) scale(0.222222 -0.164000)">
+        <line x1="9.500000" y1="-1" x2="9.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="19.500000" y1="-1" x2="19.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="29.500000" y1="-1" x2="29.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="39.500000" y1="-1" x2="39.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="49.500000" y1="-1" x2="49.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="59.500000" y1="-1" x2="59.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="69.500000" y1="-1" x2="69.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="79.500000" y1="-1" x2="79.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="89.500000" y1="-1" x2="89.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(9.500000 -1) scale(0.222222 -0.164000)">
 10        </text>
-        <line x1="19.500000" y1="-1" x2="19.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(19.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(19.500000 -1) scale(0.222222 -0.164000)">
 20        </text>
-        <line x1="29.500000" y1="-1" x2="29.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(29.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(29.500000 -1) scale(0.222222 -0.164000)">
 30        </text>
-        <line x1="39.500000" y1="-1" x2="39.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(39.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(39.500000 -1) scale(0.222222 -0.164000)">
 40        </text>
-        <line x1="49.500000" y1="-1" x2="49.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(49.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(49.500000 -1) scale(0.222222 -0.164000)">
 50        </text>
-        <line x1="59.500000" y1="-1" x2="59.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(59.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(59.500000 -1) scale(0.222222 -0.164000)">
 60        </text>
-        <line x1="69.500000" y1="-1" x2="69.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(69.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(69.500000 -1) scale(0.222222 -0.164000)">
 70        </text>
-        <line x1="79.500000" y1="-1" x2="79.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(79.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(79.500000 -1) scale(0.222222 -0.164000)">
 80        </text>
-        <line x1="89.500000" y1="-1" x2="89.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(89.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(89.500000 -1) scale(0.222222 -0.164000)">
 90        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(99.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(99.500000 -1) scale(0.222222 -0.164000)">
 100        </text>
       </g>
       <text x="5.000000" y="245.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
@@ -976,22 +978,10 @@ Per Base Sequence Quality
     </g>
     <g transform="translate(120.000000 365.000000)">
       <g transform="translate(0.000000 100.000000) scale(4.500000 -2.000000)">
-        <line y1="10" y2="10" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <line y1="20" y2="20" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <line y1="30" y2="30" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <line y1="40" y2="40" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
         <polyline points=" 0.50,24.49  1.50,22.07  2.50,28.16  3.50,20.21  4.50,38.76  5.50,42.67  6.50,34.08  7.50,39.06  8.50,18.31  9.50,29.54  10.50,26.47  11.50,27.08  12.50,23.38  13.50,22.96  14.50,31.73  15.50,31.80  16.50,30.88  17.50,31.00  18.50,30.45  19.50,30.08  20.50,29.56  21.50,29.38  22.50,29.32  23.50,29.75  24.50,29.39  25.50,29.57  26.50,30.13  27.50,29.85  28.50,30.06  29.50,29.99  30.50,29.55  31.50,29.62  32.50,29.87  33.50,29.40  34.50,29.55  35.50,29.84  36.50,29.53  37.50,29.74  38.50,29.90  39.50,29.75  40.50,29.86  41.50,29.82  42.50,29.56  43.50,29.54  44.50,29.70  45.50,29.41  46.50,29.54  47.50,29.91  48.50,29.60  49.50,29.63  50.50,29.83  51.50,29.56  52.50,29.59  53.50,29.72  54.50,29.48  55.50,29.56  56.50,29.71  57.50,29.50  58.50,29.69  59.50,29.97  60.50,29.43  61.50,29.66  62.50,29.83  63.50,29.55  64.50,29.52  65.50,29.71  66.50,29.45  67.50,29.41  68.50,29.63  69.50,29.47  70.50,29.62  71.50,29.91  72.50,29.65  73.50,29.71  74.50,29.64  75.50,29.26  76.50,29.41  77.50,29.77  78.50,29.29  79.50,29.39  80.50,29.56  81.50,29.45  82.50,29.52  83.50,29.79  84.50,29.41  85.50,29.42  86.50,29.74  87.50,29.33  88.50,29.52  89.50,29.56  90.50,29.38  91.50,29.44  92.50,29.58  93.50,29.46  94.50,29.47  95.50,29.72  96.50,29.48  97.50,29.56  98.50,29.77  99.50,29.39 " fill="none" stroke="#648964" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
         <polyline points=" 0.50,15.86  1.50,42.30  2.50,33.20  3.50,42.44  4.50,37.86  5.50,20.06  6.50,26.74  7.50,22.53  8.50,24.89  9.50,35.40  10.50,27.64  11.50,33.56  12.50,29.89  13.50,30.13  14.50,25.66  15.50,27.60  16.50,29.77  17.50,29.89  18.50,29.49  19.50,29.37  20.50,29.49  21.50,29.56  22.50,29.59  23.50,29.54  24.50,29.69  25.50,29.49  26.50,29.22  27.50,29.28  28.50,29.29  29.50,29.40  30.50,29.50  31.50,29.31  32.50,29.40  33.50,29.52  34.50,29.54  35.50,29.39  36.50,29.70  37.50,29.51  38.50,29.60  39.50,29.62  40.50,29.41  41.50,29.51  42.50,29.55  43.50,29.47  44.50,29.74  45.50,29.57  46.50,29.54  47.50,29.51  48.50,29.58  49.50,29.72  50.50,29.65  51.50,29.65  52.50,29.54  53.50,29.41  54.50,29.58  55.50,29.56  56.50,29.59  57.50,29.53  58.50,29.60  59.50,29.55  60.50,29.71  61.50,29.62  62.50,29.48  63.50,29.59  64.50,29.41  65.50,29.40  66.50,29.52  67.50,29.41  68.50,29.53  69.50,29.57  70.50,29.50  71.50,29.51  72.50,29.73  73.50,29.50  74.50,29.43  75.50,29.53  76.50,29.54  77.50,29.39  78.50,29.42  79.50,29.57  80.50,29.58  81.50,29.57  82.50,29.58  83.50,29.47  84.50,29.60  85.50,29.49  86.50,29.42  87.50,29.55  88.50,29.41  89.50,29.42  90.50,29.71  91.50,29.65  92.50,29.52  93.50,29.59  94.50,29.50  95.50,29.44  96.50,29.51  97.50,29.50  98.50,29.36  99.50,29.38 " fill="none" stroke="#89bc89" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
         <polyline points=" 0.50,24.17  1.50,21.35  2.50,24.72  3.50,26.04  4.50,11.43  5.50,11.49  6.50,14.90  7.50,17.59  8.50,33.97  9.50,20.96  10.50,15.72  11.50,19.04  12.50,22.29  13.50,27.85  14.50,21.37  15.50,19.98  16.50,19.75  17.50,19.39  18.50,19.51  19.50,20.07  20.50,20.20  21.50,20.47  22.50,20.59  23.50,20.20  24.50,20.30  25.50,20.43  26.50,20.14  27.50,20.38  28.50,20.29  29.50,20.15  30.50,20.41  31.50,20.56  32.50,20.32  33.50,20.38  34.50,20.49  35.50,20.21  36.50,20.28  37.50,20.39  38.50,20.12  39.50,20.11  40.50,20.27  41.50,20.29  42.50,20.32  43.50,20.58  44.50,20.19  45.50,20.34  46.50,20.59  47.50,20.20  48.50,20.38  49.50,20.38  50.50,20.15  51.50,20.36  52.50,20.50  53.50,20.36  54.50,20.30  55.50,20.47  56.50,20.32  57.50,20.43  58.50,20.40  59.50,20.18  60.50,20.44  61.50,20.48  62.50,20.32  63.50,20.43  64.50,20.63  65.50,20.43  66.50,20.56  67.50,20.73  68.50,20.30  69.50,20.53  70.50,20.65  71.50,20.31  72.50,20.41  73.50,20.45  74.50,20.53  75.50,20.67  76.50,20.80  77.50,20.43  78.50,20.65  79.50,20.71  80.50,20.43  81.50,20.61  82.50,20.68  83.50,20.43  84.50,20.59  85.50,20.67  86.50,20.54  87.50,20.67  88.50,20.77  89.50,20.61  90.50,20.58  91.50,20.71  92.50,20.63  93.50,20.66  94.50,20.77  95.50,20.63  96.50,20.70  97.50,20.80  98.50,20.74  99.50,20.95 " fill="none" stroke="#84accf" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
         <polyline points=" 0.50,35.48  1.50,14.29  2.50,13.91  3.50,11.31  4.50,11.95  5.50,25.78  6.50,24.28  7.50,20.82  8.50,22.83  9.50,14.09  10.50,30.17  11.50,20.31  12.50,24.44  13.50,19.07  14.50,21.24  15.50,20.62  16.50,19.60  17.50,19.72  18.50,20.55  19.50,20.48  20.50,20.74  21.50,20.60  22.50,20.50  23.50,20.50  24.50,20.63  25.50,20.51  26.50,20.51  27.50,20.50  28.50,20.36  29.50,20.46  30.50,20.54  31.50,20.51  32.50,20.41  33.50,20.69  34.50,20.43  35.50,20.56  36.50,20.49  37.50,20.36  38.50,20.38  39.50,20.52  40.50,20.46  41.50,20.38  42.50,20.57  43.50,20.40  44.50,20.37  45.50,20.68  46.50,20.33  47.50,20.38  48.50,20.44  49.50,20.26  50.50,20.38  51.50,20.43  52.50,20.38  53.50,20.51  54.50,20.65  55.50,20.42  56.50,20.38  57.50,20.54  58.50,20.31  59.50,20.30  60.50,20.42  61.50,20.24  62.50,20.36  63.50,20.43  64.50,20.44  65.50,20.47  66.50,20.48  67.50,20.44  68.50,20.53  69.50,20.43  70.50,20.23  71.50,20.26  72.50,20.22  73.50,20.35  74.50,20.40  75.50,20.54  76.50,20.25  77.50,20.41  78.50,20.65  79.50,20.33  80.50,20.43  81.50,20.38  82.50,20.22  83.50,20.31  84.50,20.40  85.50,20.42  86.50,20.29  87.50,20.45  88.50,20.30  89.50,20.40  90.50,20.32  91.50,20.20  92.50,20.28  93.50,20.28  94.50,20.27  95.50,20.20  96.50,20.31  97.50,20.14  98.50,20.13  99.50,20.29 " fill="none" stroke="#5d7992" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 10) scale(0.222222 -0.500000)">
-10%        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 20) scale(0.222222 -0.500000)">
-20%        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 30) scale(0.222222 -0.500000)">
-30%        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 40) scale(0.222222 -0.500000)">
-40%        </text>
         <line x1="9.500000" y1="-1" x2="9.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="19.500000" y1="-1" x2="19.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="29.500000" y1="-1" x2="29.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
@@ -1001,133 +991,148 @@ Per Base Sequence Quality
         <line x1="69.500000" y1="-1" x2="69.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="79.500000" y1="-1" x2="79.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="89.500000" y1="-1" x2="89.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line y1="10" y2="10" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 10) scale(0.222222 -0.500000)">
+10%        </text>
+        <line y1="20" y2="20" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 20) scale(0.222222 -0.500000)">
+20%        </text>
+        <line y1="30" y2="30" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 30) scale(0.222222 -0.500000)">
+30%        </text>
+        <line y1="40" y2="40" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 40) scale(0.222222 -0.500000)">
+40%        </text>
+        <g transform="translate(-4.444444 8.333333) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#648964"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+A          </text>
+        </g>
+        <g transform="translate(-4.444444 16.666667) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#89bc89"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+T          </text>
+        </g>
+        <g transform="translate(-4.444444 25.000000) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#84accf"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+G          </text>
+        </g>
+        <g transform="translate(-4.444444 33.333333) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#5d7992"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+C          </text>
+        </g>
       </g>
       <text x="5.000000" y="95.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
 Base Content Percentage
       </text>
-      <text x="-15.000000" y="16.666667" fill="#648964" font-family="sans-serif" font-size="15px">
-A      </text>
-      <text x="-15.000000" y="33.333333" fill="#89bc89" font-family="sans-serif" font-size="15px">
-T      </text>
-      <text x="-15.000000" y="50.000000" fill="#84accf" font-family="sans-serif" font-size="15px">
-G      </text>
-      <text x="-15.000000" y="66.666667" fill="#5d7992" font-family="sans-serif" font-size="15px">
-C      </text>
     </g>
     <text x="840.000000" y="0" font-family="sans-serif" text-anchor="middle" font-size="15px" fill="black">
 1069333 reads encoded in phred33
     </text>
     <g transform="translate(615.000000 5.000000)">
-      <g transform="translate(0.000000 100.000000) scale(4.500000 -1.000000) rotate(0.000000)">
-        <rect x="0.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="1.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="2.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="3.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="4.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="5.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="6.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="7.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="8.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="9.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="10.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="11.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="12.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="13.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="14.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="15.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="16.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="17.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="18.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="19.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="20.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="21.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="22.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="23.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="24.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="25.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="26.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="27.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="28.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="29.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="30.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="31.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="32.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="33.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="34.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="35.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="36.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="37.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="38.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="39.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="40.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="41.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="42.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="43.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="44.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="45.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="46.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="47.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="48.000000" height="0.000000" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="49.000000" height="0.037872" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="50.000000" height="0.036194" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="51.000000" height="0.039932" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="52.000000" height="0.038811" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="53.000000" height="0.038902" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="54.000000" height="0.038712" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="55.000000" height="0.039276" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="56.000000" height="0.038811" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="57.000000" height="0.040489" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="58.000000" height="0.044052" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="59.000000" height="0.041237" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="60.000000" height="0.038902" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="61.000000" height="0.046196" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="62.000000" height="0.041901" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="63.000000" height="0.044792" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="64.000000" height="0.046852" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="65.000000" height="0.045822" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="66.000000" height="0.044136" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="67.000000" height="0.049194" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="68.000000" height="0.050682" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="69.000000" height="0.047882" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="70.000000" height="0.048721" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="71.000000" height="0.054054" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="72.000000" height="0.054237" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="73.000000" height="0.055367" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="74.000000" height="0.051430" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="75.000000" height="0.062004" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="76.000000" height="0.059380" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="77.000000" height="0.062660" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="78.000000" height="0.069664" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="79.000000" height="0.070610" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="80.000000" height="0.074432" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="81.000000" height="0.077530" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="82.000000" height="0.096230" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="83.000000" height="0.096039" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="84.000000" height="0.103241" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="85.000000" height="0.111191" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="86.000000" height="0.122414" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="87.000000" height="0.141586" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="88.000000" height="0.158882" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="89.000000" height="0.179367" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="90.000000" height="0.223686" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="91.000000" height="0.270729" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="92.000000" height="0.325066" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="93.000000" height="0.417549" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="94.000000" height="0.568764" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="95.000000" height="0.831734" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="96.000000" height="1.345047" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="97.000000" height="1.823845" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="98.000000" height="4.559288" y="0.000000" width="1.100000" fill="steelblue"/>
-        <rect x="99.000000" height="86.994606" y="0.000000" width="1.100000" fill="steelblue"/>
-        <line y1="25" y2="25" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 25.000000) scale(0.222222 -1.000000)">
-25%        </text>
-        <line y1="50" y2="50" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 50.000000) scale(0.222222 -1.000000)">
-50%        </text>
-        <line y1="75" y2="75" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 75.000000) scale(0.222222 -1.000000)">
-75%        </text>
+      <g transform="translate(0.000000 100.000000) scale(4.500000 -1.000000)">
+        <rect x="0" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="1" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="2" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="3" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="4" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="5" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="6" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="7" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="8" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="9" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="10" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="11" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="12" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="13" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="14" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="15" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="16" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="17" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="18" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="19" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="20" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="21" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="22" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="23" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="24" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="25" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="26" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="27" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="28" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="29" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="30" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="31" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="32" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="33" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="34" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="35" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="36" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="37" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="38" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="39" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="40" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="41" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="42" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="43" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="44" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="45" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="46" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="47" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="48" height="0.000000" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="49" height="0.037874" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="50" height="0.036191" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="51" height="0.039931" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="52" height="0.038809" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="53" height="0.038903" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="54" height="0.038716" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="55" height="0.039277" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="56" height="0.038809" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="57" height="0.040493" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="58" height="0.044046" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="59" height="0.041241" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="60" height="0.038903" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="61" height="0.046197" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="62" height="0.041895" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="63" height="0.044794" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="64" height="0.046852" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="65" height="0.045823" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="66" height="0.044140" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="67" height="0.049190" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="68" height="0.050686" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="69" height="0.047880" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="70" height="0.048722" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="71" height="0.054052" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="72" height="0.054239" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="73" height="0.055362" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="74" height="0.051434" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="75" height="0.062001" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="76" height="0.059383" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="77" height="0.062656" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="78" height="0.069670" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="79" height="0.070605" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="80" height="0.074439" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="81" height="0.077525" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="82" height="0.096228" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="83" height="0.096041" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="84" height="0.103242" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="85" height="0.111191" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="86" height="0.122413" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="87" height="0.141584" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="88" height="0.158884" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="89" height="0.179364" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="90" height="0.223691" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="91" height="0.270730" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="92" height="0.325062" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="93" height="0.417550" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="94" height="0.568766" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="95" height="0.831733" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="96" height="1.345044" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="97" height="1.823847" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="98" height="4.559291" width="1.100000" y="0" fill="steelblue"/>
+        <rect x="99" height="86.994606" width="1.100000" y="0" fill="steelblue"/>
         <line y1="0" y2="0" x1="0" x2="100.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
         <line x1="9.500000" y1="2.000000" x2="9.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
         <line x1="19.500000" y1="2.000000" x2="19.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
@@ -1138,6 +1143,16 @@ C      </text>
         <line x1="69.500000" y1="2.000000" x2="69.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
         <line x1="79.500000" y1="2.000000" x2="79.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
         <line x1="89.500000" y1="2.000000" x2="89.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line x1="99.500000" y1="2.000000" x2="99.500000" y2="-2.000000" stroke="black" stroke-opacity="0.500000" vector-effect="non-scaling-stroke"/>
+        <line y1="25" y2="25" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 25.000000) scale(0.222222 -1.000000)">
+25%        </text>
+        <line y1="50" y2="50" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 50.000000) scale(0.222222 -1.000000)">
+50%        </text>
+        <line y1="75" y2="75" x1="0" x2="100.000000" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1.000000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101.000000 75.000000) scale(0.222222 -1.000000)">
+75%        </text>
       </g>
       <text x="5.000000" y="95.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
 Length Distribution
@@ -1145,82 +1160,83 @@ Length Distribution
     </g>
     <g transform="translate(1080.000000 110.000000)">
       <g transform="translate(0.000000 250.000000) scale(2.000000 -6.097561)">
-        <rect y="0.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="1.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="2.000000" width="0.000059" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="3.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="4.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="5.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="6.000000" width="0.326371" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="7.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="8.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="9.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="10.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="11.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="12.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="13.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="14.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="15.000000" width="0.685128" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="16.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="17.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="18.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="19.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="20.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="21.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="22.000000" width="0.881278" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="23.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="24.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="25.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="26.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="27.000000" width="3.006489" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="28.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="29.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="30.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="31.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="32.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="33.000000" width="15.874571" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="34.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="35.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="36.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="37.000000" width="44.689339" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="38.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="39.000000" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
-        <rect y="40.000000" width="34.536755" x="0.000000" height="1.000000" fill="steelblue"/>
-        <line x1="10" x2="10" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <rect y="0" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="1" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="2" width="0.000058" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="3" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="4" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="5" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="6" width="0.323346" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="7" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="8" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="9" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="10" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="11" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="12" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="13" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="14" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="15" width="0.678778" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="16" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="17" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="18" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="19" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="20" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="21" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="22" width="0.873111" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="23" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="24" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="25" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="26" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="27" width="2.978625" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="28" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="29" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="30" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="31" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="32" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="33" width="15.727448" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="34" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="35" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="36" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="37" width="44.275166" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="38" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="39" width="0.000000" x="0.000000" height="1.000000" fill="steelblue"/>
+        <rect y="40" width="34.216671" x="0.000000" height="1.000000" fill="steelblue"/>
+        <line x1="10" x2="10" y1="0" y2="26640478" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(10.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
 10%        </text>
-        <line x1="20" x2="20" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="20" x2="20" y1="0" y2="26640478" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
 20%        </text>
-        <line x1="30" x2="30" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="30" x2="30" y1="0" y2="26640478" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(30.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
 30%        </text>
-        <line x1="40" x2="40" y1="0" y2="41" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="40" x2="40" y1="0" y2="26640478" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(40.000000 42.000000) scale(0.500000 -0.164000) rotate(-45)">
 40%        </text>
-        <line x1="0" x2="0" y1="0" y2="41.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 5.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 5.500000) scale(0.500000 -0.164000)">
 5        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 10.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 10.500000) scale(0.500000 -0.164000)">
 10        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 15.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 15.500000) scale(0.500000 -0.164000)">
 15        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 20.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 20.500000) scale(0.500000 -0.164000)">
 20        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 25.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 25.500000) scale(0.500000 -0.164000)">
 25        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 30.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 30.500000) scale(0.500000 -0.164000)">
 30        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 35.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 35.500000) scale(0.500000 -0.164000)">
 35        </text>
-        <text font-family="sans-serif" text-anchor="end" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-1.000000 40.500000) scale(0.500000 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 40.500000) scale(0.500000 -0.164000)">
 40        </text>
+        <line x1="0" x2="0" y1="0" y2="41.000000" stroke="black" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
       </g>
       <text x="5.000000" y="245.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
-<tspan dy="-15">Score</tspan><tspan dy="15" x="5">Distribution</tspan>      </text>
+<tspan dy="-15">Score</tspan><tspan dy="15" x="5">Distribution</tspan>
+      </text>
     </g>
     <g transform="translate(615.000000 110.000000)">
-      <g transform="translate(0, 250.000000) scale(4.500000 -6.097561)">
+      <g transform="translate(0.000000 250.000000) scale(4.500000 -6.097561)">
         <rect y="0" width="100" height="20" fill="#d73027" fill-opacity="0.100000"/>
         <rect y="20" width="100" height="8" fill="#ffffbf" fill-opacity="0.100000"/>
         <rect y="28" width="100" height="13" fill="#1a9850" fill-opacity="0.100000"/>
@@ -1925,34 +1941,34 @@ Length Distribution
         <rect x="99" y="33" fill-opacity="0.317470" width="1" height="1" stroke="none" stroke-width="0" fill="black"/>
         <rect x="99" y="37" fill-opacity="0.682530" width="1" height="1" stroke="none" stroke-width="0" fill="black"/>
         <polyline points=" 0.50,33.01  1.50,32.67  2.50,32.76  3.50,36.48  4.50,36.49  5.50,36.46  6.50,36.45  7.50,36.44  8.50,36.46  9.50,36.45  10.50,36.48  11.50,36.46  12.50,36.49  13.50,38.58  14.50,38.61  15.50,38.60  16.50,38.58  17.50,38.56  18.50,38.59  19.50,38.59  20.50,38.58  21.50,38.56  22.50,38.53  23.50,38.53  24.50,38.51  25.50,38.51  26.50,38.50  27.50,38.47  28.50,38.46  29.50,38.42  30.50,38.42  31.50,38.41  32.50,38.40  33.50,38.39  34.50,38.37  35.50,38.34  36.50,38.32  37.50,38.28  38.50,38.25  39.50,38.23  40.50,38.21  41.50,38.19  42.50,38.11  43.50,38.06  44.50,38.00  45.50,37.93  46.50,37.89  47.50,37.84  48.50,37.82  49.50,37.78  50.50,37.73  51.50,37.67  52.50,37.61  53.50,37.57  54.50,37.53  55.50,37.48  56.50,37.41  57.50,37.32  58.50,37.23  59.50,37.13  60.50,37.05  61.50,36.95  62.50,36.85  63.50,36.73  64.50,36.60  65.50,36.43  66.50,36.35  67.50,36.22  68.50,36.09  69.50,35.97  70.50,35.86  71.50,35.74  72.50,35.61  73.50,35.47  74.50,35.35  75.50,35.22  76.50,35.08  77.50,34.98  78.50,34.87  79.50,34.77  80.50,34.70  81.50,34.88  82.50,34.87  83.50,34.84  84.50,34.81  85.50,34.76  86.50,34.72  87.50,34.68  88.50,34.65  89.50,34.62  90.50,34.62  91.50,34.59  92.50,34.58  93.50,34.59  94.50,34.63  95.50,34.66  96.50,34.73  97.50,34.83  98.50,35.28  99.50,35.73 " fill="none" stroke="black" vector-effect="non-scaling-stroke" stroke-width="1.000000" stroke-opacity="0.600000"/>
-        <line x1="9.500000" y1="-1" x2="9.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(9.500000 -2.000000) scale(0.222222 -0.164000)">
+        <line x1="9.500000" y1="-1" x2="9.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="19.500000" y1="-1" x2="19.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="29.500000" y1="-1" x2="29.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="39.500000" y1="-1" x2="39.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="49.500000" y1="-1" x2="49.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="59.500000" y1="-1" x2="59.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="69.500000" y1="-1" x2="69.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="79.500000" y1="-1" x2="79.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line x1="89.500000" y1="-1" x2="89.500000" y2="41.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(9.500000 -1) scale(0.222222 -0.164000)">
 10        </text>
-        <line x1="19.500000" y1="-1" x2="19.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(19.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(19.500000 -1) scale(0.222222 -0.164000)">
 20        </text>
-        <line x1="29.500000" y1="-1" x2="29.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(29.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(29.500000 -1) scale(0.222222 -0.164000)">
 30        </text>
-        <line x1="39.500000" y1="-1" x2="39.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(39.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(39.500000 -1) scale(0.222222 -0.164000)">
 40        </text>
-        <line x1="49.500000" y1="-1" x2="49.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(49.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(49.500000 -1) scale(0.222222 -0.164000)">
 50        </text>
-        <line x1="59.500000" y1="-1" x2="59.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(59.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(59.500000 -1) scale(0.222222 -0.164000)">
 60        </text>
-        <line x1="69.500000" y1="-1" x2="69.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(69.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(69.500000 -1) scale(0.222222 -0.164000)">
 70        </text>
-        <line x1="79.500000" y1="-1" x2="79.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(79.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(79.500000 -1) scale(0.222222 -0.164000)">
 80        </text>
-        <line x1="89.500000" y1="-1" x2="89.500000" y2="42" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(89.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(89.500000 -1) scale(0.222222 -0.164000)">
 90        </text>
-        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(99.500000 -2.000000) scale(0.222222 -0.164000)">
+        <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" fill="black" fill-opacity="0.5" transform="translate(99.500000 -1) scale(0.222222 -0.164000)">
 100        </text>
       </g>
       <text x="5.000000" y="245.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
@@ -1961,22 +1977,10 @@ Per Base Sequence Quality
     </g>
     <g transform="translate(615.000000 365.000000)">
       <g transform="translate(0.000000 100.000000) scale(4.500000 -2.000000)">
-        <line y1="10" y2="10" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <line y1="20" y2="20" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <line y1="30" y2="30" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
-        <line y1="40" y2="40" x1="0" x2="100" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
         <polyline points=" 0.50,23.60  1.50,21.81  2.50,28.18  3.50,20.23  4.50,38.47  5.50,42.05  6.50,33.88  7.50,38.46  8.50,18.82  9.50,29.23  10.50,26.37  11.50,27.00  12.50,23.62  13.50,23.11  14.50,31.61  15.50,31.66  16.50,30.81  17.50,30.90  18.50,30.21  19.50,29.94  20.50,29.52  21.50,29.29  22.50,29.37  23.50,29.69  24.50,29.36  25.50,29.50  26.50,30.10  27.50,29.89  28.50,29.94  29.50,30.01  30.50,29.48  31.50,29.52  32.50,29.75  33.50,29.22  34.50,29.55  35.50,29.73  36.50,29.52  37.50,29.63  38.50,29.75  39.50,29.69  40.50,29.68  41.50,29.72  42.50,29.52  43.50,29.41  44.50,29.69  45.50,29.38  46.50,29.53  47.50,29.86  48.50,29.47  49.50,29.59  50.50,29.76  51.50,29.56  52.50,29.55  53.50,29.73  54.50,29.46  55.50,29.33  56.50,29.67  57.50,29.48  58.50,29.62  59.50,29.90  60.50,29.44  61.50,29.49  62.50,29.72  63.50,29.40  64.50,29.53  65.50,29.56  66.50,29.28  67.50,29.30  68.50,29.61  69.50,29.35  70.50,29.48  71.50,29.75  72.50,29.51  73.50,29.56  74.50,29.48  75.50,29.20  76.50,29.45  77.50,29.77  78.50,29.33  79.50,29.47  80.50,29.63  81.50,29.50  82.50,29.48  83.50,29.72  84.50,29.36  85.50,29.41  86.50,29.66  87.50,29.29  88.50,29.55  89.50,29.54  90.50,29.42  91.50,29.55  92.50,29.63  93.50,29.54  94.50,29.47  95.50,29.69  96.50,29.49  97.50,29.59  98.50,29.85  99.50,29.34 " fill="none" stroke="#648964" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
         <polyline points=" 0.50,15.89  1.50,42.68  2.50,33.08  3.50,42.67  4.50,37.41  5.50,20.46  6.50,26.87  7.50,22.90  8.50,25.21  9.50,35.27  10.50,27.97  11.50,33.52  12.50,30.04  13.50,30.19  14.50,25.88  15.50,27.76  16.50,29.89  17.50,29.95  18.50,29.59  19.50,29.52  20.50,29.65  21.50,29.63  22.50,29.80  23.50,29.76  24.50,29.90  25.50,29.65  26.50,29.33  27.50,29.29  28.50,29.35  29.50,29.45  30.50,29.56  31.50,29.47  32.50,29.61  33.50,29.67  34.50,29.64  35.50,29.60  36.50,29.69  37.50,29.65  38.50,29.65  39.50,29.69  40.50,29.46  41.50,29.67  42.50,29.71  43.50,29.66  44.50,29.82  45.50,29.73  46.50,29.59  47.50,29.63  48.50,29.72  49.50,29.85  50.50,29.65  51.50,29.69  52.50,29.58  53.50,29.48  54.50,29.74  55.50,29.73  56.50,29.76  57.50,29.64  58.50,29.70  59.50,29.64  60.50,29.84  61.50,29.79  62.50,29.53  63.50,29.72  64.50,29.59  65.50,29.61  66.50,29.73  67.50,29.70  68.50,29.65  69.50,29.67  70.50,29.63  71.50,29.71  72.50,29.83  73.50,29.60  74.50,29.73  75.50,29.71  76.50,29.67  77.50,29.54  78.50,29.56  79.50,29.68  80.50,29.63  81.50,29.64  82.50,29.69  83.50,29.55  84.50,29.76  85.50,29.65  86.50,29.62  87.50,29.66  88.50,29.49  89.50,29.65  90.50,29.71  91.50,29.80  92.50,29.64  93.50,29.74  94.50,29.76  95.50,29.62  96.50,29.68  97.50,29.67  98.50,29.55  99.50,29.57 " fill="none" stroke="#89bc89" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
         <polyline points=" 0.50,23.56  1.50,20.67  2.50,24.10  3.50,25.30  4.50,11.76  5.50,11.87  6.50,15.16  7.50,17.78  8.50,33.35  9.50,21.11  10.50,16.09  11.50,19.21  12.50,22.26  13.50,27.65  14.50,21.41  15.50,20.02  16.50,19.78  17.50,19.47  18.50,19.68  19.50,20.24  20.50,20.29  21.50,20.59  22.50,20.57  23.50,20.24  24.50,20.30  25.50,20.41  26.50,20.21  27.50,20.41  28.50,20.38  29.50,20.28  30.50,20.45  31.50,20.67  32.50,20.33  33.50,20.44  34.50,20.60  35.50,20.25  36.50,20.46  37.50,20.49  38.50,20.26  39.50,20.16  40.50,20.51  41.50,20.36  42.50,20.30  43.50,20.71  44.50,20.21  45.50,20.35  46.50,20.68  47.50,20.28  48.50,20.46  49.50,20.46  50.50,20.18  51.50,20.42  52.50,20.59  53.50,20.36  54.50,20.39  55.50,20.61  56.50,20.34  57.50,20.43  58.50,20.46  59.50,20.21  60.50,20.39  61.50,20.54  62.50,20.39  63.50,20.54  64.50,20.64  65.50,20.40  66.50,20.63  67.50,20.70  68.50,20.31  69.50,20.57  70.50,20.66  71.50,20.38  72.50,20.38  73.50,20.55  74.50,20.53  75.50,20.56  76.50,20.65  77.50,20.37  78.50,20.58  79.50,20.67  80.50,20.37  81.50,20.55  82.50,20.67  83.50,20.41  84.50,20.51  85.50,20.58  86.50,20.40  87.50,20.60  88.50,20.67  89.50,20.46  90.50,20.44  91.50,20.65  92.50,20.56  93.50,20.56  94.50,20.61  95.50,20.49  96.50,20.54  97.50,20.67  98.50,20.50  99.50,20.78 " fill="none" stroke="#84accf" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
         <polyline points=" 0.50,36.95  1.50,14.84  2.50,14.64  3.50,11.81  4.50,12.36  5.50,25.61  6.50,24.09  7.50,20.86  8.50,22.62  9.50,14.39  10.50,29.57  11.50,20.27  12.50,24.08  13.50,19.05  14.50,21.10  15.50,20.56  16.50,19.53  17.50,19.68  18.50,20.51  19.50,20.30  20.50,20.53  21.50,20.50  22.50,20.26  23.50,20.31  24.50,20.44  25.50,20.44  26.50,20.37  27.50,20.41  28.50,20.33  29.50,20.27  30.50,20.50  31.50,20.33  32.50,20.31  33.50,20.67  34.50,20.20  35.50,20.43  36.50,20.34  37.50,20.23  38.50,20.35  39.50,20.46  40.50,20.35  41.50,20.25  42.50,20.47  43.50,20.22  44.50,20.28  45.50,20.54  46.50,20.19  47.50,20.24  48.50,20.36  49.50,20.10  50.50,20.41  51.50,20.33  52.50,20.27  53.50,20.43  54.50,20.42  55.50,20.33  56.50,20.23  57.50,20.45  58.50,20.23  59.50,20.25  60.50,20.32  61.50,20.18  62.50,20.36  63.50,20.34  64.50,20.24  65.50,20.43  66.50,20.36  67.50,20.30  68.50,20.43  69.50,20.41  70.50,20.23  71.50,20.16  72.50,20.28  73.50,20.29  74.50,20.26  75.50,20.53  76.50,20.23  77.50,20.32  78.50,20.53  79.50,20.19  80.50,20.36  81.50,20.31  82.50,20.16  83.50,20.33  84.50,20.37  85.50,20.36  86.50,20.32  87.50,20.45  88.50,20.29  89.50,20.35  90.50,20.43  91.50,20.00  92.50,20.17  93.50,20.16  94.50,20.16  95.50,20.20  96.50,20.29  97.50,20.07  98.50,20.09  99.50,20.31 " fill="none" stroke="#5d7992" vector-effect="non-scaling-stroke" stroke-width="2.000000"/>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 10) scale(0.222222 -0.500000)">
-10%        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 20) scale(0.222222 -0.500000)">
-20%        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 30) scale(0.222222 -0.500000)">
-30%        </text>
-        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(101 40) scale(0.222222 -0.500000)">
-40%        </text>
         <line x1="9.500000" y1="-1" x2="9.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="19.500000" y1="-1" x2="19.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="29.500000" y1="-1" x2="29.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
@@ -1986,18 +1990,42 @@ Per Base Sequence Quality
         <line x1="69.500000" y1="-1" x2="69.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="79.500000" y1="-1" x2="79.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
         <line x1="89.500000" y1="-1" x2="89.500000" y2="50.000000" stroke="black" stroke-opacity="0.250000" stroke-dasharray="1 9" vector-effect="non-scaling-stroke"/>
+        <line y1="10" y2="10" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 10) scale(0.222222 -0.500000)">
+10%        </text>
+        <line y1="20" y2="20" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 20) scale(0.222222 -0.500000)">
+20%        </text>
+        <line y1="30" y2="30" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 30) scale(0.222222 -0.500000)">
+30%        </text>
+        <line y1="40" y2="40" x1="0" x2="100.000000" stroke="#AAA" vector-effect="non-scaling-stroke" stroke-width="0.500000"/>
+        <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(100.000000 40) scale(0.222222 -0.500000)">
+40%        </text>
+        <g transform="translate(-4.444444 8.333333) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#648964"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+A          </text>
+        </g>
+        <g transform="translate(-4.444444 16.666667) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#89bc89"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+T          </text>
+        </g>
+        <g transform="translate(-4.444444 25.000000) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#84accf"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+G          </text>
+        </g>
+        <g transform="translate(-4.444444 33.333333) scale(0.222222 -0.500000)">
+          <rect y="-15" x="15" width="4" height="16" fill="#5d7992"/>
+          <text x="8" text-anchor="middle" fill="black" fill-opacity="0.500000" font-family="sans-serif" font-size="16px">
+C          </text>
+        </g>
       </g>
       <text x="5.000000" y="95.000000" fill="#AAA" font-family="sans-serif" font-size="15px">
 Base Content Percentage
       </text>
-      <text x="-15.000000" y="16.666667" fill="#648964" font-family="sans-serif" font-size="15px">
-A      </text>
-      <text x="-15.000000" y="33.333333" fill="#89bc89" font-family="sans-serif" font-size="15px">
-T      </text>
-      <text x="-15.000000" y="50.000000" fill="#84accf" font-family="sans-serif" font-size="15px">
-G      </text>
-      <text x="-15.000000" y="66.666667" fill="#5d7992" font-family="sans-serif" font-size="15px">
-C      </text>
     </g>
   </g>
 </svg>
