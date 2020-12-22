@@ -59,6 +59,18 @@ char * point_string(int length, fpair_t* p){
 #define svg_end_label() svg_end_tag("text")
 
 
+int calc_step(float min, float max, int breaks){
+    float length = max - min;
+    /* Find a tick step that is
+     * - at least 5
+     * - divisible by 5,
+     * - creates 5 ticks */
+    int step = length/breaks;
+    step = (step /5 )*5;
+    if (step < 5) step = 5;
+
+    return step;
+}
 
 
 void draw_svg_distro(int length, fpair_t* p,
@@ -88,18 +100,6 @@ void draw_svg_distro(int length, fpair_t* p,
     );
 
 
-    /* /\* Draw distribution *\/ */
-    /* char* points = point_string(length, p); */
-
-    /* svg_simple_tag("polyline", 5, */
-    /*                svg_attr("points", "%s", points), */
-    /*                svg_attr("stroke", "%s", "steelblue"), */
-    /*                svg_attr("fill", "%s", "none"), */
-    /*                svg_attr("stroke-width", "%fpx", 0.5), */
-    /*                svg_attr("vector-effect", "%s", "non-scaling-stroke") */
-    /* ); */
-
-    /* free(points); */
 
     for( i = 0; i < length; i++  )
         svg_simple_tag("rect",5,
@@ -111,13 +111,7 @@ void draw_svg_distro(int length, fpair_t* p,
                        );
 
 
-    /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 5 ticks */
-    int step = original.y/4;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
+    int step = calc_step(0,original.y,4);
 
     for(i = step; i < original.y; i+=step){
         svg_simple_tag("line", 7,
@@ -158,11 +152,7 @@ void draw_svg_distro(int length, fpair_t* p,
      * - at least 5
      * - divisible by 5,
      * - creates 10 ticks */
-    step = length/10;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
-
-
+    step = calc_step(0, length, 10);
 
     for (i = step; i <= length - step; i += step){
         svg_simple_tag("line", 7,
@@ -194,35 +184,26 @@ void draw_svg_distro(int length, fpair_t* p,
 
 
 
-void draw_svg_content(sequence_data* data, fpair_t translate){
+void draw_svg_content(sequence_data* data, fpair_t translate, float max){
 
-    unsigned int i;
-    int j;
+    unsigned int i, j;
 
-    uint64_t len, y;
+    uint64_t len;
     char * points;
-    float max;
 
     fpair_t *perc[4];
     for(i = 0; i < 4; i++){
         perc[i] = malloc(sizeof(fpair_t[data->max_length]));
     }
 
-    /* Calculate cumulative percentage of base content, in decending order so
-     * they stack */
+    /* Calculate cumulative percentage of base content */
     for(i = 0; i < data->max_length; i++){
-
-        y = 0;
         len = data->bases[i].length_count;
-        for (j = 3; j >= 0; j--) {
+        for (j = 0; j < 4; j++) {
             perc[j][i].x = i +0.5;
             perc[j][i].y = data->bases[i].content[j] * 100.0 / len;
-
-            if(max < perc[j][i].y) max = perc[j][i].y;
         }
     }
-
-    max = ceil(max / 10.0) * 10.0;
 
     svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
     svg_start_tag("g", 1,
@@ -282,13 +263,7 @@ void draw_svg_content(sequence_data* data, fpair_t translate){
 
     }
 
-        /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 10 ticks */
-    int step = data->max_length/10;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
+    int step = calc_step(0, data->max_length, 10);
 
 
 
@@ -405,13 +380,7 @@ void draw_svg_quality(sequence_data* data, fpair_t translate){
     free(p);
 
 
-    /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 10 ticks */
-    int step = data->max_length/10;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
+    int step = calc_step(0, data->max_length, 10);
 
     /*  invert scale */
     fpair_t scale = { 1.0 / (GRAPH_WIDTH/data->max_length),
@@ -456,8 +425,8 @@ void draw_svg_quality(sequence_data* data, fpair_t translate){
                       svg_attr("vector-effect", "%s", "non-scaling-size"),
                       svg_attr("fill",        "%s", "black"),
                       svg_attr("fill-opacity",        "%f", 0.5),
-                      svg_attr("transform", "translate(%d %f) scale(%f %f)",
-                               data->max_length, -2.0,
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               data->max_length-0.5, -2.0,
                                scale.x, scale.y));
 
         printf("%" PRIu64, data->max_length);
@@ -495,11 +464,6 @@ void draw_svg_length(sequence_data * data, fpair_t translate, float max){
         different |= (points[i].y > 0.0);
     }
 
-    // check last point
-    if(max < points[i].y) max = points[i].y;
-
-    // Adjust max to nearest ten
-    max = ceil(max / 10.0) * 10.0;
 
     original_size = (fpair_t){data->max_length, max};
     final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
@@ -559,9 +523,6 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
         points[i].y = points[i].y * 100.0 / total;
     }
 
-    // Get next ten for max
-    max = ceil(max/10.0)*10.0;
-
     original = (fpair_t){max, data->max_score+1};
     final    = (fpair_t){PERF_SIZE, GRAPH_HEIGHT};
 
@@ -596,13 +557,7 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
                        svg_attr("fill",   "%s", "steelblue")
                        );
 
-    /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 10 ticks */
-    int step = max/4;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
+    int step = calc_step(0, max, 4);
 
     for(i = step; i < max; i+=step){
         svg_simple_tag("line", 7,
@@ -640,13 +595,7 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
                    svg_attr("stroke-width", "%f", 0.5));
 
 
-    /* Find a tick step that is
-     * - at least 5
-     * - divisible by 5,
-     * - creates 10 ticks */
-    step = data->max_score/10;
-    step = (step /5 )*5;
-    if (step < 5) step = 5;
+    step = calc_step(0, data->max_score, 10);
 
     /*  loop through each step. excluded last step if too close to max score */
     for (i = step; i < data->max_score - (step/2); i += step){
@@ -743,6 +692,9 @@ float get_max(sequence_data* f, sequence_data* r,
         }
     }
 
+    // Adjust max to nearest ten
+    max = ceil(max / 10.0) * 10.0;
+
     return max;
 }
 
@@ -786,35 +738,48 @@ float get_max_score(sequence_data* f, sequence_data* r){
     return get_max(f,r,score_stop,score_accessor);
 }
 
+inline float content_accessor(sequence_data* data, int i){
+    int j;
+    uint64_t max = 0;
+    for (j = 3; j >= 0; j--) {
+        if(max < data->bases[i].content[j])
+            max =  data->bases[i].content[j];
+    }
+    return max * 100.0 / data->bases[i].length_count;
+}
+float get_max_content(sequence_data* f, sequence_data* r){
+    return get_max(f,r,length_stop,content_accessor);
+}
 
 void draw_svg(sequence_data* forward,
               sequence_data* reverse,
               char* name,
               int adapters_used){
 
+    int i;
+    sequence_data* list[2] = {forward, reverse};
+
     float max_length  = get_max_length(forward, reverse);
     float max_score   = get_max_score(forward, reverse);
     float max_adapter = get_max_adapter(forward, reverse);
+    float max_content = get_max_content(forward, reverse);
 
-    fpair_t translate = {GRAPH_PAD*2 + PERF_SIZE + 10, GRAPH_PAD};
 
-    /* Set width */
-    int width = 615;
+    /* Set size */
+    fpair_t size = {615, 510};
     if(reverse)
-        width = 1195;
+        size.x = 1195;
 
-    /* Set height */
-    int height = 510;
     if(adapters_used)
-        height = 610;
+        size.y = 610;
     if(name != NULL)
-        height += 30;
+        size.y += 30;
 
     // Start svg
     svg_start_tag("svg", 5,
-                  svg_attr("width",   "%d", width),
-                  svg_attr("height",  "%d", height),
-                  svg_attr("viewBox", "%d %d %d %d", 0, 0, width, height),
+                  svg_attr("width",   "%f", size.x),
+                  svg_attr("height",  "%f", size.y),
+                  svg_attr("viewBox", "%f %f %f %f", 0.0, 0.0, size.x, size.y),
                   svg_attr("xmlns",       "%s", "http://www.w3.org/2000/svg"),
                   svg_attr("xmlns:xlink", "%s", "http://www.w3.org/1999/xlink")
                   );
@@ -822,7 +787,7 @@ void draw_svg(sequence_data* forward,
     /* If name is given, add to middle of viewBox (half of width + min-x of viewbox) */
     if(name != NULL){
         svg_start_tag("text", 6,
-                      svg_attr("x", "%d", (width/2)),
+                      svg_attr("x", "%f", (size.x/2)),
                       svg_attr("y", "%d", 30),
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "middle"),
@@ -832,85 +797,49 @@ void draw_svg(sequence_data* forward,
         svg_end_tag("text");
 
         svg_start_tag("g", 1,
-                      svg_attr("transform", "translate(%d %d)", 0, 45)
+                      svg_attr("transform", "translate(%d %d)", 0, 50)
         );
 
     }
 
 
-
-    svg_start_tag("text", 6,
-                      svg_attr("x", "%f", (GRAPH_WIDTH/2) + PERF_SIZE + GRAPH_PAD),
-                      svg_attr("y", "%d", 0),
-                      svg_attr("font-family", "%s", "sans-serif"),
-                      svg_attr("text-anchor", "%s", "middle"),
-                      svg_attr("font-size",   "%s", "15px"),
-                      svg_attr("fill",        "%s", "black"));
-        printf("%" PRId64 " reads encoded in phred%d\n", forward->number_of_sequences, forward->encoding);
-        svg_end_tag("text");
-
-
-    draw_svg_length(forward, translate, max_length);
-
-    translate.y += PERF_SIZE + GRAPH_PAD;
-
-
-
-
-    draw_svg_score(forward, (fpair_t){GRAPH_PAD, translate.y}, 0, max_score);
-
-
-
-    draw_svg_quality(forward, translate);
-
-    translate.y += GRAPH_HEIGHT + GRAPH_PAD;
-
-    draw_svg_content(forward, translate);
-
-
-
-    translate.y += PERF_SIZE + GRAPH_PAD;
-    if(adapters_used){
-        draw_svg_adapter(forward, translate, max_adapter);
-
-    }
-
-    if(reverse){
+    fpair_t translate = {GRAPH_PAD*2 + PERF_SIZE + 10, GRAPH_PAD};
+    float score_locations[2] = {GRAPH_PAD, GRAPH_PAD*4 + GRAPH_WIDTH*2 + PERF_SIZE + 60};
+    for(i = 0; i < 2; i++){
+        sequence_data * data = list[i];
+        if(data == NULL) continue;
+       
         translate.y = GRAPH_PAD;
-        translate.x += GRAPH_PAD + GRAPH_WIDTH + 40;
 
-
-    svg_start_tag("text", 6,
+        svg_start_tag("text", 6,
                       svg_attr("x", "%f", (GRAPH_WIDTH/2) + translate.x),
                       svg_attr("y", "%d", 0),
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("font-size",   "%s", "15px"),
                       svg_attr("fill",        "%s", "black"));
-        printf("%" PRIu64 " reads encoded in phred%d\n", reverse->number_of_sequences, reverse->encoding);
+        printf("%" PRId64 " reads encoded in phred%d\n", data->number_of_sequences, data->encoding);
         svg_end_tag("text");
 
 
-        draw_svg_length(reverse, translate, max_length);
+        draw_svg_length(data, translate, max_length);
 
         translate.y += PERF_SIZE + GRAPH_PAD;
 
+        draw_svg_score(data, (fpair_t){score_locations[i], translate.y}, i, max_score);
 
 
-        draw_svg_score(reverse,
-                       (fpair_t){translate.x + GRAPH_WIDTH + GRAPH_PAD + 10, translate.y}, 1, max_score);
-        draw_svg_quality(reverse, translate);
+        draw_svg_quality(data, translate);
 
         translate.y += GRAPH_HEIGHT + GRAPH_PAD;
-
-        draw_svg_content(reverse, translate);
+        draw_svg_content(data, translate, max_content);
 
         translate.y += PERF_SIZE + GRAPH_PAD;
         if(adapters_used)
-            draw_svg_adapter(reverse, translate, max_adapter);
+            draw_svg_adapter(data, translate, max_adapter);
 
+        translate.x += GRAPH_PAD + GRAPH_WIDTH + 40;
     }
-
 
     if(name != NULL) svg_end_tag("g");
 
