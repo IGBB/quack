@@ -99,7 +99,7 @@ struct arguments parse_options(int argc, char **argv) {
       case 'h':
       case '?':
       default:
-        printf("%s\n", help_message);
+        fprintf(stderr, "%s\n", help_message);
         exit(EXIT_SUCCESS);
 
     };
