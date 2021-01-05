@@ -5,6 +5,20 @@ SRR1168757.fastq.gz:
 ERR1438847_%.fastq.gz:
 	wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR143/007/ERR1438847/$@
 
+long.fastq.gz:
+	wget -O $@.tmp ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR605/007/SRR6059707/SRR6059707_1.fastq.gz
+	mv $@.tmp $@
+
+long.adapter.svg long.adapter.txt: long.adapter
+long.adapter: long.fastq.gz ../quack ../all.fa.gz
+long.noadapt.svg long.noadapt.txt: long.noadapt
+long.noadapt: long.fastq.gz ../quack
+
+long.adapter long.noadapt: long.%:
+	../quack -u $< $(if $(word 3,$^), -a $(word 3,$^)) -n SRR6059707 --svg $@.svg --txt $@.txt
+	touch $@
+
+
 single.adapter.svg single.adapter.txt: single.adapter
 single.adapter: SRR1168757.fastq.gz ../quack
 	../quack -u $< -a ../all.fa.gz -n SRR1168757 --svg $@.svg --txt $@.txt
@@ -36,4 +50,6 @@ all: paired.adapter.png \
      paired.noadapt.png \
      single.adapter.png \
      single.noadapt.png \
+	 long.adapter.png \
+	 long.noadapt.png \
      explanation.png
