@@ -131,19 +131,19 @@ All reads are 51-bp    </text>
         <rect y="39" width="12.309784" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="40" width="15.262687" x="0.000000" height="1.000000" fill="steelblue"/>
         <rect y="41" width="27.962633" x="0.000000" height="1.000000" fill="steelblue"/>
-        <line x1="5" x2="5" y1="0" y2="10353038" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="5" x2="5" y1="0" y2="27057678" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(5.000000 43.000000) scale(-0.300000 -0.168000) rotate(-45)">
 5%        </text>
-        <line x1="10" x2="10" y1="0" y2="10353038" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="10" x2="10" y1="0" y2="27057678" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(10.000000 43.000000) scale(-0.300000 -0.168000) rotate(-45)">
 10%        </text>
-        <line x1="15" x2="15" y1="0" y2="10353038" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="15" x2="15" y1="0" y2="27057678" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(15.000000 43.000000) scale(-0.300000 -0.168000) rotate(-45)">
 15%        </text>
-        <line x1="20" x2="20" y1="0" y2="10353038" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="20" x2="20" y1="0" y2="27057678" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(20.000000 43.000000) scale(-0.300000 -0.168000) rotate(-45)">
 20%        </text>
-        <line x1="25" x2="25" y1="0" y2="10353038" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
+        <line x1="25" x2="25" y1="0" y2="27057678" stroke="white" vector-effect="non-scaling-stroke" stroke-width="1"/>
         <text font-family="sans-serif" text-anchor="start" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(25.000000 43.000000) scale(-0.300000 -0.168000) rotate(-45)">
 25%        </text>
         <text font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" font-size="8px" vector-effect="non-scaling-size" fill="black" fill-opacity="0.500000" transform="translate(-4.000000 5.500000) scale(-0.300000 -0.168000)">

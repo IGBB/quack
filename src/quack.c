@@ -9,10 +9,14 @@
 #include "arg.h"
 #include "seq.h"
 
-extern void draw_txt(sequence_data* forward, sequence_data* reverse,
-                     char* name, int adapters_used);
-extern void draw_svg(sequence_data* forward, sequence_data* reverse,
-                     char* name, int adapters_used);
+extern void draw_txt(
+  FILE * output,
+  sequence_data* forward, sequence_data* reverse,
+  char* name, int adapters_used);
+extern void draw_svg(
+  FILE * output,
+  sequence_data* forward, sequence_data* reverse,
+  char* name, int adapters_used);
 
 
 int main (int argc, char **argv)
@@ -21,7 +25,6 @@ int main (int argc, char **argv)
     arguments = parse_options(argc, argv);
 
     int paired, unpaired, adapters;
-    int width, height;
     int *kmers = NULL;
 
     paired = (arguments.forward != NULL && arguments.reverse != NULL);
@@ -30,7 +33,7 @@ int main (int argc, char **argv)
     
     /* If paired and unparied data are both set or unset, then throw error */
     if(paired == unpaired){
-      printf("%s\n", "Usage: quack [OPTION...]\nTry `quack --help' or `quack --usage' for more information.");
+      fprintf(stderr, "Usage: quack [OPTION...]\nTry `quack --help' or `quack --usage' for more information.");
       exit(1);
     }
 
@@ -45,11 +48,11 @@ int main (int argc, char **argv)
       reverse = NULL;
     }
 
-    if(arguments.outfmt == TXT)
-      draw_txt(forward, reverse, arguments.name, adapters);
+    if(arguments.txt)
+      draw_txt(arguments.txt, forward, reverse, arguments.name, adapters);
 
-    if(arguments.outfmt == SVG)
-      draw_svg(forward, reverse, arguments.name, adapters);
+    if(arguments.svg)
+      draw_svg(arguments.svg, forward, reverse, arguments.name, adapters);
   
 
     exit (0);

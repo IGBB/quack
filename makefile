@@ -23,3 +23,4 @@ images: quack
 	$(MAKE) -C images all
 
 test: images
+	$(MAKE) -C test all

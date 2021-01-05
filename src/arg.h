@@ -1,13 +1,10 @@
 #ifndef __ARG_H
 #define __ARG_H
 
+#include <stdio.h>
 #include "seq.h"
 
 extern const char* const program_version;
-
-typedef enum {
-    TXT, SVG
-} output_format;
 
 struct arguments {
    char *name,
@@ -15,8 +12,8 @@ struct arguments {
        *reverse,
        *unpaired,
        *adapters;
-   output_format outfmt;
-   encoding_t encoding;
+    FILE * svg, * txt;
+    encoding_t encoding;
 };
 
 struct arguments parse_options(int argc, char **argv);

@@ -56,49 +56,49 @@ char* svg_attr(const char* name, const char* fmt, ...){
 
 
 
-void _svg_tag(const int simple, const char* type, int num, ...){
+void _svg_tag(FILE * svg, const int simple, const char* type, int num, ...){
   int i = 0;
   va_list vl;
   char* attr;
 
   /* Indent current tag */
   for( i = 0; i < _svg_indent_level; i++)
-    printf(INDENT);
+    fprintf(svg, INDENT);
 
   /* Increase indent level if started tag with internal elements */
   if(!simple)
     _svg_indent_level++;
 
   /* Open tag */
-  printf("<%s", type);
+  fprintf(svg, "<%s", type);
 
   /* Print each attribute, free memory as used */
   va_start(vl, num);
   for(i = 0; i < num; i++){
     attr = va_arg(vl, char*);
-    printf("%s", attr);
+    fprintf(svg, "%s", attr);
     free(attr);
   }
   va_end(vl);
 
   /* print nested closing tag if no internal elements expected */
-  if(simple) printf("/");
+  if(simple) fprintf(svg, "/");
 
   /* close tag */
-  printf(">\n");
+  fprintf(svg, ">\n");
 }
 
 
-void svg_end_tag(const char* type){
+void svg_end_tag(FILE* svg, const char* type){
   int i = 0;
 
   if(_svg_indent_level > 0)
     _svg_indent_level--;
 
   for( i = 0; i < _svg_indent_level; i++)
-    printf(INDENT);
+    fprintf(svg, INDENT);
 
   
-  printf("</%s>\n", type);
+  fprintf(svg, "</%s>\n", type);
   
 }

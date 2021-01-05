@@ -16,8 +16,8 @@ const char* const help_message = ""
   "  -a, --adapters adapters.fa.gz   (Optional) Adapters file\n"
   "  -e, --encoding phred33          (Optional) fastq quality encoding.\n"
   "                                     Valid options are phred64, 64, phred33, and 33.\n"
-  "  -f, --outfmt svg                (Optional) output format\n"
-  "                                     Valid options are txt, and svg.\n"
+  "  -s, --svg filename.svg          (Optional) Filename for svg output\n"
+  "  -t, --txt filename.txt          (Optional) Filename for txt output\n"
   "  -n, --name NAME                 (Optional) Display in output\n"
   "  -u, --unpaired unpaired.fq.gz   Data (only use with -u)\n"
   "  -?, --help                      Give this help list\n"
@@ -32,7 +32,9 @@ static ko_longopt_t longopts[] = {
     { "adapters", ko_required_argument, 'a' },
 
     { "encoding", ko_required_argument, 'e' },
-    { "outfmt",   ko_required_argument, 'f' },
+
+    { "svg",   ko_required_argument, 's' },
+    { "txt",   ko_required_argument, 't' },
 
     { "name",     ko_required_argument, 'n' },
 
@@ -51,13 +53,15 @@ struct arguments parse_options(int argc, char **argv) {
                                 .name = NULL,
                                 .adapters = NULL,
                                 .encoding = guess,
-                                .outfmt = SVG
+                                .svg = NULL,
+                                .txt = NULL,
   };
 
 
   ketopt_t opt = KETOPT_INIT;
 
-  int i, c;
+  int  c;
+  FILE* tmp;
   while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:f:n:?V", longopts)) >= 0) {
     switch(c){
       case '1': arguments.forward  = opt.arg; break;
@@ -78,16 +82,19 @@ struct arguments parse_options(int argc, char **argv) {
 
         break;
 
-      case 'f':
-        if(strcmp(opt.arg, "txt") == 0){
-          arguments.outfmt = TXT;
-        }else if(strcmp(opt.arg, "svg") == 0){
-          arguments.outfmt = SVG;
-        }else{
+      case 's':
+      case 't':
+        tmp = fopen(opt.arg, "w");
+
+        if(c == 's') arguments.svg = tmp;
+        if(c == 't') arguments.txt = tmp;
+
+        if(tmp == NULL){
           perror("Cannot parse output format argument\n");
           perror(help_message);
           exit(EXIT_FAILURE);
         }
+
         break;
 
       case 'n': arguments.name = opt.arg;     break;
@@ -104,6 +111,10 @@ struct arguments parse_options(int argc, char **argv) {
 
     };
   }
+
+  /* If no output arguments are given, then default to svg on stdout */
+  if(arguments.svg == NULL && arguments.txt == NULL)
+    arguments.svg = stdout;
 
     return arguments;
 }

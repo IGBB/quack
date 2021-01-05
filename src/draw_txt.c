@@ -8,139 +8,141 @@
 #include "seq.h"
 
 
-void draw_txt_content(sequence_data* data){
+void draw_txt_content(FILE* output, sequence_data* data){
 
     int i, j;
 
-    printf("### Per Base Content \n\n");
-    printf("|   Base |          A          |          T          |          C          |          G          |\n");
-    printf("| ------ | ------------------- | ------------------- | ------------------- | ------------------- |\n");
+    fprintf(output, "### Per Base Content \n\n");
+    fprintf(output, "|   Base |          A          |          T          |          C          |          G          |\n");
+    fprintf(output, "| ------ | ------------------- | ------------------- | ------------------- | ------------------- |\n");
 
     for(i = 0; i < data->max_length; i++){
-        printf("| % 6d ", i);
+        fprintf(output, "| % 6d ", i);
         for(j = 0; j < 4; j++){
-            printf("| % 10d (%5.2f%%) ", data->bases[i].content[j],
+            fprintf(output, "| % 10d (%5.2f%%) ", data->bases[i].content[j],
                    (data->bases[i].content[j] * 100.0)/data->bases[i].length_count);
         }
-        printf("|\n");
+        fprintf(output, "|\n");
     }
-    printf("\n");
+    fprintf(output, "\n");
 }
 
 
-void draw_txt_quality(sequence_data* data){
+void draw_txt_quality(FILE* output, sequence_data* data){
     int i, j;
     uint64_t total[91] = {0}, tt = 0;
 
 
-    printf("### Per Base Sequence Quality \n\n");
-    printf("|   Base ");
+    fprintf(output, "### Per Base Sequence Quality \n\n");
+    fprintf(output, "|   Base ");
     for(i = data->min_score; i <= data->max_score; i++)
-        printf("| %17d ", i);
-    printf("|\n");
+        fprintf(output, "| %17d ", i);
+    fprintf(output, "|\n");
 
-    printf("| ------ ");
+    fprintf(output, "| ------ ");
     for(i = data->min_score; i <= data->max_score; i++)
-        printf("| ----------------- ");
-    printf("|\n");
+        fprintf(output, "| ----------------- ");
+    fprintf(output, "|\n");
 
     for(i = 0; i < data->max_length; i++){
-        printf("| % 6d ", i);
+        fprintf(output, "| % 6d ", i);
         for(j = data->min_score; j <= data->max_score; j++){
             tt += data->bases[i].scores[j];
             total[j] += data->bases[i].scores[j];
-            printf("| % 8d (%5.2f%%) ", data->bases[i].scores[j],
+            fprintf(output, "| % 8d (%5.2f%%) ", data->bases[i].scores[j],
                    (data->bases[i].scores[j] * 100.0)/data->bases[i].length_count);
         }
-        printf("|\n");
+        fprintf(output, "|\n");
     }
 
-     printf("| ------ ");
+     fprintf(output, "| ------ ");
     for(i = data->min_score; i <= data->max_score; i++)
-        printf("| ----------------- ");
-    printf("|\n");
+        fprintf(output, "| ----------------- ");
+    fprintf(output, "|\n");
 
-    printf("| % 6s ", "Total");
+    fprintf(output, "| % 6s ", "Total");
     for(j = data->min_score; j <= data->max_score; j++){
-        printf("| % 8d (%5.2f%%) ", total[j],
+        fprintf(output, "| % 8d (%5.2f%%) ", total[j],
                (total[j] * 100.0)/tt);
     }
-    printf("|\n");
+    fprintf(output, "|\n");
 
-    printf("\n");
+    fprintf(output, "\n");
 
 
 }
 
 
-void draw_txt_length(sequence_data * data){
+void draw_txt_length(FILE* output, sequence_data * data){
     int i;
 
-    printf("### Length Distribution \n\n");
-    printf("|   Base |     Terminating     |      Cumulative      |\n");
-    printf("| ------ | ------------------- | -------------------- |\n");
+    fprintf(output, "### Length Distribution \n\n");
+    fprintf(output, "|   Base |     Terminating     |      Cumulative      |\n");
+    fprintf(output, "| ------ | ------------------- | -------------------- |\n");
 
     for(i = 0; i < data->max_length-1; i++){
         uint64_t term = data->bases[i].length_count-data->bases[i+1].length_count;
-        printf("| % 6d ", i);
-        printf("| % 10d (%6.2f%%) ", term, term*100.0/data->number_of_sequences);
-        printf("| % 10d (%6.2f%%) ", data->bases[i].length_count,
+        fprintf(output, "| % 6d ", i);
+        fprintf(output, "| % 10d (%6.2f%%) ", term, term*100.0/data->number_of_sequences);
+        fprintf(output, "| % 10d (%6.2f%%) ", data->bases[i].length_count,
                data->bases[i].length_count*100.0/data->number_of_sequences);
-        printf("|\n");
+        fprintf(output, "|\n");
     }
 
-    printf("| % 6d ", i);
-    printf("| % 10d (%6.2f%%) ", data->bases[i].length_count,
+    fprintf(output, "| % 6d ", i);
+    fprintf(output, "| % 10d (%6.2f%%) ", data->bases[i].length_count,
            data->bases[i].length_count*100.0/data->number_of_sequences);
-    printf("| % 10d (%6.2f%%) ", data->bases[i].length_count,
+    fprintf(output, "| % 10d (%6.2f%%) ", data->bases[i].length_count,
            data->bases[i].length_count*100.0/data->number_of_sequences);
-    printf("|\n");
+    fprintf(output, "|\n");
 
 }
 
-void draw_txt_adapters(sequence_data * data){
+void draw_txt_adapters(FILE* output, sequence_data * data){
     int i;
 
-    printf("### Adapter Distribution \n\n");
-    printf("|   Base |        Count        |\n");
-    printf("| ------ | ------------------- |\n");
+    fprintf(output, "### Adapter Distribution \n\n");
+    fprintf(output, "|   Base |        Count        |\n");
+    fprintf(output, "| ------ | ------------------- |\n");
 
     for(i = 0; i < data->max_length; i++){
-        printf("| % 6d ", i);
-        printf("| % 10d (%6.2f%%) ", data->bases[i].kmer_count,
+        fprintf(output, "| % 6d ", i);
+        fprintf(output, "| % 10d (%6.2f%%) ", data->bases[i].kmer_count,
                data->bases[i].kmer_count*100.0/data->bases[i].length_count);
-        printf("|\n");
+        fprintf(output, "|\n");
     }
 
 }
 
 
-void draw_txt(sequence_data* forward,
-              sequence_data* reverse,
-              char* name,
-              int adapters_used){
+void draw_txt(
+    FILE * output,
+    sequence_data* forward,
+    sequence_data* reverse,
+    char* name,
+    int adapters_used){
 
     if(name)
-        printf("# %s\n\n", name);
+        fprintf(output, "# %s\n\n", name);
 
     if(reverse)
-        printf("## Forward\n\n");
+        fprintf(output, "## Forward\n\n");
 
-    draw_txt_content(forward);
-    draw_txt_quality(forward);
-    draw_txt_length(forward);
+    draw_txt_content(output, forward);
+    draw_txt_quality(output, forward);
+    draw_txt_length(output, forward);
 
     if(adapters_used)
-        draw_txt_adapters(forward);
+        draw_txt_adapters(output, forward);
 
     if(reverse){
-        printf("## Reverse\n\n");
+        fprintf(output, "## Reverse\n\n");
 
-        draw_txt_content(reverse);
-        draw_txt_quality(reverse);
-        draw_txt_length(reverse);
+        draw_txt_content(output, reverse);
+        draw_txt_quality(output, reverse);
+        draw_txt_length(output, reverse);
 
         if(adapters_used)
-            draw_txt_adapters(reverse);
+            draw_txt_adapters(output, reverse);
     }
 }

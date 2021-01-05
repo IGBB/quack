@@ -21,6 +21,8 @@ char *ratio_colors[4] = {"#648964", "#89bc89", "#84accf", "#5d7992"};
 
 #define PI 3.14159265
 
+FILE * output;
+
 typedef struct {
     float x,y;
 } fpair_t;
@@ -131,7 +133,7 @@ char * point_string(int length, fpair_t* p){
 
 
 #define svg_start_label(posx, posy)                                     \
-    svg_start_tag("text", 5,                                            \
+    svg_start_tag(output, "text", 5,                                            \
                   svg_attr("x",           "%f", (float)(posx)),         \
                   svg_attr("y",           "%f", (float)(posy)),         \
                   svg_attr("fill",        "%s", "#AAA"),                \
@@ -139,7 +141,7 @@ char * point_string(int length, fpair_t* p){
                   svg_attr("font-size",   "%s", "15px")                 \
     )
 
-#define svg_end_label() svg_end_tag("text")
+#define svg_end_label() svg_end_tag(output, "text")
 
 
 int calc_step(float min, float max, int breaks){
@@ -159,7 +161,7 @@ void xaxis_length_ticks( fpair_t size, fpair_t scale){
     int step = calc_step(0,size.x,10);
     int i;
 
-    svg_simple_tag("line", 7,
+    svg_simple_tag(output, "line", 7,
                    svg_attr("y1", "%d", 0),
                    svg_attr("y2", "%d", 0),
                    svg_attr("x1", "%d", 0),
@@ -170,7 +172,7 @@ void xaxis_length_ticks( fpair_t size, fpair_t scale){
 
 
     for (i = step; i <= size.x - step; i += step){
-        svg_simple_tag("line", 7,
+        svg_simple_tag(output, "line", 7,
                        svg_attr("x1", "%f", i-0.5),
                        svg_attr("y1", "%f", -2.0 / scale.y),
                        svg_attr("x2", "%f", i-0.5),
@@ -181,7 +183,7 @@ void xaxis_length_ticks( fpair_t size, fpair_t scale){
         );
     }
 
-    svg_simple_tag("line", 7,
+    svg_simple_tag(output, "line", 7,
                        svg_attr("x1", "%f", size.x-0.5),
                        svg_attr("y1", "%f", -2.0 / scale.y),
                        svg_attr("x2", "%f", size.x-0.5),
@@ -199,7 +201,7 @@ void yaxis_score_labels( fpair_t size, fpair_t scale){
     /*  loop through each step. excluded last step if too close to max score */
     for (i = step; i < size.y - (step/2); i += step){
 
-        svg_start_tag("text", 8,
+        svg_start_tag(output, "text", 8,
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("dominant-baseline", "%s", "middle"),
@@ -211,13 +213,13 @@ void yaxis_score_labels( fpair_t size, fpair_t scale){
                                -4.0, i+0.5,
                                1.0/scale.x, 1.0/scale.y));
 
-        printf("%d", i);
-        svg_end_tag("text");
+        fprintf(output, "%d", i);
+        svg_end_tag(output, "text");
 
 
     }
     /* add max score label */
-        svg_start_tag("text", 8,
+        svg_start_tag(output, "text", 8,
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("dominant-baseline", "%s", "middle"),
@@ -229,10 +231,10 @@ void yaxis_score_labels( fpair_t size, fpair_t scale){
                                -4.0, size.y-0.5,
                                1.0/scale.x, 1.0/scale.y));
 
-        printf("%d", (int)size.y-1);
-        svg_end_tag("text");
+        fprintf(output, "%d", (int)size.y-1);
+        svg_end_tag(output, "text");
 
-    svg_simple_tag("line", 7,
+    svg_simple_tag(output, "line", 7,
                    svg_attr("x1", "%d", 0),
                    svg_attr("x2", "%d", 0),
                    svg_attr("y1", "%d", 0),
@@ -248,7 +250,7 @@ void xaxis_percent_labels( fpair_t size, fpair_t scale){
     int i, step = calc_step(0, size.x, 4);
 
     for(i = step; i < size.x; i+=step){
-        svg_simple_tag("line", 7,
+        svg_simple_tag(output, "line", 7,
                        svg_attr("x1", "%d", i),
                        svg_attr("x2", "%d", i),
                        svg_attr("y1", "%d", 0),
@@ -258,7 +260,7 @@ void xaxis_percent_labels( fpair_t size, fpair_t scale){
                        svg_attr("stroke-width", "%d", 1)
 
         );
-        svg_start_tag("text", 8,
+        svg_start_tag(output, "text", 8,
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "start"),
                       svg_attr("dominant-baseline", "%s", "middle"),
@@ -269,8 +271,8 @@ void xaxis_percent_labels( fpair_t size, fpair_t scale){
                       svg_attr("transform", "translate(%f %f) scale(%f %f) rotate(-45)",
                                (float)i,  size.y + 1,
                                1/scale.x, 1/scale.y ));
-        printf("%d%%", i);
-        svg_end_tag("text");
+        fprintf(output, "%d%%", i);
+        svg_end_tag(output, "text");
     }
 
 }
@@ -280,7 +282,7 @@ void yaxis_percent_labels( fpair_t size, fpair_t scale){
     int i, step = calc_step(0,size.y,4);
 
     for(i = step; i < size.y; i+=step){
-        svg_simple_tag("line", 7,
+        svg_simple_tag(output, "line", 7,
                        svg_attr("y1", "%d", i),
                        svg_attr("y2", "%d", i),
                        svg_attr("x1", "%d", 0),
@@ -290,7 +292,7 @@ void yaxis_percent_labels( fpair_t size, fpair_t scale){
                        svg_attr("stroke-width", "%f", 1.0)
 
                        );
-        svg_start_tag("text", 8,
+        svg_start_tag(output, "text", 8,
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "start"),
                       svg_attr("dominant-baseline", "%s", "middle"),
@@ -301,8 +303,8 @@ void yaxis_percent_labels( fpair_t size, fpair_t scale){
                       svg_attr("transform", "translate(%f %f) scale(%f %f)",
                                size.x + 1, (float)i,
                                1/scale.x, 1/scale.y ));
-        printf("%d%%", i);
-        svg_end_tag("text");
+        fprintf(output,"%d%%", i);
+        svg_end_tag(output, "text");
     }
 
 }
@@ -318,8 +320,6 @@ void draw_svg_graph(sequence_data* data,
     fpair_t scale = (fpair_t){final.x/original.x, final.y/original.y};
     fpair_t scale_translate = (fpair_t){0,0};
 
-    int i;
-
     if(flip.x){
         scale.x *= -1;
         scale_translate.x = final.x;
@@ -329,8 +329,8 @@ void draw_svg_graph(sequence_data* data,
         scale_translate.y = final.y;
     }
 
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
-    svg_start_tag("g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
+    svg_start_tag(output, "g", 1, svg_attr("transform", "translate(%f %f)", translate.x, translate.y));
+    svg_start_tag(output, "g", 1, svg_attr("transform", "translate(%f %f) scale(%f %f)",
                                    scale_translate.x, scale_translate.y,
                                    scale.x, scale.y
                   )
@@ -343,25 +343,25 @@ void draw_svg_graph(sequence_data* data,
     if(xaxis != NULL) (*xaxis)(original, scale);
     if(yaxis != NULL) (*yaxis)(original, scale);
 
-    svg_end_tag("g");
+    svg_end_tag(output, "g");
 
     /* Add graph label */
     svg_start_label(GRAPH_PAD, final.y - GRAPH_PAD);
-    printf("%s\n", label);
+    fprintf(output,"%s\n", label);
     svg_end_label();
 
-    svg_end_tag("g");
+    svg_end_tag(output, "g");
 
 }
 
 void draw_histo_length(sequence_data* data){
-    int i;
+    unsigned int i;
     float y;
     for(i = 0; i < data->max_length-1; i++){
         y = (data->bases[i].length_count - data->bases[i+1].length_count);
         y = y*100.0/data->number_of_sequences;
 
-        svg_simple_tag("rect", 5,
+        svg_simple_tag(output, "rect", 5,
                        svg_attr("x", "%d", i),
                        svg_attr("height", "%f", y),
                        svg_attr("width", "%f", 1.1),
@@ -375,7 +375,7 @@ void draw_histo_length(sequence_data* data){
     /*  Draw last bar */
     y = (data->bases[i].length_count)*100.0/data->number_of_sequences;
 
-    svg_simple_tag("rect", 5,
+    svg_simple_tag(output, "rect", 5,
                    svg_attr("x", "%d", i),
                    svg_attr("height", "%f", y),
                    svg_attr("width", "%f", 1.1),
@@ -407,7 +407,7 @@ void draw_svg_length(sequence_data * data, fpair_t translate, float max){
     }
 
     if(i >= data->max_length -1){
-        svg_simple_tag("rect", 6,
+        svg_simple_tag(output, "rect", 6,
                        svg_attr("x", "%f", translate.x),
                        svg_attr("y", "%f", translate.y),
                        svg_attr("width", "%f", final.x),
@@ -416,7 +416,7 @@ void draw_svg_length(sequence_data * data, fpair_t translate, float max){
                        svg_attr("opacity", "%f", 0.5)
                        );
 
-        svg_start_tag("text", 7,
+        svg_start_tag(output, "text", 7,
                       svg_attr("x", "%f", translate.x + final.x/2),
                       svg_attr("y", "%f", translate.y + final.y/2),
                       svg_attr("font-family", "%s", "sans-serif"),
@@ -424,8 +424,8 @@ void draw_svg_length(sequence_data * data, fpair_t translate, float max){
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("font-size",   "%s", "12px"),
                       svg_attr("fill",        "%s", "black"));
-        printf("All reads are %" PRIu64 "-bp", data->max_length);
-        svg_end_tag("text");
+        fprintf(output, "All reads are %" PRIu64 "-bp", data->max_length);
+        svg_end_tag(output, "text");
     }
 
 }
@@ -446,7 +446,7 @@ void draw_line_content(sequence_data* data){
        
         points_string = point_string(data->max_length, points);
 
-        svg_simple_tag("polyline", 5,
+        svg_simple_tag(output, "polyline", 5,
                       svg_attr("points", "%s", points_string),
                        svg_attr("fill", "%s", "none"),
                        svg_attr("stroke", "%s", ratio_colors[j]),
@@ -464,7 +464,7 @@ void draw_line_content(sequence_data* data){
 void xaxis_length_dotted(fpair_t size, fpair_t scale){
     int i, step = calc_step(0, size.x, 10);
     for (i = step; i <= size.x - step; i += step){
-        svg_simple_tag("line", 8,
+        svg_simple_tag(output, "line", 8,
                        svg_attr("x1", "%f", i-0.5),
                        svg_attr("y1", "%d", -1),
                        svg_attr("x2", "%f", i-0.5),
@@ -482,7 +482,7 @@ void xaxis_length_dotted_labels(fpair_t size, fpair_t scale){
     xaxis_length_dotted(size, scale);
 
     for (i = step; i <= size.x - step; i += step){
-        svg_start_tag("text", 7,
+        svg_start_tag(output, "text", 7,
                       svg_attr("font-family", "sans-serif"),
                       svg_attr("text-anchor", "middle"),
                       svg_attr("dominant-baseline", "middle"),
@@ -493,10 +493,10 @@ void xaxis_length_dotted_labels(fpair_t size, fpair_t scale){
                                i -0.5, -1,
                                1/scale.x, 1/scale.y));
 
-        printf("%d", i);
-        svg_end_tag("text");
+        fprintf(output, "%d", i);
+        svg_end_tag(output, "text");
     }
-        svg_start_tag("text", 7,
+        svg_start_tag(output, "text", 7,
                       svg_attr("font-family", "sans-serif"),
                       svg_attr("text-anchor", "middle"),
                       svg_attr("dominant-baseline", "middle"),
@@ -507,14 +507,14 @@ void xaxis_length_dotted_labels(fpair_t size, fpair_t scale){
                                size.x -0.5, -1,
                                1/scale.x, 1/scale.y));
 
-        printf("%d", (int) size.x);
-        svg_end_tag("text");
+        fprintf(output, "%d", (int) size.x);
+        svg_end_tag(output, "text");
 }
 
 void yaxis_content(fpair_t size, fpair_t scale){
     int i;
     for (i = 10; i < size.y; i += 10){
-                svg_simple_tag("line", 7,
+                svg_simple_tag(output, "line", 7,
                        svg_attr("y1", "%d", i),
                        svg_attr("y2", "%d", i),
                        svg_attr("x1", "%d", 0),
@@ -523,7 +523,7 @@ void yaxis_content(fpair_t size, fpair_t scale){
                        svg_attr("vector-effect", "%s", "non-scaling-stroke"),
                        svg_attr("stroke-width", "%f", 0.5));
 
-                svg_start_tag("text", 8,
+                svg_start_tag(output, "text", 8,
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "start"),
                       svg_attr("dominant-baseline", "%s", "middle"),
@@ -534,23 +534,23 @@ void yaxis_content(fpair_t size, fpair_t scale){
                       svg_attr("transform", "translate(%f %d) scale(%f %f)",
                                size.x, i,
                            1/scale.x, 1/scale.y));
-        printf("%d%%", i);
-        svg_end_tag("text");
+        fprintf(output, "%d%%", i);
+        svg_end_tag(output, "text");
     }
 
     for(i = 0; i<4; i++){
-        svg_start_tag("g", 1,
+        svg_start_tag(output, "g", 1,
                       svg_attr("transform", "translate(%f %f) scale(%f %f)",
                                -20.0 / scale.x , size.y * (i + 1) / 6.0,
                                1/scale.x, 1/scale.y));
-        svg_simple_tag("rect", 5,
+        svg_simple_tag(output, "rect", 5,
                        svg_attr("y", "%d", -15),
                        svg_attr("x", "%d", 15),
                        svg_attr("width", "%d", 4),
                        svg_attr("height", "%d", 16),
                        svg_attr("fill",        "%s", ratio_colors[i]));
 
-        svg_start_tag("text", 6,
+        svg_start_tag(output, "text", 6,
                       svg_attr("x", "%d", 8),
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("fill",        "%s", "black"),
@@ -559,9 +559,9 @@ void yaxis_content(fpair_t size, fpair_t scale){
                       svg_attr("font-size",   "%s", "16px")
 
         );
-        printf("%c", rev_lookup[i] );
-        svg_end_tag("text");
-        svg_end_tag("g");
+        fprintf(output, "%c", rev_lookup[i] );
+        svg_end_tag(output, "text");
+        svg_end_tag(output, "g");
     }
 
 
@@ -590,7 +590,7 @@ void draw_heatmap_quality(sequence_data* data){
 
     for(i = 1; i <= 3; i++){
         int height = score_delineation[i] - score_delineation[i-1];
-        svg_simple_tag("rect", 5,
+        svg_simple_tag(output, "rect", 5,
                        svg_attr("y", "%d", score_delineation[i-1]),
                        svg_attr("width", "%d", data->max_length),
                        svg_attr("height", "%d", height),
@@ -610,7 +610,7 @@ void draw_heatmap_quality(sequence_data* data){
             if(data->bases[i].scores[j] == 0)
                 continue;
             float perc =  ((float) data->bases[i].scores[j] )/data->bases[i].length_count;
-            svg_simple_tag("rect", 8,
+            svg_simple_tag(output, "rect", 8,
                        svg_attr("x",      "%d", i),
                        svg_attr("y",      "%d", j),
                        svg_attr("fill-opacity", "%f", perc),
@@ -626,7 +626,7 @@ void draw_heatmap_quality(sequence_data* data){
 
     char* points = point_string(data->max_length, p);
 
-    svg_simple_tag("polyline", 6,
+    svg_simple_tag(output, "polyline", 6,
                    /* Since coordinates for lines and rectangles don't work the same; set the
                       first point of each line to start off graph. Then, add 0.5 to the x of each
                       point. Finally, end the line off graph. */
@@ -661,7 +661,7 @@ void draw_histo_score(sequence_data * data){
 
     for(i = 0; i <= data->max_score; i++){
         float y = score_accessor(data, i);
-        svg_simple_tag("rect",5,
+        svg_simple_tag(output, "rect",5,
                        svg_attr("y",      "%d", i),
                        svg_attr("width",  "%f", y),
                        svg_attr("x",      "%f", 0.0),
@@ -689,13 +689,13 @@ void draw_svg_score(sequence_data * data, fpair_t translate, int flipx, float ma
 }
 
 void draw_histo_adapter(sequence_data * data){
-    int i;
+    unsigned int i;
     float y;
 
     for(i = 0; i < data->max_length; i++){
         y = data->bases[i].kmer_count*100.0/data->number_of_sequences;
 
-        svg_simple_tag("rect", 5,
+        svg_simple_tag(output, "rect", 5,
                        svg_attr("x", "%d", i),
                        svg_attr("height", "%f", y),
                        svg_attr("width", "%f", 1.1),
@@ -709,7 +709,6 @@ void draw_histo_adapter(sequence_data * data){
 }
 
 void draw_svg_adapter(sequence_data * data, fpair_t translate, float max){
-    unsigned int i;
     fpair_t original_size, final_size, flip;
 
 
@@ -726,10 +725,13 @@ void draw_svg_adapter(sequence_data * data, fpair_t translate, float max){
 }
 
 
-void draw_svg(sequence_data* forward,
+void draw_svg(FILE * out,
+              sequence_data* forward,
               sequence_data* reverse,
               char* name,
               int adapters_used){
+
+    output = out;
 
     int i;
     sequence_data* list[2] = {forward, reverse};
@@ -751,7 +753,7 @@ void draw_svg(sequence_data* forward,
         size.y += 30;
 
     // Start svg
-    svg_start_tag("svg", 5,
+    svg_start_tag(output, "svg", 5,
                   svg_attr("width",   "%f", size.x),
                   svg_attr("height",  "%f", size.y),
                   svg_attr("viewBox", "%f %f %f %f", 0.0, 0.0, size.x, size.y),
@@ -761,17 +763,17 @@ void draw_svg(sequence_data* forward,
 
     /* If name is given, add to middle of viewBox (half of width + min-x of viewbox) */
     if(name != NULL){
-        svg_start_tag("text", 6,
+        svg_start_tag(output, "text", 6,
                       svg_attr("x", "%f", (size.x/2)),
                       svg_attr("y", "%d", 30),
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("font-size",   "%s", "30px"),
                       svg_attr("fill",        "%s", "black"));
-        printf("%s\n", name);
-        svg_end_tag("text");
+        fprintf(output, "%s\n", name);
+        svg_end_tag(output, "text");
 
-        svg_start_tag("g", 1,
+        svg_start_tag(output, "g", 1,
                       svg_attr("transform", "translate(%d %d)", 0, 50)
         );
 
@@ -786,15 +788,15 @@ void draw_svg(sequence_data* forward,
        
         translate.y = GRAPH_PAD;
 
-        svg_start_tag("text", 6,
+        svg_start_tag(output, "text", 6,
                       svg_attr("x", "%f", (GRAPH_WIDTH/2) + translate.x),
                       svg_attr("y", "%d", 0),
                       svg_attr("font-family", "%s", "sans-serif"),
                       svg_attr("text-anchor", "%s", "middle"),
                       svg_attr("font-size",   "%s", "15px"),
                       svg_attr("fill",        "%s", "black"));
-        printf("%" PRId64 " reads encoded in phred%d\n", data->number_of_sequences, data->encoding);
-        svg_end_tag("text");
+        fprintf(output, "%" PRId64 " reads encoded in phred%d\n", data->number_of_sequences, data->encoding);
+        svg_end_tag(output, "text");
 
 
         draw_svg_length(data, translate, max_length);
@@ -816,8 +818,8 @@ void draw_svg(sequence_data* forward,
         translate.x += GRAPH_PAD + GRAPH_WIDTH + 40;
     }
 
-    if(name != NULL) svg_end_tag("g");
+    if(name != NULL) svg_end_tag(output, "g");
 
-    svg_end_tag("svg");
+    svg_end_tag(output, "svg");
 
 }
