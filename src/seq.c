@@ -203,7 +203,7 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding) {
 
     /* Fail if encoding is set and doesn't match guess */
     if( encoding != guess && data->encoding != encoding ){
-        perror("Can't open fastq file");
+        perror("Failed to validate encoding");
         exit(EXIT_FAILURE);
     }
 

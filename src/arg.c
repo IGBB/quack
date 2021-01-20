@@ -62,7 +62,7 @@ struct arguments parse_options(int argc, char **argv) {
 
   int  c;
   FILE* tmp;
-  while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:f:n:?V", longopts)) >= 0) {
+  while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:s:t:n:?V", longopts)) >= 0) {
     switch(c){
       case '1': arguments.forward  = opt.arg; break;
       case '2': arguments.reverse  = opt.arg; break;
@@ -90,7 +90,7 @@ struct arguments parse_options(int argc, char **argv) {
         if(c == 't') arguments.txt = tmp;
 
         if(tmp == NULL){
-          perror("Cannot parse output format argument\n");
+          perror("Cannot open output file\n");
           perror(help_message);
           exit(EXIT_FAILURE);
         }
