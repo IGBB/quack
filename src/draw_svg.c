@@ -254,7 +254,7 @@ void xaxis_percent_labels( fpair_t size, fpair_t scale){
                        svg_attr("x1", "%d", i),
                        svg_attr("x2", "%d", i),
                        svg_attr("y1", "%d", 0),
-                       svg_attr("y2", "%d", size.y),
+                       svg_attr("y2", "%f", size.y),
                        svg_attr("stroke", "%s", "white"),
                        svg_attr("vector-effect", "%s", "non-scaling-stroke"),
                        svg_attr("stroke-width", "%d", 1)
