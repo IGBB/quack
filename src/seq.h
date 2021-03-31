@@ -32,6 +32,7 @@ typedef enum {
 
 typedef struct {
     uint64_t scores[91];
+    uint64_t avg_scores[91];
     uint64_t content[4];
     uint64_t length_count;
     uint64_t kmer_count;
@@ -45,6 +46,7 @@ typedef struct {
     int min_score;
     encoding_t encoding;
     float * avg_score;
+    int read_type;
 } sequence_data;
 
 int* read_adapters(char *adapters_file);

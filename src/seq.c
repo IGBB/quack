@@ -110,17 +110,23 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding) {
         max_length = seq->seq.l;
       }
 
-      /* Save base and quality info 
-           encode base to 2-bit integer
+      /* Save base and quality info encode base to 2-bit integer
            
-           There are currently two encodings for quality score: phred + 33 and
+         There are currently two encodings for quality score: phred + 33 and
            phred + 64. We will assume the encoding is phred33 and correct later
            if the assumption is wrong.
+
+         Accumulate scores to determine average score of read. Increment
+           counts of reads of length seq->seq.l with that score.
        */
+      uint64_t avg_score = 0;
       for (i = 0; i < seq->seq.l; i++) {
         bases[i].content[encode_base(seq->seq.s[i])]++;
         bases[i].scores[seq->qual.s[i] - 33]++;
+        avg_score += seq->qual.s[i];
       }
+      avg_score /= seq->seq.l;
+      bases[seq->seq.l].avg_scores[avg_score]++;
 
       /* Search kmer database if it exists */
       if(kmers) {
@@ -158,8 +164,8 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding) {
     data->avg_score = malloc(sizeof(float) * max_length);
 
     /* Transform data
-     * - Make kmer_count cummulative
-     * - Make length_count cummulative
+     * - Make kmer_count cumulative
+     * - Make length_count cumulative
      * - Guess or validate encoding
      * - Calculate average score of each base,
      *      adjusting for length drop off */
@@ -233,6 +239,35 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding) {
             data->avg_score[i] += (float)bases[i].scores[j] * j;
         data->avg_score[i] = data->avg_score[i] / data->bases[i].length_count;
     }
+
+    /* Determine whether reads are short reads or long reads */
+    /* Initialize variables
+    - median_position is the location of the median value.
+    */
+
+    uint64_t mean_length = 0;
+    uint64_t median_position =  (number_of_sequences + 1) / 2;
+    int median_length;
+
+    /* Find median and accumulate lengths up to and including median.
+       The lengths are reverse-cumulative, so the median is length i
+       for which the accumulated value is greater than the median_position.
+       Once that value is found, break from the loop and set the median_length.
+       Then, resume accumulation of the lengths.
+       Calculate the mean and compare the median and the mean.
+       Long reads are right-skewed (median < mean), while short reads are either
+         not skewed (untrimmed) or left-skewed (trimmed).
+    */
+    for(i = 0; i <= max_length && bases[i].length_count >= median_position; i++)
+      mean_length += bases[i].length_count;
+    median_length = i;
+
+    for(; i<= max_length; i++)
+      mean_length += bases[i].length_count;
+
+    mean_length /= number_of_sequences;
+
+    data->read_type = (median_length < mean_length);
+
     return data;
 }
-
