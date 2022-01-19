@@ -34,11 +34,10 @@ float get_max(sequence_data* f, sequence_data* r,
               int (*stop)(sequence_data*),
               float (*accessor)(sequence_data*, int)){
     float max = 0.0;
-    sequence_data *list[2] = {f, r};
-    int i;
+    int i,n;
 
-    for( i = 0; i < 2; i++ ){
-        sequence_data* data = list[i];
+    for( n = 0; n < 2; n++ ){
+        sequence_data* data = (n == 0)?f:r;
         if(data == NULL) continue;
 
         for(i = 0; i < (*stop)(data); i++){
@@ -73,7 +72,8 @@ float get_max_length(sequence_data* f, sequence_data* r){
 
 /*  Max adapter functions */
 inline float adapter_accessor(sequence_data* data, int i){
-    return data->bases[i].kmer_count*100.0/data->number_of_sequences;
+    float ret = data->bases[i].kmer_count*100.0/data->number_of_sequences;
+    return ret;
 }
 float get_max_adapter(sequence_data* f, sequence_data* r){
     float max = get_max(f,r,length_stop,adapter_accessor);
@@ -740,7 +740,6 @@ void draw_svg(FILE * out,
     float max_score   = get_max_score(forward, reverse);
     float max_adapter = get_max_adapter(forward, reverse);
     float max_content = get_max_content(forward, reverse);
-
 
     /* Set size */
     fpair_t size = {615, 510};
