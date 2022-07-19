@@ -45,10 +45,11 @@ typedef struct {
     int min_score;
     encoding_t encoding;
     float * avg_score;
+    int * new_kmers;
 } sequence_data;
 
 int* read_adapters(char *adapters_file);
-sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding);
+sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int saturation_curve);
 /* sequence_data* transform(sequence_data* data); */
 
 #endif

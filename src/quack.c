@@ -16,7 +16,7 @@ extern void draw_txt(
 extern void draw_svg(
   FILE * output,
   sequence_data* forward, sequence_data* reverse,
-  char* name, int adapters_used);
+  char* name, int adapters_used, int saturation);
 
 
 int main (int argc, char **argv)
@@ -41,10 +41,10 @@ int main (int argc, char **argv)
 
     sequence_data *forward, *reverse;
     if(paired){
-      forward = read_fastq(arguments.forward, kmers, arguments.encoding);
-      reverse = read_fastq(arguments.reverse, kmers, arguments.encoding);
+      forward = read_fastq(arguments.forward, kmers, arguments.encoding, arguments.saturation);
+      reverse = read_fastq(arguments.reverse, kmers, arguments.encoding, arguments.saturation);
     } else {
-      forward = read_fastq(arguments.unpaired, kmers, arguments.encoding);
+      forward = read_fastq(arguments.unpaired, kmers, arguments.encoding, arguments.saturation);
       reverse = NULL;
     }
 
@@ -52,7 +52,7 @@ int main (int argc, char **argv)
       draw_txt(arguments.txt, forward, reverse, arguments.name, adapters);
 
     if(arguments.svg)
-      draw_svg(arguments.svg, forward, reverse, arguments.name, adapters);
+      draw_svg(arguments.svg, forward, reverse, arguments.name, adapters, arguments.saturation);
   
 
     exit (0);

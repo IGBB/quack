@@ -14,6 +14,7 @@ struct arguments {
        *adapters;
     FILE * svg, * txt;
     encoding_t encoding;
+    int saturation;
 };
 
 struct arguments parse_options(int argc, char **argv);

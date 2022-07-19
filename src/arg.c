@@ -16,6 +16,7 @@ const char* const help_message = ""
   "  -a, --adapters adapters.fa.gz   (Optional) Adapters file\n"
   "  -e, --encoding phred33          (Optional) fastq quality encoding.\n"
   "                                     Valid options are phred64, 64, phred33, and 33.\n"
+  "  -c, --saturation                (Optional) Saturation curve for novel k-mers per read\n"
   "  -s, --svg filename.svg          (Optional) Filename for svg output\n"
   "  -t, --txt filename.txt          (Optional) Filename for txt output\n"
   "  -n, --name NAME                 (Optional) Display in output\n"
@@ -32,6 +33,8 @@ static ko_longopt_t longopts[] = {
     { "adapters", ko_required_argument, 'a' },
 
     { "encoding", ko_required_argument, 'e' },
+
+    { "saturation", ko_no_argument, 'c' },
 
     { "svg",   ko_required_argument, 's' },
     { "txt",   ko_required_argument, 't' },
@@ -53,6 +56,7 @@ struct arguments parse_options(int argc, char **argv) {
                                 .name = NULL,
                                 .adapters = NULL,
                                 .encoding = guess,
+                                .saturation = NULL,
                                 .svg = NULL,
                                 .txt = NULL,
   };
@@ -62,7 +66,7 @@ struct arguments parse_options(int argc, char **argv) {
 
   int  c;
   FILE* tmp;
-  while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:s:t:n:?V", longopts)) >= 0) {
+  while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:c:s:t:n:?V", longopts)) >= 0) {
     switch(c){
       case '1': arguments.forward  = opt.arg; break;
       case '2': arguments.reverse  = opt.arg; break;
@@ -81,7 +85,9 @@ struct arguments parse_options(int argc, char **argv) {
         }
 
         break;
-
+      
+      case 'c': arguments.saturation = 1; break;
+      
       case 's':
       case 't':
         tmp = fopen(opt.arg, "w");

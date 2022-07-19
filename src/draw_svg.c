@@ -61,6 +61,9 @@ inline int length_stop(sequence_data* data){
 inline int score_stop(sequence_data* data ){
     return data->max_score+1;
 }
+inline int sequence_stop(sequence_data* data ){
+    return data->number_of_sequences+1;
+}
 
 /*  Max length functions */
 inline float length_accessor(sequence_data* data, int i){
@@ -108,6 +111,17 @@ float get_max_content(sequence_data* f, sequence_data* r){
     return get_max(f,r,length_stop,content_accessor);
 }
 
+/*  Max saturation functions */
+inline float saturation_accessor(sequence_data* data, int i){
+    float ret = data->new_kmers[i]*100.0/data->number_of_sequences;
+    return ret;
+}
+float get_max_saturation(sequence_data* f, sequence_data* r){
+    float max = get_max(f,r,sequence_stop,saturation_accessor);
+    /*  Adjust max to sane level */
+    if(max < 20.0) max = 20.0;
+    return max;
+}
 
 
 char * point_string(int length, fpair_t* p){
@@ -115,7 +129,7 @@ char * point_string(int length, fpair_t* p){
     size_t max = 0;
     int i = 0;
 
-    /* Find lenght of each point string */
+    /* Find length of each point string */
     for(i = 0; i < length; i++)
         max += snprintf(NULL, 0, " %.2f,%.2f ", p[i].x, p[i].y);
     max++;
@@ -724,22 +738,58 @@ void draw_svg_adapter(sequence_data * data, fpair_t translate, float max){
 
 }
 
+void draw_histo_saturation(sequence_data * data){
+    unsigned int i;
+    float y;
+
+    for(i = 0; i < 1000; i++){
+        y = saturation_accessor(data, i*(data->number_of_sequences/1000));
+        svg_simple_tag(output, "rect", 5,
+                       svg_attr("x", "%d", i),
+                       svg_attr("height", "%f", y),
+                       svg_attr("width", "%f", 1.1),
+                       svg_attr("y", "%d", 0),
+                       svg_attr("fill", "%s", "steelblue")
+                       );
+
+
+    }
+
+}
+
+void draw_svg_saturation(sequence_data * data, fpair_t translate, float max){
+    fpair_t original_size, final_size, flip;
+
+
+    original_size = (fpair_t){1000, max};
+    final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
+    flip          = (fpair_t){0,1};
+
+    draw_svg_graph(data,
+                   original_size, final_size, flip, translate,
+                   draw_histo_saturation, xaxis_length_ticks, yaxis_percent_labels,
+                   "Novel K-mer Saturation");
+
+
+}
 
 void draw_svg(FILE * out,
               sequence_data* forward,
               sequence_data* reverse,
               char* name,
-              int adapters_used){
+              int adapters_used,
+              int saturation_curve){
 
     output = out;
 
     int i;
     sequence_data* list[2] = {forward, reverse};
 
-    float max_length  = get_max_length(forward, reverse);
-    float max_score   = get_max_score(forward, reverse);
-    float max_adapter = get_max_adapter(forward, reverse);
-    float max_content = get_max_content(forward, reverse);
+    float max_length     = get_max_length(forward, reverse);
+    float max_score      = get_max_score(forward, reverse);
+    float max_adapter    = get_max_adapter(forward, reverse);
+    float max_content    = get_max_content(forward, reverse);
+    float max_saturation = get_max_saturation(forward, reverse);
 
     /* Set size */
     fpair_t size = {615, 510};
@@ -750,6 +800,9 @@ void draw_svg(FILE * out,
         size.y = 610;
     if(name != NULL)
         size.y += 30;
+
+    if(saturation_curve)
+        size.y += 100;
 
     // Start svg
     svg_start_tag(output, "svg", 5,
@@ -810,9 +863,15 @@ void draw_svg(FILE * out,
         translate.y += GRAPH_HEIGHT + GRAPH_PAD;
         draw_svg_content(data, translate, max_content);
 
-        translate.y += PERF_SIZE + GRAPH_PAD;
-        if(adapters_used)
-            draw_svg_adapter(data, translate, max_adapter);
+        if(adapters_used) {
+          translate.y += PERF_SIZE + GRAPH_PAD;
+          draw_svg_adapter(data, translate, max_adapter);
+        }
+
+        if(saturation_curve) {
+            translate.y += PERF_SIZE + GRAPH_PAD;
+            draw_svg_saturation(data, translate, max_saturation);    
+        }
 
         translate.x += GRAPH_PAD + GRAPH_WIDTH + 40;
     }
