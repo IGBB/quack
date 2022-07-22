@@ -21,6 +21,10 @@
 #define ADAPTER_DB_SIZE (1 << (ADAPTER_KMER_SIZE * 2))
 #define ADAPTER_DB_MASK (ADAPTER_DB_SIZE - 1)
 
+#define SATURATION_KMER_SIZE 31
+#define SATURATION_DB_SIZE (1ul << (SATURATION_KMER_SIZE * 2))
+#define SATURATION_DB_MASK (SATURATION_DB_SIZE - 1)
+
 extern int lookup[];
 extern char rev_lookup[];
 
@@ -45,7 +49,7 @@ typedef struct {
     int min_score;
     encoding_t encoding;
     float * avg_score;
-    int * new_kmers;
+    long int * new_kmers;
 } sequence_data;
 
 int* read_adapters(char *adapters_file);

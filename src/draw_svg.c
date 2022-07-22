@@ -113,7 +113,7 @@ float get_max_content(sequence_data* f, sequence_data* r){
 
 /*  Max saturation functions */
 inline float saturation_accessor(sequence_data* data, int i){
-    float ret = data->new_kmers[i]*100.0/data->number_of_sequences;
+    float ret = data->new_kmers[i]*100/data->new_kmers[data->number_of_sequences-1];
     return ret;
 }
 float get_max_saturation(sequence_data* f, sequence_data* r){
@@ -744,6 +744,12 @@ void draw_histo_saturation(sequence_data * data){
 
     for(i = 0; i < 1000; i++){
         y = saturation_accessor(data, i*(data->number_of_sequences/1000));
+        printf("%f, %lu, %lu, %lu\n", 
+                y,
+                data->new_kmers[i*(data->number_of_sequences/1000)],
+                data->new_kmers[data->number_of_sequences-1],
+                data->new_kmers[i*(data->number_of_sequences/1000)]*100/data->new_kmers[data->number_of_sequences-1]);
+
         svg_simple_tag(output, "rect", 5,
                        svg_attr("x", "%d", i),
                        svg_attr("height", "%f", y),
@@ -759,7 +765,6 @@ void draw_histo_saturation(sequence_data * data){
 
 void draw_svg_saturation(sequence_data * data, fpair_t translate, float max){
     fpair_t original_size, final_size, flip;
-
 
     original_size = (fpair_t){1000, max};
     final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};

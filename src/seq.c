@@ -4,6 +4,7 @@
 #include <zlib.h>
 
 #include "kseq.h"
+#include "khash.h"
 
 #define unlikely(x) __builtin_expect ((x), 0)
 #define likely(x)       __builtin_expect((x),1)
@@ -32,8 +33,10 @@ char rev_lookup[] = "ATGC";
                                  |             |                 |
  */
 #define next_kmer(kmer, base) (((kmer << 2) + encode_base(base)) & ADAPTER_DB_MASK)
+#define next_kmer_read(kmer, base) (((kmer << 2) + encode_base(base)) & SATURATION_DB_MASK)
 
 KSEQ_INIT(gzFile, gzread)
+KHASH_SET_INIT_INT(m32)
 
 int* read_adapters(char *adapters_file) {
     gzFile fp;
@@ -83,13 +86,15 @@ int* read_adapters(char *adapters_file) {
 sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int saturation_curve) {
     gzFile fp;
     kseq_t *seq;
-    int i, j, l, index;
+    int i, j, l, index, is_absent, absent;
+    uint64_t saturation_index;
     int max_length = 0;
     base_information *bases = NULL;
     sequence_data *data = malloc(sizeof(sequence_data));
     int number_of_sequences = 0;
-    int *new_kmers;
-    int *kmers_from_reads;
+    long int *new_kmers;
+    // int *kmers_from_reads;
+    khint_t k;
     int number_of_reads = 1000000;
 
 
@@ -101,18 +106,20 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int
     }
 
     /* Initialize hash to track kmers and array to count novel k-mers per read */
-    kmers_from_reads = calloc(ADAPTER_DB_SIZE, sizeof(int));
+    // kmers_from_reads = calloc(ADAPTER_DB_SIZE, sizeof(int));
+    
+    khash_t(m32) *kmers_from_reads = kh_init(m32);
     if(kmers_from_reads == NULL){
       perror("Can't create adapter database");
       exit(EXIT_FAILURE);
     }
-    new_kmers = malloc(number_of_reads * sizeof(int));
+    new_kmers = malloc(number_of_reads * sizeof(long int));
 
     /* Parse each sequence in fastq */
     seq = kseq_init(fp);
     while ((l = kseq_read(seq)) >= 0) {
 
-      int new_kmers_this_read = 0;
+      long int new_kmers_this_read = 0;
 
       /* if current sequence is longer than any sequence previously read,
          increase base information size and set all new base counts to zero.
@@ -124,8 +131,7 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int
       }
 
       if(number_of_reads - 1 == number_of_sequences) {
-        new_kmers = realloc(new_kmers, number_of_reads * 2 * sizeof(int));
-        memset(new_kmers+number_of_reads, 0, (number_of_reads)*sizeof(int));
+        new_kmers = realloc(new_kmers, number_of_reads * 2 * sizeof(long int));
         number_of_reads = number_of_reads * 2;
       }
 
@@ -141,7 +147,7 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int
         bases[i].scores[seq->qual.s[i] - 33]++;
       }
 
-      /* Search kmer database if it exists and count novel k-mers*/
+      /* Search kmer database if it exists */
       if(kmers) {
         /* Clear index kmer */
         index = 0;
@@ -150,14 +156,10 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int
         for (i = 0; i < ADAPTER_KMER_SIZE; i++) {
           index = next_kmer(index, seq->seq.s[i]);
         }
-        new_kmers_this_read += (kmers_from_reads[index] != 1);
-        kmers_from_reads[index] = 1;
 
         /* Loop through remaining bases, searching kmer database, stoping if kmer is found */
         for (; !kmers[index] && i < seq->seq.l; i++) {
           index = next_kmer(index, seq->seq.s[i]);
-          new_kmers_this_read += (kmers_from_reads[index] != 1);
-          kmers_from_reads[index] = 1;
         }
 
         /* Add to base kmer count if i didn't reach the end of the sequence */
@@ -167,23 +169,29 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int
 
       }
 
-      /* Count novel k-mers without searching for adapter content */
-      if (!kmers && saturation_curve) {
+      /* Count novel k-mers per read */
+      if (saturation_curve) {
         /* Clear index kmer */
-        index = 0;
+        saturation_index = 0;
 
         /* Fill kmer index with first bases */
-        for (i = 0; i < ADAPTER_KMER_SIZE; i++) {
-          index = next_kmer(index, seq->seq.s[i]);
+        for (i = 0; i < SATURATION_KMER_SIZE; i++) {
+          saturation_index = next_kmer_read(saturation_index, seq->seq.s[i]);
         }
-        new_kmers_this_read += (kmers_from_reads[index] != 1);
-        kmers_from_reads[index] = 1;
+
+        k = kh_get(m32, kmers_from_reads, saturation_index);
+        is_absent = (k != kh_end(kmers_from_reads));
+        // printf("Present: %d\n", is_present);
+        new_kmers_this_read += is_absent;
+        kh_put(m32, kmers_from_reads, saturation_index, &absent);
 
         /* Loop through remaining bases */
         for (; i < seq->seq.l; i++) {
-          index = next_kmer(index, seq->seq.s[i]);
-          new_kmers_this_read += (kmers_from_reads[index] != 1);
-          kmers_from_reads[index] = 1;
+          saturation_index = next_kmer_read(saturation_index, seq->seq.s[i]);
+          k = kh_get(m32, kmers_from_reads, saturation_index);
+          is_absent = (k == kh_end(kmers_from_reads));
+          new_kmers_this_read += is_absent;
+          kh_put(m32, kmers_from_reads, saturation_index, &absent);
         }
       }
 
@@ -236,11 +244,12 @@ sequence_data* read_fastq(char *fastq_file, int *kmers, encoding_t encoding, int
         max = j;
 
     }
-
-    for (int i = 0; i < number_of_sequences; i++) {
-      saturation_count += data->new_kmers[i];
-      printf("%d\t%llu\n", i, saturation_count);
-      data->new_kmers[i] = saturation_count;
+    if(saturation_curve) {
+        for(i = 0; i < number_of_sequences; i++) {
+          saturation_count += data->new_kmers[i];
+          // printf("%d\t%llu\n", i, saturation_count);
+          data->new_kmers[i] = saturation_count;
+        }
     }
 
     /* Guess/Validate encoding from min-max range

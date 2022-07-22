@@ -56,7 +56,7 @@ struct arguments parse_options(int argc, char **argv) {
                                 .name = NULL,
                                 .adapters = NULL,
                                 .encoding = guess,
-                                .saturation = NULL,
+                                .saturation = 0,
                                 .svg = NULL,
                                 .txt = NULL,
   };
