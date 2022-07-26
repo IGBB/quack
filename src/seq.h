@@ -50,6 +50,7 @@ typedef struct {
     encoding_t encoding;
     float * avg_score;
     long int * new_kmers;
+    int windows;
 } sequence_data;
 
 int* read_adapters(char *adapters_file);

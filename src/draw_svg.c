@@ -62,7 +62,7 @@ inline int score_stop(sequence_data* data ){
     return data->max_score+1;
 }
 inline int sequence_stop(sequence_data* data ){
-    return data->number_of_sequences+1;
+    return data->windows+1;
 }
 
 /*  Max length functions */
@@ -113,7 +113,7 @@ float get_max_content(sequence_data* f, sequence_data* r){
 
 /*  Max saturation functions */
 inline float saturation_accessor(sequence_data* data, int i){
-    float ret = data->new_kmers[i]*100/data->new_kmers[data->number_of_sequences-1];
+    float ret = data->new_kmers[i];
     return ret;
 }
 float get_max_saturation(sequence_data* f, sequence_data* r){
@@ -318,6 +318,37 @@ void yaxis_percent_labels( fpair_t size, fpair_t scale){
                                size.x + 1, (float)i,
                                1/scale.x, 1/scale.y ));
         fprintf(output,"%d%%", i);
+        svg_end_tag(output, "text");
+    }
+
+}
+
+void yaxis_saturation_labels( fpair_t size, fpair_t scale){
+    int i, step = calc_step(0,size.y,4);
+
+    for(i = step; i < size.y; i+=step){
+        svg_simple_tag(output, "line", 7,
+                       svg_attr("y1", "%d", i),
+                       svg_attr("y2", "%d", i),
+                       svg_attr("x1", "%d", 0),
+                       svg_attr("x2", "%f", size.x),
+                       svg_attr("stroke", "%s", "white"),
+                       svg_attr("vector-effect", "%s", "non-scaling-stroke"),
+                       svg_attr("stroke-width", "%f", 1.0)
+
+                       );
+        svg_start_tag(output, "text", 8,
+                      svg_attr("font-family", "%s", "sans-serif"),
+                      svg_attr("text-anchor", "%s", "start"),
+                      svg_attr("dominant-baseline", "%s", "middle"),
+                      svg_attr("font-size",   "%s", "8px"),
+                      svg_attr("vector-effect", "%s", "non-scaling-size"),
+                      svg_attr("fill",        "%s", "black"),
+                      svg_attr("fill-opacity",        "%f", 0.5),
+                      svg_attr("transform", "translate(%f %f) scale(%f %f)",
+                               size.x + 1, (float)i,
+                               1/scale.x, 1/scale.y ));
+        fprintf(output,"%d", i);
         svg_end_tag(output, "text");
     }
 
@@ -742,13 +773,8 @@ void draw_histo_saturation(sequence_data * data){
     unsigned int i;
     float y;
 
-    for(i = 0; i < 1000; i++){
-        y = saturation_accessor(data, i*(data->number_of_sequences/1000));
-        printf("%f, %lu, %lu, %lu\n", 
-                y,
-                data->new_kmers[i*(data->number_of_sequences/1000)],
-                data->new_kmers[data->number_of_sequences-1],
-                data->new_kmers[i*(data->number_of_sequences/1000)]*100/data->new_kmers[data->number_of_sequences-1]);
+    for(i = 0; i < data->windows; i++){
+        y = saturation_accessor(data, i);
 
         svg_simple_tag(output, "rect", 5,
                        svg_attr("x", "%d", i),
@@ -760,21 +786,21 @@ void draw_histo_saturation(sequence_data * data){
 
 
     }
+    printf("Done\n");
 
 }
 
 void draw_svg_saturation(sequence_data * data, fpair_t translate, float max){
     fpair_t original_size, final_size, flip;
 
-    original_size = (fpair_t){1000, max};
+    original_size = (fpair_t){data->windows, max};
     final_size    = (fpair_t){GRAPH_WIDTH, PERF_SIZE};
     flip          = (fpair_t){0,1};
 
     draw_svg_graph(data,
                    original_size, final_size, flip, translate,
-                   draw_histo_saturation, xaxis_length_ticks, yaxis_percent_labels,
+                   draw_histo_saturation, xaxis_length_ticks, yaxis_saturation_labels,
                    "Novel K-mer Saturation");
-
 
 }
 
