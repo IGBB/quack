@@ -786,7 +786,6 @@ void draw_histo_saturation(sequence_data * data){
 
 
     }
-    printf("Done\n");
 
 }
 
