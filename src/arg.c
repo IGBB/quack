@@ -17,6 +17,7 @@ const char* const help_message = ""
   "  -e, --encoding phred33          (Optional) fastq quality encoding.\n"
   "                                     Valid options are phred64, 64, phred33, and 33.\n"
   "  -s, --svg filename.svg          (Optional) Filename for svg output\n"
+  "  -S, --summary filename          (Optional) Filename for summary output\n"
   "  -t, --txt filename.txt          (Optional) Filename for txt output\n"
   "  -n, --name NAME                 (Optional) Display in output\n"
   "  -u, --unpaired unpaired.fq.gz   Data (only use with -u)\n"
@@ -33,8 +34,9 @@ static ko_longopt_t longopts[] = {
 
     { "encoding", ko_required_argument, 'e' },
 
-    { "svg",   ko_required_argument, 's' },
-    { "txt",   ko_required_argument, 't' },
+    { "svg",    ko_required_argument, 's' },
+    { "summary",ko_required_argument, 'S' },
+    { "txt",    ko_required_argument, 't' },
 
     { "name",     ko_required_argument, 'n' },
 
@@ -54,6 +56,7 @@ struct arguments parse_options(int argc, char **argv) {
                                 .adapters = NULL,
                                 .encoding = guess,
                                 .svg = NULL,
+                                .summary = NULL,
                                 .txt = NULL,
   };
 
@@ -62,7 +65,7 @@ struct arguments parse_options(int argc, char **argv) {
 
   int  c;
   FILE* tmp;
-  while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:s:t:n:?V", longopts)) >= 0) {
+  while ((c = ketopt(&opt, argc, argv, 1, "1:2:a:u:e:s:S:t:n:?V", longopts)) >= 0) {
     switch(c){
       case '1': arguments.forward  = opt.arg; break;
       case '2': arguments.reverse  = opt.arg; break;
@@ -83,10 +86,12 @@ struct arguments parse_options(int argc, char **argv) {
         break;
 
       case 's':
+      case 'S':
       case 't':
         tmp = fopen(opt.arg, "w");
 
         if(c == 's') arguments.svg = tmp;
+        if(c == 'S') arguments.summary = tmp;
         if(c == 't') arguments.txt = tmp;
 
         if(tmp == NULL){
@@ -113,7 +118,9 @@ struct arguments parse_options(int argc, char **argv) {
   }
 
   /* If no output arguments are given, then default to svg on stdout */
-  if(arguments.svg == NULL && arguments.txt == NULL)
+  if(arguments.svg == NULL &&
+     arguments.txt == NULL &&
+     arguments.summary == NULL)
     arguments.svg = stdout;
 
     return arguments;

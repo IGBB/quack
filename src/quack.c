@@ -17,6 +17,11 @@ extern void draw_svg(
   FILE * output,
   sequence_data* forward, sequence_data* reverse,
   char* name, int adapters_used);
+extern void print_summary(
+  FILE * output,
+  sequence_data* forward, sequence_data* reverse,
+  char* name, int adapters_used);
+
 
 
 int main (int argc, char **argv)
@@ -53,7 +58,9 @@ int main (int argc, char **argv)
 
     if(arguments.svg)
       draw_svg(arguments.svg, forward, reverse, arguments.name, adapters);
-  
+
+    if(arguments.summary)
+      print_summary(arguments.summary, forward, reverse, arguments.name, adapters);
 
     exit (0);
 }

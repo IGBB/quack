@@ -12,7 +12,7 @@ struct arguments {
        *reverse,
        *unpaired,
        *adapters;
-    FILE * svg, * txt;
+    FILE * svg, * txt, *summary;
     encoding_t encoding;
 };
 
