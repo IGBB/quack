@@ -1,8 +1,8 @@
-src = $(wildcard *.c)
+src = $(wildcard src/*.c)
 obj = $(src:.c=.o)
 
-override LDFLAGS := -lz -lm $(LDFLAGS)
-override CFLAGS := -Iklib -O3 $(CFLAGS)
+override LDFLAGS := -g -lz -lm $(LDFLAGS)
+override CFLAGS := -g -Iklib -O3 $(CFLAGS)
 
 all : klib/kseq.h quack
 
@@ -23,3 +23,4 @@ images: quack
 	$(MAKE) -C images all
 
 test: images
+	$(MAKE) -C test all
